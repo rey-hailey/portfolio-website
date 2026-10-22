@@ -1,0 +1,29 @@
+---
+// WRT-R02: 글 카드. data-category는 필터 스크립트가 읽는다
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  slug: string;
+  title: string;
+  summary: string;
+  category: string;
+  publishedAt: Date;
+  thumbnail?: ImageMetadata | null | undefined;
+  thumbnailAlt?: string | null | undefined;
+}
+const { slug, title, summary, category, publishedAt, thumbnail, thumbnailAlt } = Astro.props;
+const date = publishedAt.toISOString().slice(0, 10);
+---
+
+<li data-testid="writing-card" data-category={category} class="border-t border-ink-line">
+  <a href={`/writing/${slug}`} class="flex flex-col gap-3 py-8 text-ink no-underline md:flex-row md:gap-8">
+    {thumbnail && thumbnailAlt && <Image src={thumbnail} alt={thumbnailAlt} widths={[320, 640]} sizes="(min-width: 768px) 240px, 100vw" class="h-auto w-full md:w-60" />}
+    <span class="flex flex-col gap-2">
+      <span class="text-small text-accent">{category}</span>
+      <h2 class="text-h3 font-semibold break-keep">{title}</h2>
+      <span class="text-ink-muted break-keep">{summary}</span>
+      <time datetime={date} class="text-small text-ink-muted">{date}</time>
+    </span>
+  </a>
+</li>

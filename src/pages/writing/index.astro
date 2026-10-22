@@ -1,0 +1,38 @@
+---
+// Writing 목록 (WRT-R02)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WritingCard from '../../components/writing/WritingCard.astro';
+import WritingFilters from '../../components/writing/WritingFilters.astro';
+import { site } from '../../config/site';
+import { getPublished } from '../../lib/content';
+
+const posts = (await getPublished('writing')).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+---
+
+<BaseLayout title={`Writing | ${site.name}`} description="[TODO: 문구]">
+  <h1 class="font-display text-h1 font-semibold">Writing</h1>
+  <p class="mt-4 text-small"><a href="/rss.xml" class="text-accent underline underline-offset-4">RSS</a></p>
+  {
+    posts.length === 0 ? (
+      <p class="mt-8 text-ink-muted" data-testid="writing-empty">[TODO: 문구]</p>
+    ) : (
+      <>
+        <WritingFilters total={posts.length} />
+        <ul class="mt-8">
+          {posts.map((p) => (
+            <WritingCard
+              slug={p.id}
+              title={p.data.title}
+              summary={p.data.summary}
+              category={p.data.category}
+              publishedAt={p.data.publishedAt}
+              thumbnail={p.data.thumbnail}
+              thumbnailAlt={p.data.thumbnailAlt}
+            />
+          ))}
+        </ul>
+        <nav aria-label="페이지" class="mt-8 flex flex-wrap gap-2" data-writing-pager />
+      </>
+    )
+  }
+</BaseLayout>

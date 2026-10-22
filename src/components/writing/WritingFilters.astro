@@ -1,0 +1,22 @@
+---
+// WRT-R02: 카테고리 필터와 결과 수(aria-live)
+import { WRITING_CATEGORIES } from '../../content/schemas';
+
+interface Props {
+  total: number;
+}
+const { total } = Astro.props;
+const chip = 'border border-ink-line px-3 py-1 text-small text-ink no-underline aria-[current=true]:border-accent aria-[current=true]:text-accent';
+---
+
+<div class="mt-8 flex flex-col gap-4" data-testid="writing-filters">
+  <nav aria-label="카테고리" class="flex flex-wrap gap-2">
+    <a href="/writing" data-writing-filter class={chip}>전체</a>
+    {WRITING_CATEGORIES.map((c) => <a href={`/writing?category=${encodeURIComponent(c)}`} data-writing-filter class={chip}>{c}</a>)}
+  </nav>
+  <p class="text-small text-ink-muted" aria-live="polite"><span data-writing-count>{total}</span></p>
+</div>
+
+<script>
+  import '../../scripts/writing-filter';
+</script>

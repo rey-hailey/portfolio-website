@@ -1,0 +1,39 @@
+---
+// Writing 상세 (WRT-R03)
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../config/site';
+import { getPublished } from '../../lib/content';
+import { isPublic } from '../../lib/content-filter';
+import { readingMinutes } from '../../lib/writing';
+
+export async function getStaticPaths() {
+  return (await getPublished('writing')).map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const d = post.data;
+const { Content } = await render(post);
+const minutes = readingMinutes(post.body ?? '');
+const labEntry = d.relatedLab ? await getEntry('lab', d.relatedLab.id) : undefined;
+const lab = labEntry && isPublic(labEntry, import.meta.env.PROD) ? labEntry : undefined;
+const iso = (x: Date) => x.toISOString().slice(0, 10);
+---
+
+<BaseLayout title={`${d.title} | ${site.name}`} description={d.description}>
+  <article class="mx-auto flex max-w-prose flex-col gap-8">
+    <header class="flex flex-col gap-4">
+      <p class="text-small"><a href="/writing" class="text-ink-muted">Writing</a> · <span class="text-accent" data-field="category">{d.category}</span></p>
+      <h1 class="font-display text-h1 font-semibold break-keep">{d.title}</h1>
+      <p class="flex flex-wrap gap-x-4 text-small text-ink-muted">
+        <time datetime={iso(d.publishedAt)} data-field="publishedAt">{iso(d.publishedAt)}</time>
+        {d.updatedAt && <time datetime={iso(d.updatedAt)} data-field="updatedAt">{iso(d.updatedAt)}</time>}
+        <span data-field="readingMinutes">{minutes}분</span>
+      </p>
+      {d.thumbnail && d.thumbnailAlt && <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[680, 1360]} sizes="680px" class="h-auto w-full" />}
+    </header>
+    <div class="mdx-body"><Content /></div>
+    {lab && <p><a href={`/lab/${lab.id}`} data-field="relatedLab" class="text-accent underline underline-offset-4">{lab.data.title}</a></p>}
+  </article>
+</BaseLayout>
