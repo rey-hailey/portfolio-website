@@ -1,0 +1,37 @@
+---
+// Work 목록 (WRK-R01). 공개 work를 order 순 카드로
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../config/site';
+import { getPublished } from '../../lib/content';
+import { formatDatePeriod } from '../../lib/period';
+import { sortByOrder } from '../../lib/work';
+
+const works = sortByOrder(await getPublished('work'));
+---
+
+<BaseLayout title={`Work | ${site.name}`} description="[TODO: 문구]">
+  <h1 class="font-display text-h1 font-semibold">Work</h1>
+  <ol class="mt-12 grid gap-16 md:grid-cols-2 md:gap-12">
+    {
+      works.map((work) => (
+        <li data-testid="work-card">
+          <a href={`/work/${work.id}`} class="flex flex-col gap-4 text-ink no-underline">
+            <Image src={work.data.thumbnail} alt={work.data.thumbnailAlt} widths={[400, 800]} sizes="(min-width: 768px) 50vw, 100vw" class="h-auto w-full" />
+            <h2 class="text-h3 font-semibold break-keep">{work.data.title}</h2>
+            <p class="text-ink-muted break-keep">{work.data.summary}</p>
+            {work.data.metrics[0] && (
+              <p class="flex flex-wrap items-baseline gap-x-3">
+                <strong class="font-display text-h3 text-accent">{work.data.metrics[0].value}</strong>
+                <span class="text-small text-ink-muted">{work.data.metrics[0].label}</span>
+              </p>
+            )}
+            <p class="text-small text-ink-muted">
+              {work.data.role} · {formatDatePeriod(work.data.period.start, work.data.period.end)}
+            </p>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</BaseLayout>

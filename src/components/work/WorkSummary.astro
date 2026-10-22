@@ -1,0 +1,58 @@
+---
+// WRK-R03 요약 박스, WRK-R05 익명 표시. 레이블은 원문이 없어 [TODO: 문구], 의미는 data-field로 남긴다
+import { formatDatePeriod } from '../../lib/period';
+
+interface Props {
+  company: string;
+  isAnonymized: boolean;
+  role: string;
+  period: { start: Date; end?: Date | null | undefined };
+  team?: string | null | undefined;
+  metrics: { label: string; value: string; note?: string | null | undefined }[];
+}
+const { company, isAnonymized, role, period, team, metrics } = Astro.props;
+const item = 'flex flex-col gap-1';
+const label = 'text-small text-ink-muted';
+---
+
+<dl class="grid gap-6 border-y border-ink-line py-8 sm:grid-cols-2 lg:grid-cols-4" data-testid="work-summary">
+  <div class={item}>
+    <dt class={label} data-field="company">[TODO: 문구]</dt>
+    <dd>
+      {company}
+      {isAnonymized && <span class="ml-2 text-small text-ink-muted" data-anonymized>[TODO: 문구]</span>}
+    </dd>
+  </div>
+  <div class={item}>
+    <dt class={label} data-field="role">[TODO: 문구]</dt>
+    <dd>{role}</dd>
+  </div>
+  <div class={item}>
+    <dt class={label} data-field="period">[TODO: 문구]</dt>
+    <dd>{formatDatePeriod(period.start, period.end)}</dd>
+  </div>
+  {
+    team && (
+      <div class={item}>
+        <dt class={label} data-field="team">[TODO: 문구]</dt>
+        <dd>{team}</dd>
+      </div>
+    )
+  }
+  <div class="flex flex-col gap-3 sm:col-span-2 lg:col-span-4">
+    <dt class={label} data-field="metrics">[TODO: 문구]</dt>
+    <dd>
+      <ul class="grid gap-6 sm:grid-cols-2">
+        {
+          metrics.map((m) => (
+            <li class="flex flex-col gap-1" data-testid="work-metric">
+              <span class="font-display text-h2 font-semibold whitespace-nowrap text-accent">{m.value}</span>
+              <span class="text-ink-muted break-keep">{m.label}</span>
+              {m.note && <span class="text-small text-ink-muted">{m.note}</span>}
+            </li>
+          ))
+        }
+      </ul>
+    </dd>
+  </div>
+</dl>

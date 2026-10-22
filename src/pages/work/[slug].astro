@@ -1,0 +1,40 @@
+---
+// Work 상세 (WRK-R02~R05)
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkPager from '../../components/work/WorkPager.astro';
+import WorkSummary from '../../components/work/WorkSummary.astro';
+import { site } from '../../config/site';
+import { getPublished } from '../../lib/content';
+import { neighbors, sortByOrder } from '../../lib/work';
+
+export async function getStaticPaths() {
+  const works = sortByOrder(await getPublished('work'));
+  return works.map((work, index) => {
+    const { prev, next } = neighbors(works, index);
+    const link = (w?: CollectionEntry<'work'>) => (w ? { slug: w.id, title: w.data.title } : undefined);
+    return { params: { slug: work.id }, props: { work, prev: link(prev), next: link(next) } };
+  });
+}
+
+const { work, prev, next } = Astro.props;
+const { Content } = await render(work);
+const d = work.data;
+---
+
+<BaseLayout title={`${d.title} | ${site.name}`} description={d.description}>
+  <article class="mx-auto flex max-w-page flex-col gap-12">
+    <header class="flex max-w-prose flex-col gap-4">
+      <p class="text-small text-ink-muted"><a href="/work" class="text-ink-muted">Work</a></p>
+      <h1 class="font-display text-h1 font-semibold break-keep">{d.title}</h1>
+      <p class="text-h3 text-ink-muted break-keep">{d.summary}</p>
+    </header>
+    <WorkSummary company={d.company} isAnonymized={d.isAnonymized} role={d.role} period={d.period} team={d.team} metrics={d.metrics} />
+    <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[600, 1200]} sizes="(min-width: 1200px) 1200px, 100vw" class="h-auto w-full" />
+    <div class="mdx-body max-w-prose">
+      <Content />
+    </div>
+  </article>
+  <WorkPager prev={prev} next={next} />
+</BaseLayout>
