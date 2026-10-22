@@ -34,15 +34,15 @@ const writing = writingEntry && isPublic(writingEntry, import.meta.env.PROD) ? {
       <LabDetailLinks demoUrl={d.demoUrl} repoUrl={d.repoUrl} writing={writing} />
     </header>
     <dl class="grid gap-6 border-y border-ink-line py-8 sm:grid-cols-3">
-      <div><dt class="text-small text-ink-muted" data-field="status">[TODO: 문구]</dt><dd>{d.status}</dd></div>
-      <div><dt class="text-small text-ink-muted" data-field="tools">[TODO: 문구]</dt><dd>{d.tools.join(' · ')}</dd></div>
-      <div><dt class="text-small text-ink-muted" data-field="buildDuration">[TODO: 문구]</dt><dd>{d.buildDuration}</dd></div>
+      <div><dt class="text-small text-ink-muted" data-field="status">상태</dt><dd>{d.status}</dd></div>
+      <div><dt class="text-small text-ink-muted" data-field="tools">도구</dt><dd>{d.tools.join(' · ')}</dd></div>
+      <div><dt class="text-small text-ink-muted" data-field="buildDuration">제작 기간</dt><dd>{d.buildDuration}</dd></div>
     </dl>
     <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[600, 1200]} sizes="(min-width: 1200px) 1200px, 100vw" class="h-auto w-full" />
     <div class="mdx-body max-w-prose">
-      <h2>[TODO: 문구]</h2>
+      <h2>왜 만들었나</h2>
       <p data-field="why">{d.why}</p>
-      <h2>[TODO: 문구]</h2>
+      <h2>배운 점</h2>
       <p data-field="learned">{d.learned}</p>
       <Content />
     </div>

@@ -43,7 +43,7 @@ const h2 = 'text-h2 font-semibold';
       {
         toc.length > 0 && (
           <details class="lg:sticky lg:top-8" open data-testid="term-toc">
-            <summary class="cursor-pointer text-small text-ink-muted">[TODO: 문구]</summary>
+            <summary class="cursor-pointer text-small text-ink-muted">목차</summary>
             <ol class="mt-3 flex flex-col gap-2 text-small">
               {toc.map((item) => (
                 <li><a href={`#${item.slug}`} class="text-ink">{item.text}</a></li>
@@ -63,7 +63,7 @@ const h2 = 'text-h2 font-semibold';
       {
         d.faq.length > 0 && (
           <section aria-labelledby="term-faq" class="flex flex-col gap-4">
-            <h2 id="term-faq" class={h2}>[TODO: 문구]</h2>
+            <h2 id="term-faq" class={h2}>자주 묻는 질문</h2>
             {d.faq.map((f) => (
               <details class="border-t border-ink-line py-4" data-testid="term-faq-item">
                 <summary class="cursor-pointer font-semibold break-keep">{f.question}</summary>
@@ -76,7 +76,7 @@ const h2 = 'text-h2 font-semibold';
       {
         d.references.length > 0 && (
           <section aria-labelledby="term-refs" class="flex flex-col gap-4">
-            <h2 id="term-refs" class={h2}>[TODO: 문구]</h2>
+            <h2 id="term-refs" class={h2}>참고 문서</h2>
             <ul class="flex list-disc flex-col gap-2 pl-6">
               {d.references.map((r) => (
                 <li><a href={r.url} target="_blank" rel="noopener noreferrer" class="text-accent underline underline-offset-4">{r.title}</a></li>
@@ -88,7 +88,7 @@ const h2 = 'text-h2 font-semibold';
       {
         related.length > 0 && (
           <section aria-labelledby="term-related" class="flex flex-col gap-4" data-testid="term-related">
-            <h2 id="term-related" class={h2}>[TODO: 문구]</h2>
+            <h2 id="term-related" class={h2}>관련 용어</h2>
             <ul class="flex flex-wrap gap-2">
               {related.map((r) => (
                 <li><a href={`/encyclopedia/${r.id}`} class="border border-ink-line px-3 py-1 text-ink no-underline">{r.data.term}</a></li>
@@ -102,7 +102,7 @@ const h2 = 'text-h2 font-semibold';
   {
     others.length > 0 && (
       <section aria-labelledby="term-others" class="mt-24 border-t border-ink-line pt-8" data-testid="term-others">
-        <h2 id="term-others" class={h2}>[TODO: 문구]</h2>
+        <h2 id="term-others" class={h2}>다른 용어</h2>
         <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {others.map((o) => (
             <li><a href={`/encyclopedia/${o.id}`} class="flex flex-col gap-1 text-ink no-underline"><span class="font-semibold">{o.data.term}</span><span class="text-small text-ink-muted break-keep">{o.data.definition}</span></a></li>

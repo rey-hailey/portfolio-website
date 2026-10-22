@@ -23,26 +23,26 @@ const person = personLd({ name, email, linkedinUrl, url: new URL('/about', Astro
     </section>
 
     <section aria-labelledby="about-intro" class="flex flex-col gap-6">
-      <h2 id="about-intro" class="text-h2 font-semibold">[TODO: 문구]</h2>
+      <h2 id="about-intro" class="text-h2 font-semibold">소개</h2>
       <div class="flex flex-col gap-4 break-keep">
         <Content />
       </div>
     </section>
 
     <section aria-labelledby="about-career" class="flex flex-col gap-8">
-      <h2 id="about-career" class="text-h2 font-semibold">[TODO: 문구]</h2>
+      <h2 id="about-career" class="text-h2 font-semibold">경력</h2>
       <CareerTimeline career={career} />
     </section>
 
     <section aria-labelledby="about-contact" class="flex flex-col gap-6" data-testid="about-contact">
-      <h2 id="about-contact" class="text-h2 font-semibold">[TODO: 문구]</h2>
+      <h2 id="about-contact" class="text-h2 font-semibold">연락처</h2>
       <ul class="flex flex-col gap-3">
         <li><a href={`mailto:${email}`} class="text-accent underline underline-offset-4">{email}</a></li>
         <li>
           <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" class="text-accent underline underline-offset-4">LinkedIn</a>
         </li>
       </ul>
-      <a href={resumeFile} download class="self-start bg-accent px-4 py-2 text-bg no-underline">[TODO: 문구]</a>
+      <a href={resumeFile} download class="self-start bg-accent px-4 py-2 text-bg no-underline">이력서 다운로드</a>
     </section>
   </div>
 </BaseLayout>

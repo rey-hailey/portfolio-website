@@ -1,5 +1,5 @@
 ---
-// WRK-R03 요약 박스, WRK-R05 익명 표시. 레이블은 원문이 없어 [TODO: 문구], 의미는 data-field로 남긴다
+// WRK-R03 요약 박스, WRK-R05 익명 표시. 레이블의 의미는 data-field로 남긴다
 import { formatDatePeriod } from '../../lib/period';
 
 interface Props {
@@ -17,30 +17,30 @@ const label = 'text-small text-ink-muted';
 
 <dl class="grid gap-6 border-y border-ink-line py-8 sm:grid-cols-2 lg:grid-cols-4" data-testid="work-summary">
   <div class={item}>
-    <dt class={label} data-field="company">[TODO: 문구]</dt>
+    <dt class={label} data-field="company">회사</dt>
     <dd>
       {company}
-      {isAnonymized && <span class="ml-2 text-small text-ink-muted" data-anonymized>[TODO: 문구]</span>}
+      {isAnonymized && <span class="ml-2 text-small text-ink-muted" data-anonymized>비공개</span>}
     </dd>
   </div>
   <div class={item}>
-    <dt class={label} data-field="role">[TODO: 문구]</dt>
+    <dt class={label} data-field="role">역할</dt>
     <dd>{role}</dd>
   </div>
   <div class={item}>
-    <dt class={label} data-field="period">[TODO: 문구]</dt>
+    <dt class={label} data-field="period">기간</dt>
     <dd>{formatDatePeriod(period.start, period.end)}</dd>
   </div>
   {
     team && (
       <div class={item}>
-        <dt class={label} data-field="team">[TODO: 문구]</dt>
+        <dt class={label} data-field="team">팀</dt>
         <dd>{team}</dd>
       </div>
     )
   }
   <div class="flex flex-col gap-3 sm:col-span-2 lg:col-span-4">
-    <dt class={label} data-field="metrics">[TODO: 문구]</dt>
+    <dt class={label} data-field="metrics">성과</dt>
     <dd>
       <ul class="grid gap-6 sm:grid-cols-2">
         {

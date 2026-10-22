@@ -10,11 +10,11 @@ import { initialOf, statusText } from '../../lib/encyclopedia';
 const terms = (await getPublished('encyclopedia')).sort((a, b) => a.data.term.localeCompare(b.data.term, 'ko'));
 ---
 
-<BaseLayout title={`Encyclopedia | ${site.name}`} description="[TODO: 문구]" kind="Encyclopedia">
+<BaseLayout title={`Encyclopedia | ${site.name}`} description="AI 제품 기획에 쓰는 개념과 용어를 기획자 관점으로 정리합니다." kind="Encyclopedia">
   <h1 class="font-display text-h1 font-semibold">Encyclopedia</h1>
   {
     terms.length === 0 ? (
-      <p class="mt-8 text-ink-muted" data-testid="enc-empty">[TODO: 문구]</p>
+      <p class="mt-8 text-ink-muted" data-testid="enc-empty">아직 등록한 용어가 없습니다. 하나씩 정리해 올리겠습니다.</p>
     ) : (
       <>
         <EncyclopediaFilters status={statusText(terms.length, 1, 1)} />

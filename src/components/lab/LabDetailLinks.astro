@@ -10,7 +10,7 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
 <ul class="flex flex-wrap gap-4" data-testid="lab-links">
-  {demoUrl && <li><a href={demoUrl} {...external} data-field="demo" class="bg-accent px-4 py-2 text-bg no-underline">[TODO: 문구]</a></li>}
-  {repoUrl && <li><a href={repoUrl} {...external} data-field="repo" class="text-accent underline underline-offset-4">[TODO: 문구]</a></li>}
+  {demoUrl && <li><a href={demoUrl} {...external} data-field="demo" class="bg-accent px-4 py-2 text-bg no-underline">데모 보기</a></li>}
+  {repoUrl && <li><a href={repoUrl} {...external} data-field="repo" class="text-accent underline underline-offset-4">저장소</a></li>}
   {writing && <li><a href={`/writing/${writing.slug}`} data-field="writing" class="text-accent underline underline-offset-4">{writing.title}</a></li>}
 </ul>

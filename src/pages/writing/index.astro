@@ -9,12 +9,12 @@ import { getPublished } from '../../lib/content';
 const posts = (await getPublished('writing')).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
 ---
 
-<BaseLayout title={`Writing | ${site.name}`} description="[TODO: 문구]" kind="Writing">
+<BaseLayout title={`Writing | ${site.name}`} description="AI와 일하며 남긴 기획 노트와 제작기, 회고를 씁니다." kind="Writing">
   <h1 class="font-display text-h1 font-semibold">Writing</h1>
   <p class="mt-4 text-small"><a href="/rss.xml" class="text-accent underline underline-offset-4">RSS</a></p>
   {
     posts.length === 0 ? (
-      <p class="mt-8 text-ink-muted" data-testid="writing-empty">[TODO: 문구]</p>
+      <p class="mt-8 text-ink-muted" data-testid="writing-empty">아직 발행한 글이 없습니다. 기획 노트와 제작기를 곧 올리겠습니다.</p>
     ) : (
       <>
         <WritingFilters total={posts.length} />

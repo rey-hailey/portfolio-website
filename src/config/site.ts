@@ -21,5 +21,5 @@ export const site: SiteConfig = {
     { label: 'Encyclopedia', href: '/encyclopedia' },
     { label: 'Writing', href: '/writing' },
   ],
-  cta: { label: '[TODO: 문구]', href: '/resume.pdf' },
+  cta: { label: '이력서 다운로드', href: '/resume.pdf' },
 };

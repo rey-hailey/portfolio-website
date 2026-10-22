@@ -11,7 +11,7 @@ const { prev, next } = Astro.props;
   {
     prev && (
       <a href={`/work/${prev.slug}`} rel="prev" data-field="prev" class="flex flex-col gap-1 text-ink no-underline">
-        <span class="text-small text-ink-muted">[TODO: 문구]</span>
+        <span class="text-small text-ink-muted">이전 케이스</span>
         <span class="font-semibold break-keep">{prev.title}</span>
       </a>
     )
@@ -19,7 +19,7 @@ const { prev, next } = Astro.props;
   {
     next && (
       <a href={`/work/${next.slug}`} rel="next" data-field="next" class="flex flex-col gap-1 text-ink no-underline sm:col-start-2 sm:text-right">
-        <span class="text-small text-ink-muted">[TODO: 문구]</span>
+        <span class="text-small text-ink-muted">다음 케이스</span>
         <span class="font-semibold break-keep">{next.title}</span>
       </a>
     )

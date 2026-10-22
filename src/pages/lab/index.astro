@@ -10,11 +10,11 @@ import { sortLabs, toolOptions } from '../../lib/lab';
 const labs = sortLabs(await getPublished('lab'));
 ---
 
-<BaseLayout title={`Lab | ${site.name}`} description="[TODO: 문구]" kind="Lab">
+<BaseLayout title={`Lab | ${site.name}`} description="직접 만든 시제품과 도구를 모으고, 왜 만들었고 무엇을 배웠는지 적습니다." kind="Lab">
   <h1 class="font-display text-h1 font-semibold">Lab</h1>
   {
     labs.length === 0 ? (
-      <p class="mt-8 text-ink-muted" data-testid="lab-empty">[TODO: 문구]</p>
+      <p class="mt-8 text-ink-muted" data-testid="lab-empty">아직 공개한 Lab이 없습니다. 직접 만든 결과물을 곧 올리겠습니다.</p>
     ) : (
       <>
         <LabFilters tools={toolOptions(labs)} total={labs.length} />

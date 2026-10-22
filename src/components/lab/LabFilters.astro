@@ -12,12 +12,12 @@ const link = 'border border-ink-line px-3 py-1 text-small text-ink no-underline 
 
 <div class="mt-8 flex flex-col gap-4" data-testid="lab-filters">
   <fieldset class="flex flex-wrap items-center gap-2">
-    <legend class="mb-2 text-small text-ink-muted">[TODO: 문구]</legend>
-    <a href="/lab" data-lab-filter class={link}>[TODO: 문구]</a>
+    <legend class="mb-2 text-small text-ink-muted">도구</legend>
+    <a href="/lab" data-lab-filter class={link}>전체</a>
     {tools.map((tool) => <a href={`/lab?tool=${encodeURIComponent(tool)}`} data-lab-filter data-tool={tool} class={link}>{tool}</a>)}
   </fieldset>
   <fieldset class="flex flex-wrap items-center gap-2">
-    <legend class="mb-2 text-small text-ink-muted">[TODO: 문구]</legend>
+    <legend class="mb-2 text-small text-ink-muted">상태</legend>
     {LAB_STATUSES.map((status) => <a href={`/lab?status=${status}`} data-lab-filter data-status-filter={status} class={link}>{status}</a>)}
   </fieldset>
   <p class="text-small text-ink-muted" aria-live="polite"><span data-lab-count>{total}</span></p>
