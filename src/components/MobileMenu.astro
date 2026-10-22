@@ -52,6 +52,20 @@ const { pathname } = Astro.url;
 
   :global(html.js) .menu-button[aria-expanded='false'] + #mobile-menu {
     display: none;
+    opacity: 0;
+  }
+
+  /* 열기/닫기 전환 (FND-R18 대상): 토큰 --ease-out, 200ms */
+  #mobile-menu {
+    transition:
+      opacity 200ms var(--ease-out),
+      display 200ms allow-discrete;
+  }
+
+  @starting-style {
+    #mobile-menu {
+      opacity: 0;
+    }
   }
 </style>
 

@@ -4,6 +4,7 @@
 /* 자체 호스팅 폰트 (FND-R06): 외부 CDN 없음. Vite가 woff2를 /_astro/ 아래로 번들한다 */
 @import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css"; /* Pretendard Variable 다이내믹 서브셋, font-display: swap */
 @import "@fontsource-variable/geist"; /* Geist Variable (라틴 등 5개 서브셋), font-display: swap */
+@import "lenis/dist/lenis.css"; /* .lenis* 클래스에만 적용되므로 동작 줄이기에서는 무효 (FND-R17) */
 
 @layer base {
   html {
@@ -17,5 +18,17 @@
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+}
+
+/* 동작 줄이기 (FND-R18): 전환·애니메이션·부드러운 스크롤을 끈다 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
