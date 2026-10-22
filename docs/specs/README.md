@@ -26,7 +26,7 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | # | 스펙 | 범위 | 상태 | requirements | design | 실행 계획 |
 |---|------|------|------|--------------|--------|-----------|
 | 01 | foundation | 프로젝트 세팅, 디자인 토큰, 레이아웃, 헤더(모바일 메뉴 포함), 푸터 | Done | `docs/specs/01-foundation/requirements.md` | `docs/specs/01-foundation/design.md` | `.omo/plans/01-foundation.md` |
-| 02 | content-model | Keystatic 관리자 화면, 5종 콘텐츠 스키마, 샘플 콘텐츠, 작성 가이드 | Draft (미작성) | `docs/specs/02-content-model/requirements.md` | `docs/specs/02-content-model/design.md` | `.omo/plans/02-content-model.md` |
+| 02 | content-model | Keystatic 관리자 화면, 5종 콘텐츠 스키마, 샘플 콘텐츠, 작성 가이드 | Done (실제 문구는 사이트 주인 대기) | `docs/specs/02-content-model/requirements.md` | `docs/specs/02-content-model/design.md` | `.omo/plans/02-content-model.md` |
 | 03 | home | 메인 페이지 섹션 구성 | Done | `docs/specs/03-home/requirements.md` | `docs/specs/03-home/design.md` | `.omo/plans/03-home.md` |
 | 04 | about | 소개, 경력 타임라인, 이력서 PDF 다운로드 | Done | `docs/specs/04-about/requirements.md` | `docs/specs/04-about/design.md` | `.omo/plans/04-about.md` |
 | 05 | work | 케이스 스터디 목록/상세 (배경 → 문제 정의 → 가설 → 실행 → 결과 → 회고) | Done | `docs/specs/05-work/requirements.md` | `docs/specs/05-work/design.md` | `.omo/plans/05-work.md` |
