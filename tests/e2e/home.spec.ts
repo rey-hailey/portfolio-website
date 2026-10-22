@@ -29,8 +29,22 @@ test('숫자 카드 4개, accent 색, 절대 매출액 없음 (HOME-R04)', async
   expect(await page.content()).not.toMatch(/억 ?원/);
 });
 
-test('공개된 대표 Work·Lab이 없으면 섹션 없음 (HOME-R05, R07)', async ({ page }) => {
-  await expect(page.getByTestId('home-featured-work')).toHaveCount(0);
+test('대표 Work 3개가 01·02·03 순서로 링크된다 (HOME-R05, WRK-R06 AC3)', async ({ page }) => {
+  const links = page.getByTestId('home-featured-work').locator('a');
+  expect(await links.evaluateAll((els) => els.map((el) => el.getAttribute('href')))).toEqual([
+    '/work/laura',
+    '/work/orc-laura',
+    '/work/the-life-of-our-lord',
+  ]);
+});
+
+test('강점 근거가 공개 케이스로 링크된다 (HOME-R02, WRK-R06 AC3)', async ({ page }) => {
+  const links = page.locator('section[aria-labelledby="home-strengths"] h3 a');
+  await expect(links).toHaveCount(3);
+  await expect(links.first()).toHaveAttribute('href', '/work/laura');
+});
+
+test('공개된 Lab이 없으면 섹션 없음 (HOME-R07)', async ({ page }) => {
   await expect(page.getByTestId('home-lab')).toHaveCount(0);
 });
 
