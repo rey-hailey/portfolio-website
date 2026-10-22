@@ -1,0 +1,26 @@
+# omo 세션 상태: .omo/plans/ 만 커밋하고 나머지(goal, drafts, session-work 등)는 무시
+.omo/*
+!.omo/plans/
+
+# 개인 원본 자료(이력서, 기존 포트폴리오 등): 전화번호/주소 포함 가능성 → 커밋 금지
+_private/
+
+# 의존성 / 빌드 산출물
+node_modules/
+dist/
+.astro/
+.vercel/
+
+# 테스트 산출물
+coverage/
+test-results/
+playwright-report/
+
+# 환경 변수
+.env
+.env.*
+!.env.example
+
+# OS / 에디터
+.DS_Store
+*.log
