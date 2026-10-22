@@ -3,9 +3,9 @@
 // 금지 필드(전화번호, 주소, 생년월일)는 정의하지 않고 strict로 알 수 없는 키를 모두 거부한다.
 import { z } from 'astro/zod';
 
-export interface SchemaHelpers {
-  image: () => z.ZodType;
-  ref: (collection: 'work' | 'lab' | 'encyclopedia' | 'writing') => z.ZodType;
+export interface SchemaHelpers<I extends z.ZodType = z.ZodType, R extends z.ZodType = z.ZodType> {
+  image: () => I;
+  ref: (collection: 'work' | 'lab' | 'encyclopedia' | 'writing') => R;
 }
 
 export const ENCYCLOPEDIA_CATEGORIES = ['기초 개념', '모델·기술', '프롬프트·에이전트', 'AI 제품 기획', '평가·안전·정책'] as const;
@@ -27,7 +27,7 @@ const listCommon = {
 const datesInOrder = (d: { publishedAt: Date; updatedAt?: Date | null }) => !d.updatedAt || d.updatedAt >= d.publishedAt;
 const datesMessage = { message: 'updatedAt은 publishedAt보다 이를 수 없다', path: ['updatedAt'] };
 
-export const workSchema = (h: SchemaHelpers) =>
+export const workSchema = <I extends z.ZodType, R extends z.ZodType>(h: SchemaHelpers<I, R>) =>
   z
     .object({
       title: text,
@@ -52,7 +52,7 @@ export const workSchema = (h: SchemaHelpers) =>
     .strict()
     .refine(datesInOrder, datesMessage);
 
-export const labSchema = (h: SchemaHelpers) =>
+export const labSchema = <I extends z.ZodType, R extends z.ZodType>(h: SchemaHelpers<I, R>) =>
   z
     .object({
       title: text,
@@ -74,7 +74,7 @@ export const labSchema = (h: SchemaHelpers) =>
     .strict()
     .refine(datesInOrder, datesMessage);
 
-export const encyclopediaSchema = (h: SchemaHelpers) =>
+export const encyclopediaSchema = <I extends z.ZodType, R extends z.ZodType>(h: SchemaHelpers<I, R>) =>
   z
     .object({
       term: text,
@@ -90,7 +90,7 @@ export const encyclopediaSchema = (h: SchemaHelpers) =>
     .strict()
     .refine(datesInOrder, datesMessage);
 
-export const writingSchema = (h: SchemaHelpers) =>
+export const writingSchema = <I extends z.ZodType, R extends z.ZodType>(h: SchemaHelpers<I, R>) =>
   z
     .object({
       title: text,
@@ -106,7 +106,7 @@ export const writingSchema = (h: SchemaHelpers) =>
     .refine(datesInOrder, datesMessage)
     .refine((d) => !d.thumbnail || !!d.thumbnailAlt, { message: '썸네일에는 alt가 필요하다', path: ['thumbnailAlt'] });
 
-export const aboutSchema = (h: SchemaHelpers) =>
+export const aboutSchema = <I extends z.ZodType, R extends z.ZodType>(h: SchemaHelpers<I, R>) =>
   z
     .object({
       name: text,
