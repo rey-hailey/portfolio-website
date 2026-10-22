@@ -19,7 +19,11 @@ test('강점 3개 (HOME-R02)', async ({ page }) => {
 });
 
 test('문제의식 (HOME-R03)', async ({ page }) => {
-  await expect(page.getByTestId('home-problem')).toHaveText('[TODO: 문구]');
+  const problem = page.getByTestId('home-problem');
+  await expect(problem).toBeVisible();
+  const text = (await problem.textContent())?.trim() ?? '';
+  expect(text.length).toBeGreaterThan(10);
+  expect(text).not.toBe('[TODO: 문구]');
 });
 
 test('숫자 카드 4개, accent 색, 절대 매출액 없음 (HOME-R04)', async ({ page }) => {
