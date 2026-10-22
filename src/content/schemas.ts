@@ -126,3 +126,12 @@ export const aboutSchema = <I extends z.ZodType, R extends z.ZodType>(h: SchemaH
     })
     .strict()
     .refine((d) => !d.photo || !!d.photoAlt, { message: '사진에는 alt가 필요하다', path: ['photoAlt'] });
+
+export const homeSchema = () =>
+  z
+    .object({
+      problem: text,
+      metrics: z.array(z.object({ value: text, label: text }).strict()).length(4),
+      closing: text,
+    })
+    .strict();

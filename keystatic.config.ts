@@ -131,6 +131,21 @@ export default config({
     }),
   },
   singletons: {
+    home: singleton({
+      label: 'Home',
+      path: 'src/content/home/',
+      format: { contentField: 'body' },
+      schema: {
+        problem: longText('문제의식'),
+        metrics: fields.array(fields.object({ value: text('숫자'), label: text('설명') }), {
+          label: '성과 숫자 (4개)',
+          itemLabel: (p) => p.fields.value.value,
+          validation: { length: { min: 4, max: 4 } },
+        }),
+        closing: text('마무리 문장'),
+        body: fields.mdx({ label: '본문 (사용하지 않음)' }),
+      },
+    }),
     about: singleton({
       label: 'About',
       path: 'src/content/about/',

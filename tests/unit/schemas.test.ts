@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   aboutSchema,
   encyclopediaSchema,
+  homeSchema,
   labSchema,
   workSchema,
   writingSchema,
@@ -96,5 +97,18 @@ describe('규칙', () => {
   it('work metrics는 1~4개', () => {
     const m = valid.work.metrics[0];
     expect(schemas.work.safeParse({ ...valid.work, metrics: [m, m, m, m, m] }).success).toBe(false);
+  });
+});
+
+describe('home 스키마 (HOME-R10)', () => {
+  const home = { problem: T, metrics: [1, 2, 3, 4].map(() => ({ value: '+40%', label: T })), closing: T };
+  it('유효 예시 통과', () => {
+    expect(homeSchema().safeParse(home).success).toBe(true);
+  });
+  it('metrics는 정확히 4개', () => {
+    expect(homeSchema().safeParse({ ...home, metrics: home.metrics.slice(0, 3) }).success).toBe(false);
+  });
+  it.each(['phone', 'unknownField'])('알 수 없는 필드 %s 거부', (key) => {
+    expect(homeSchema().safeParse({ ...home, [key]: 'x' }).success).toBe(false);
   });
 });

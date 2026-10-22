@@ -8,6 +8,7 @@ import keystaticConfig from '../../keystatic.config';
 import {
   aboutSchema,
   encyclopediaSchema,
+  homeSchema,
   labSchema,
   workSchema,
   writingSchema,
@@ -31,6 +32,10 @@ describe('Keystatic ↔ zod 필드 이름 일치 (CNT-R07)', () => {
     const keystaticKeys = Object.keys(keystaticConfig.collections[name].schema).filter((k) => k !== 'body');
     expect(sorted(keystaticKeys)).toEqual(sorted(zodKeys[name]));
   });
+  it('home', () => {
+    const keystaticKeys = Object.keys(keystaticConfig.singletons.home.schema).filter((k) => k !== 'body');
+    expect(sorted(keystaticKeys)).toEqual(sorted(Object.keys(homeSchema().shape)));
+  });
   it('about', () => {
     const keystaticKeys = Object.keys(keystaticConfig.singletons.about.schema).filter((k) => k !== 'intro');
     expect(sorted(keystaticKeys)).toEqual(sorted(Object.keys(aboutSchema(h).shape)));
@@ -42,6 +47,10 @@ describe('Keystatic reader로 전 파일 읽기 (CNT-R06 AC2), slug 규칙 (CNT-
     const entries = await reader.collections[name].all();
     expect(entries.length).toBeGreaterThan(0);
     for (const { slug } of entries) expect(isValidSlug(slug), slug).toBe(true);
+  });
+  it('home', async () => {
+    const home = await reader.singletons.home.read();
+    expect(home?.metrics).toHaveLength(4);
   });
   it('about', async () => {
     const about = await reader.singletons.about.read();
