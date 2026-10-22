@@ -9,3 +9,4 @@
 | # | 제목 | 상태 |
 |---|------|------|
 | 0001 | [기술 스택](./0001-tech-stack.md) | Accepted |
+| 0002 | [Keystatic 배치와 스키마 단일 정의](./0002-keystatic-content-model.md) | Accepted (위임 승인, 검토 대기) |
