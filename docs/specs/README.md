@@ -32,7 +32,7 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 05 | work | 케이스 스터디 목록/상세 (배경 → 문제 정의 → 가설 → 실행 → 결과 → 회고) | Done | `docs/specs/05-work/requirements.md` | `docs/specs/05-work/design.md` | `.omo/plans/05-work.md` |
 | 06 | lab | 갤러리 그리드(도구/상태 필터), 상세(데모 링크 또는 lazy-load 임베드, why/learned, 제작기 글 링크) | Done (콘텐츠는 사이트 주인 제공 대기) | `docs/specs/06-lab/requirements.md` | `docs/specs/06-lab/design.md` | `.omo/plans/06-lab.md` |
 | 07 | encyclopedia | 목록(검색, 카테고리, 초성, 페이지네이션), 상세(TOC, FAQ, 관련 용어 자동 역링크, 참고 문서) | Done (용어 원고는 사이트 주인 대기) | `docs/specs/07-encyclopedia/requirements.md` | `docs/specs/07-encyclopedia/design.md` | `.omo/plans/07-encyclopedia.md` |
-| 08 | writing | 글 목록/상세, 카테고리, RSS | Draft (미작성) | `docs/specs/08-writing/requirements.md` | `docs/specs/08-writing/design.md` | `.omo/plans/08-writing.md` |
+| 08 | writing | 글 목록/상세, 카테고리, RSS | Planned (2026-10-23 위임 승인) | `docs/specs/08-writing/requirements.md` | `docs/specs/08-writing/design.md` | `.omo/plans/08-writing.md` |
 | 09 | seo-geo | 메타, OG 이미지, JSON-LD(Lab은 SoftwareApplication 또는 CreativeWork), sitemap, llms.txt | Draft (미작성) | `docs/specs/09-seo-geo/requirements.md` | `docs/specs/09-seo-geo/design.md` | `.omo/plans/09-seo-geo.md` |
 | 10 | launch | Vercel 배포, 도메인, 분석, 최종 QA | Draft (미작성) | `docs/specs/10-launch/requirements.md` | `docs/specs/10-launch/design.md` | `.omo/plans/10-launch.md` |
 
