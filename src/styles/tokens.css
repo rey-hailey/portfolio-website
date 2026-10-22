@@ -1,0 +1,34 @@
+/*
+  디자인 토큰 — 유일한 토큰 정의 위치.
+  출처: docs/specs/01-foundation/design.md 5절, docs/PRD.md 7.2~7.5
+  FND-R04 색 / FND-R05 타이포·간격·레이아웃 / FND-R06 폰트 패밀리
+*/
+@theme {
+  --color-*: initial;            /* Tailwind 기본 팔레트 제거 (FND-R04 AC1) */
+  --color-bg: #F7F7F4;
+  --color-ink: #1A1A1A;
+  --color-accent: #2F5BFF;
+  --color-ink-muted: #5C5C5C;             /* 보조 텍스트. 후보값 — todo 5의 대비 테스트(4.5:1 이상)로 확정 */
+  --color-ink-line: rgb(26 26 26 / 0.12); /* 구분선 (텍스트 아님). ink 투명도 변형 */
+
+  --font-*: initial;
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-display: "Geist Variable", Geist, var(--font-sans);
+
+  /*
+    타이포 스케일 (PRD 7.4). clamp 가운데 값 = intercept px + slope x 100vw
+    slope = (desktop - mobile) / (1280 - 390), intercept = mobile - 390 x slope
+    => 뷰포트 390px에서 모바일 값, 1280px에서 데스크톱 값
+  */
+  --text-display: clamp(40px, 25.9775px + 3.5955vw, 72px); /* 40->72: slope=32/890=0.035955, intercept=40-390x0.035955=25.9775 */
+  --text-h1: clamp(32px, 24.9888px + 1.7978vw, 48px);      /* 32->48: slope=16/890=0.017978, intercept=32-390x0.017978=24.9888 */
+  --text-h2: clamp(24px, 20.4944px + 0.8989vw, 32px);      /* 24->32: slope=8/890=0.008989, intercept=24-390x0.008989=20.4944 */
+  --text-h3: clamp(20px, 18.2472px + 0.4494vw, 24px);      /* 20->24: slope=4/890=0.004494, intercept=20-390x0.004494=18.2472 */
+  --text-body: clamp(17px, 16.5618px + 0.1124vw, 18px);    /* 17->18: slope=1/890=0.001124, intercept=17-390x0.001124=16.5618 */
+  --text-small: 14px;                                      /* 14->14: 고정 */
+
+  --spacing: 4px;                /* Tailwind v4 간격 배수 기준 -> 1=4px, 2=8px, 3=12px, 4=16px, 6=24px, 8=32px, 12=48px, 16=64px, 24=96px, 32=128px */
+  --container-prose: 680px;      /* 본문 최대 폭 (max-w-prose) */
+  --container-page: 1200px;      /* 페이지 최대 폭 (max-w-page) */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
