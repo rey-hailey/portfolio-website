@@ -11,7 +11,7 @@ interface Props {
     {
       Astro.props.metrics.map((m) => (
         <li class="flex flex-col gap-2 border-t border-ink-line pt-6" data-testid="home-metric">
-          <span class="font-display text-h1 font-semibold text-accent" data-testid="home-metric-value">{m.value}</span>
+          <span class="font-display text-h2 font-semibold whitespace-nowrap text-accent" data-testid="home-metric-value">{m.value}</span>
           <span class="text-ink-muted break-keep">{m.label}</span>
         </li>
       ))
