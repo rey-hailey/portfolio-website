@@ -1,10 +1,10 @@
-// FND-R10·ABT-R07·HOME-R11·WRK-R07 반응형, FND-R21 JS 예산, FND-R06 AC1 외부 요청 없음 (desktop 프로젝트 전용)
+// FND-R10·ABT-R07·HOME-R11·WRK-R07·LAB-R05 반응형, FND-R21 JS 예산, FND-R06 AC1 외부 요청 없음 (desktop 프로젝트 전용)
 import { gzipSync } from 'node:zlib';
 import { expect, test } from '@playwright/test';
 
 const WIDTHS = [320, 390, 768, 1024, 1280, 1440];
 
-for (const path of ['/', '/about', '/work', '/work/laura', '/not-exist-qa']) {
+for (const path of ['/', '/about', '/work', '/work/laura', '/lab', '/not-exist-qa']) {
   for (const width of WIDTHS) {
     test(`${path} @${width}px: 가로 스크롤 없음 (FND-R10)`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
