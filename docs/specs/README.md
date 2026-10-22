@@ -27,7 +27,7 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 |---|------|------|------|--------------|--------|-----------|
 | 01 | foundation | 프로젝트 세팅, 디자인 토큰, 레이아웃, 헤더(모바일 메뉴 포함), 푸터 | Done | `docs/specs/01-foundation/requirements.md` | `docs/specs/01-foundation/design.md` | `.omo/plans/01-foundation.md` |
 | 02 | content-model | Keystatic 관리자 화면, 5종 콘텐츠 스키마, 샘플 콘텐츠, 작성 가이드 | Draft (미작성) | `docs/specs/02-content-model/requirements.md` | `docs/specs/02-content-model/design.md` | `.omo/plans/02-content-model.md` |
-| 03 | home | 메인 페이지 섹션 구성 | Planned (2026-10-23 위임 승인) | `docs/specs/03-home/requirements.md` | `docs/specs/03-home/design.md` | `.omo/plans/03-home.md` |
+| 03 | home | 메인 페이지 섹션 구성 | Done (HOME-R11 Lighthouse 예외 — ADR 0003 후속) | `docs/specs/03-home/requirements.md` | `docs/specs/03-home/design.md` | `.omo/plans/03-home.md` |
 | 04 | about | 소개, 경력 타임라인, 이력서 PDF 다운로드 | Done (ABT-R07 AC3 예외 — ADR 0003 결정 대기) | `docs/specs/04-about/requirements.md` | `docs/specs/04-about/design.md` | `.omo/plans/04-about.md` |
 | 05 | work | 케이스 스터디 목록/상세 (배경 → 문제 정의 → 가설 → 실행 → 결과 → 회고) | Draft (미작성) | `docs/specs/05-work/requirements.md` | `docs/specs/05-work/design.md` | `.omo/plans/05-work.md` |
 | 06 | lab | 갤러리 그리드(도구/상태 필터), 상세(데모 링크 또는 lazy-load 임베드, why/learned, 제작기 글 링크) | Draft (미작성) | `docs/specs/06-lab/requirements.md` | `docs/specs/06-lab/design.md` | `.omo/plans/06-lab.md` |
