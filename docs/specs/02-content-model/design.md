@@ -115,7 +115,7 @@ export const aboutSchema = (h) => z.object({
   name: text, headline: text,
   strengths: z.array(z.object({ title: text, description: text, evidence: z.string().nullish() }).strict()).length(3),
   photo: h.image().nullish(), photoAlt: z.string().nullish(),
-  career: z.array(z.object({ company: text, role: text, start: yearMonth, end: yearMonth.nullish(), highlights: z.array(text) }).strict()).min(1),
+  career: z.array(z.object({ company: text, role: text, start: yearMonth, end: yearMonth.or(z.literal('')).nullish(), highlights: z.array(text) }).strict()).min(1), // Keystatic은 빈 텍스트를 ''로 저장
   email: z.email(), linkedinUrl: z.url(), resumeFile: z.literal('/resume.pdf'),
   workingStyle: z.array(z.object({ title: text, description: text }).strict()).length(4),
 }).strict().refine((d) => !d.photo || !!d.photoAlt, { path: ['photoAlt'] });
