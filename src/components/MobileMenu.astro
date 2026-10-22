@@ -1,0 +1,60 @@
+---
+// 모바일 메뉴 (FND-R13~R15): disclosure 패턴. 상태의 유일한 출처는 button[aria-expanded] (design.md 7절)
+// JS가 없으면(html.no-js) 버튼을 숨기고 패널을 항상 보여 준다 (FND-R15)
+import { site } from '../config/site';
+import { isActivePath } from '../lib/nav';
+
+const { pathname } = Astro.url;
+---
+
+<button
+  type="button"
+  class="menu-button ml-auto flex flex-col gap-1 p-2 md:hidden"
+  aria-expanded="false"
+  aria-controls="mobile-menu"
+  aria-label="메뉴"
+>
+  <span class="block h-0.5 w-6 bg-ink"></span>
+  <span class="block h-0.5 w-6 bg-ink"></span>
+  <span class="block h-0.5 w-6 bg-ink"></span>
+</button>
+<div id="mobile-menu" class="w-full md:hidden">
+  <nav aria-label="모바일 메뉴" class="flex flex-col gap-4 py-4">
+    <ul class="flex flex-col gap-2">
+      {
+        site.nav.map((item) => {
+          const active = isActivePath(pathname, item.href);
+          return (
+            <li>
+              <a
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                class:list={[
+                  'block py-1 text-ink underline-offset-8',
+                  active ? 'underline decoration-accent decoration-2' : 'no-underline',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <a href={site.cta.href} download class="self-start bg-accent px-4 py-2 text-bg no-underline">{site.cta.label}</a>
+  </nav>
+</div>
+
+<style>
+  :global(html.no-js) .menu-button {
+    display: none;
+  }
+
+  :global(html.js) .menu-button[aria-expanded='false'] + #mobile-menu {
+    display: none;
+  }
+</style>
+
+<script>
+  import '../scripts/mobile-menu';
+</script>
