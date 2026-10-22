@@ -58,10 +58,10 @@
 
 ### CNT-R05: 컬렉션 간 참조 검증
 - 우선순위: P0 · 스토리: US-02
-- 요구사항: THE SYSTEM SHALL 컬렉션 간 연결(work.promotedFromLab, lab.relatedWriting, lab.promotedToWork, writing.relatedLab, encyclopedia.relatedTerms)을 `reference()`로 정의해, 없는 slug를 가리키면 빌드가 실패하게 한다.
+- 요구사항: THE SYSTEM SHALL 컬렉션 간 연결(work.promotedFromLab, lab.relatedWriting, lab.promotedToWork, writing.relatedLab, encyclopedia.relatedTerms)을 `reference()`로 정의하고, 없는 slug를 가리키면 `pnpm test`가 실패하게 한다.
 - 수용 기준:
-  - [ ] AC1: 샘플 콘텐츠에서 참조 하나를 없는 slug로 바꾸면 `pnpm build`가 실패한다 (QA 시나리오로 확인 후 되돌림).
-- 검증: 빌드 실패 확인
+  - [ ] AC1: 샘플 콘텐츠에서 참조 하나를 없는 slug로 바꾸면 참조 테스트가 실패한다 (QA 시나리오로 확인 후 되돌림).
+- 검증: Vitest (실행 중 확인: Astro 7 빌드는 없는 참조를 오류 로그로만 남기고 종료 코드 0으로 끝나므로 테스트로 막는다)
 
 ### CNT-R06: 관리자 화면 (로컬)
 - 우선순위: P0 · 스토리: US-01

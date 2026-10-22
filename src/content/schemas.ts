@@ -116,7 +116,7 @@ export const aboutSchema = (h: SchemaHelpers) =>
       photoAlt: z.string().nullish(),
       career: z
         .array(
-          z.object({ company: text, role: text, start: yearMonth, end: yearMonth.nullish(), highlights: z.array(text) }).strict(),
+          z.object({ company: text, role: text, start: yearMonth, end: yearMonth.or(z.literal('')).nullish(), highlights: z.array(text) }).strict(),
         )
         .min(1),
       email: z.email(),
