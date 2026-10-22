@@ -127,7 +127,7 @@ export function isActivePath(pathname: string, href: string): boolean
   --color-bg: #F7F7F4;
   --color-ink: #1A1A1A;
   --color-accent: #2F5BFF;
-  --color-ink-muted: <ink 기반, 대비 4.5:1 이상이 되는 값>;   /* 보조 텍스트 */
+  --color-ink-muted: #5C5C5C;   /* 보조 텍스트. bg 대비 6.23:1 — contrast.test.ts로 확정 (2026-10-22) */
   --color-ink-line:  <ink 기반 투명도>;                       /* 구분선 (텍스트 아님) */
 
   --font-*: initial;
