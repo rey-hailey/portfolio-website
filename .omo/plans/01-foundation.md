@@ -121,7 +121,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
 ## Todos
 > Implementation + Test = ONE todo. Never separate.
 <!-- APPEND TASK BATCHES BELOW THIS LINE WITH edit/apply_patch - never rewrite the headers above. -->
-- [ ] 1. 개발 환경(Node 24, pnpm)과 git 저장소 준비 [FND-R01]
+- [x] 1. 개발 환경(Node 24, pnpm)과 git 저장소 준비 [FND-R01]
   What to do:
   1. `brew list --versions | grep -E '^node'`로 현재 연결된 Node 포뮤러를 확인해 기록한다.
   2. `brew install node@24` → 현재 연결된 Node 포뮤러를 `brew unlink <이름>` → `brew link --overwrite --force node@24`.
@@ -139,7 +139,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `docs: 제품 문서와 스펙 초기 커밋 [FND-R01]`
   Recommended task executor category: quick — 정해진 환경 명령을 순서대로 실행하는 기계적 작업
 
-- [ ] 2. Astro 7 정적 프로젝트 스캐폴드 [FND-R01, FND-R03]
+- [x] 2. Astro 7 정적 프로젝트 스캐폴드 [FND-R01, FND-R03]
   What to do: 대화형 `create astro`를 쓰지 말고 직접 만든다.
   - `package.json`: `"name": "portfolio-site"`, `"private": true`, `"type": "module"`, `"packageManager": "pnpm@<pnpm -v 값>"`, `"engines": {"node": "24.x"}`, scripts `dev`=`astro dev`, `build`=`astro build`, `preview`=`astro preview`, `check`=`astro check`.
   - 의존성을 여기서 한 번에 설치한다: `pnpm add astro@^7 lenis@^1 pretendard@^1 @fontsource-variable/geist@^5` → `pnpm add -D @astrojs/check@^0.9 typescript@^6 @types/node tailwindcss@^4 @tailwindcss/vite@^4 vitest@^5 @playwright/test@^1`. (todo 3, 4, 11은 `pnpm add`를 하지 않는다)
@@ -157,7 +157,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `build(foundation): Astro 7 정적 프로젝트 스캐폴드 [FND-R01][FND-R03]`
   Recommended task executor category: quick — 파일 내용이 모두 정해진 설정 작업
 
-- [ ] 3. Vitest·Playwright 실행 환경 [FND-R02]
+- [x] 3. Vitest·Playwright 실행 환경 [FND-R02]
   What to do:
   - (의존성은 todo 2에서 설치됨) `pnpm exec playwright install chromium`.
   - `vitest.config.ts`: `include: ['tests/unit/**/*.test.ts']`, environment `node`.
@@ -174,7 +174,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `test(foundation): Vitest·Playwright 실행 환경 [FND-R02]`
   Recommended task executor category: quick — 표준 설정 파일 작성
 
-- [ ] 4. Tailwind v4 디자인 토큰과 폰트 [FND-R04, FND-R05, FND-R06]
+- [x] 4. Tailwind v4 디자인 토큰과 폰트 [FND-R04, FND-R05, FND-R06]
   What to do:
   - (의존성은 todo 2에서 설치됨) `astro.config.mjs`에 `vite: { plugins: [tailwindcss()] }`.
   - 폰트 패키지 확인된 경로(2026-10-22, jsDelivr): `pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css`(family `Pretendard Variable`, `font-display: swap`, 상대경로 woff2), `@fontsource-variable/geist/index.css`(family `Geist Variable`, `font-display: swap`), preload 대상 `@fontsource-variable/geist/files/geist-latin-wght-normal.woff2`. 설치 후 `ls`로 같은지 확인해 evidence에 기록.
@@ -191,7 +191,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `feat(foundation): 디자인 토큰과 자체 호스팅 폰트 [FND-R04][FND-R05][FND-R06]`
   Recommended task executor category: visual-engineering — 디자인 토큰·타이포 clamp 계산
 
-- [ ] 5. WCAG 대비 유틸 TDD와 토큰 대비 검증 [FND-R04, FND-R09]
+- [x] 5. WCAG 대비 유틸 TDD와 토큰 대비 검증 [FND-R04, FND-R09]
   What to do (TDD 순서 강제):
   1. `tests/unit/contrast.test.ts`를 먼저 작성: (a) `contrastRatio('#000000','#FFFFFF')`가 21에 근사(소수 2자리), (b) `contrastRatio('#FFFFFF','#FFFFFF')` = 1, (c) `src/styles/tokens.css`를 파일로 읽어 `--color-(bg|ink|accent|ink-muted): #XXXXXX` 값을 파싱하고 조합 ink/bg, ink-muted/bg, accent/bg, bg/accent, bg/ink가 모두 >= 4.5, (d) 포커스 링 accent/bg >= 3.
   2. `pnpm test` 실행 → `contrast.ts` 부재로 **실패**하는 출력을 evidence에 저장.
@@ -206,7 +206,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `feat(foundation): 토큰 대비 검증 유틸 [FND-R04][FND-R09]`
   Recommended task executor category: quick — 공식이 정해진 작은 유틸와 테스트
 
-- [ ] 6. 사이트 설정과 메뉴 경로 매칭 유틸 TDD [FND-R12, FND-R16]
+- [x] 6. 사이트 설정과 메뉴 경로 매칭 유틸 TDD [FND-R12, FND-R16]
   What to do (TDD 순서 강제):
   1. `tests/unit/nav.test.ts` 먼저 작성: `isActivePath('/work','/work')` true, `('/work/abc','/work')` true, `('/work/','/work')` true, `('/workshop','/work')` false, `('/','/work')` false, `('/about','/work')` false, `(아무 경로,'/')` false. 실행해 실패 출력 저장.
   2. `src/lib/nav.ts` 구현(design.md 4.2 규칙).
@@ -220,7 +220,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `feat(foundation): 사이트 설정과 메뉴 경로 매칭 [FND-R12][FND-R16]`
   Recommended task executor category: quick — 작은 순수 함수와 설정 파일
 
-- [ ] 7. 기본 레이아웃, 본문 바로가기, 포커스 링, 404, 임시 홈 [FND-R07, FND-R08, FND-R09, FND-R19, FND-R20]
+- [x] 7. 기본 레이아웃, 본문 바로가기, 포커스 링, 404, 임시 홈 [FND-R07, FND-R08, FND-R09, FND-R19, FND-R20]
   What to do:
   - `src/layouts/BaseLayout.astro`: props `title: string`, `description: string`. `<html lang="ko" class="no-js">` + `<head>` 첫 자식으로 `<script is:inline>document.documentElement.classList.replace('no-js','js')</script>`(반드시 `is:inline` — 일반 `<script>`는 번들·지연되어 패널이 깜빡인다), `<title>`, `<meta name="description">`, `<meta name="viewport" content="width=device-width, initial-scale=1">`, `global.css` import, Geist latin woff2 `<link rel="preload" as="font" type="font/woff2" crossorigin>`(Vite `?url` import로 경로 획득, todo 4 evidence의 실제 파일명 사용). body: `<SkipLink/>`, `<SiteHeader/>`, `<main id="main" tabindex="-1"><slot/></main>`, `<SiteFooter/>`.
   - `src/components/SkipLink.astro`: 레이블 "본문 바로가기", `href="#main"`, 평소에는 시각적으로 숨기고 `:focus`에서 보임(토큰 색·간격만).
@@ -243,7 +243,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `feat(foundation): 기본 레이아웃·404·임시 홈 [FND-R07][FND-R08][FND-R09][FND-R19][FND-R20]`
   Recommended task executor category: visual-engineering — 레이아웃과 접근성 UI
 
-- [ ] 8. 데스크톱 헤더와 현재 위치 표시 [FND-R11, FND-R12]
+- [x] 8. 데스크톱 헤더와 현재 위치 표시 [FND-R11, FND-R12]
   What to do:
   - `src/components/SiteHeader.astro` 채우기: 사이트 이름 `<a href="/">{site.name}</a>`; `<nav aria-label="주 메뉴">` > `<ul>` > `site.nav` 순서대로 `<li><a>`, `isActivePath(Astro.url.pathname, href)`이면 `aria-current="page"` + 토큰 기반 시각 표시(예: accent 밑줄); CTA `<a href="/resume.pdf" download class="...accent 배경, bg 글자...">{site.cta.label}</a>`.
   - 데스크톱(≥768px, Tailwind `md:`)에서 한 줄. 모바일 동작은 todo 10.
@@ -258,7 +258,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `feat(foundation): 데스크톱 헤더와 현재 위치 표시 [FND-R11][FND-R12]`
   Recommended task executor category: visual-engineering — 헤더 UI
 
-- [ ] 9. 푸터 [FND-R16]
+- [x] 9. 푸터 [FND-R16]
   What to do:
   - `src/components/SiteFooter.astro` 채우기: `<nav aria-label="하단 메뉴">` 메뉴 5개; `site.contact.email`이 있을 때만 `<a href={`mailto:${email}`}>`; `site.contact.linkedinUrl`이 있을 때만 `<a href target="_blank" rel="noopener noreferrer">LinkedIn</a>`; RSS `<a href="/rss.xml">RSS</a>`; `© {new Date().getFullYear()} {site.name}`(빌드 시점 연도).
   - `tests/e2e/footer.spec.ts`: `/`와 `/not-exist-qa`에서 `header`·`footer`가 각각 visible(헤더는 todo 8, 푸터는 이 todo로 내용이 채워짐 — FND-R19 AC1 가시성 부분); contact가 비어 있는 현재 값에서 mailto·LinkedIn 링크 0개, RSS 링크 존재, 저작권에 현재 연도 포함, 푸터 텍스트에 `tel:` 링크 0개.
@@ -272,7 +272,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `feat(foundation): 푸터 [FND-R16]`
   Recommended task executor category: visual-engineering — 푸터 UI
 
-- [ ] 10. 모바일 메뉴 [FND-R13, FND-R14, FND-R15]
+- [x] 10. 모바일 메뉴 [FND-R13, FND-R14, FND-R15]
   What to do:
   - `src/components/MobileMenu.astro`: `<button type="button" aria-expanded="false" aria-controls="mobile-menu">`(접근 가능한 이름 `aria-label="메뉴"`), `<div id="mobile-menu">` 안에 `<nav aria-label="모바일 메뉴">` 메뉴 5개 + CTA. `md:hidden`. `SiteHeader.astro`에 포함하고 데스크톱 nav/CTA는 `hidden md:flex`.
   - 버튼과 `#mobile-menu`는 형제 요소로 둔다. 상태의 유일한 출처는 `button[aria-expanded]`(design.md 7절). CSS(토큰만): `html.js button[aria-expanded="false"] + #mobile-menu { display: none }` → JS가 없으면(`html.no-js`) 패널이 항상 보이고 `html.no-js` 아래 버튼은 숨김. `data-open` 같은 중복 상태를 두지 않는다.
@@ -287,7 +287,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `feat(foundation): 모바일 메뉴 [FND-R13][FND-R14][FND-R15]`
   Recommended task executor category: visual-engineering — 접근성 상호작용 UI
 
-- [ ] 11. Lenis 부드러운 스크롤과 동작 줄이기 [FND-R17, FND-R18]
+- [x] 11. Lenis 부드러운 스크롤과 동작 줄이기 [FND-R17, FND-R18]
   What to do:
   - (lenis는 todo 2에서 설치됨. todo 2 evidence의 사전 확인 결과로 `anchors`·`autoRaf`·`lenis-stopped`·`lenis.css` export를 확인한 뒤 시작. 하나라도 없으면 멈추고 보고)
   - Lenis CSS는 `global.css`에 `@import "lenis/dist/lenis.css";`(exports에 없으면 todo 2 evidence에 기록된 내보낸 경로 사용). 규칙이 `.lenis*`에만 걸려 reduced-motion에서는 무효하다.
@@ -311,7 +311,7 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   Commit: Y | `feat(foundation): Lenis 스크롤과 동작 줄이기 [FND-R17][FND-R18]`
   Recommended task executor category: visual-engineering — 모션과 접근성
 
-- [ ] 12. 반응형·JS 예산·토큰 가드·Lighthouse 품질 게이트 [FND-R03, FND-R10, FND-R21, FND-R22]
+- [x] 12. 반응형·JS 예산·토큰 가드·Lighthouse 품질 게이트 [FND-R03, FND-R10, FND-R21, FND-R22]
   What to do:
   - `tests/e2e/responsive.spec.ts`: 너비 320, 390, 768, 1024, 1280, 1440(높이 900)에서 `/`와 `/not-exist-qa` 각각 `document.documentElement.scrollWidth <= window.innerWidth`. desktop 프로젝트에서만 실행(뷰포트를 직접 설정하므로).
   - todo 3의 `tests/unit/smoke.test.ts`, `tests/e2e/smoke.spec.ts` 삭제.
@@ -331,17 +331,22 @@ Your next move: 리뷰 결과를 본 뒤 `/ulw-execute 01-foundation`으로 실�
   QA scenarios: happy — 위 전부. failure — 임시로 `index.astro`에 `<div class="w-[400px]">`를 넣으면 (c) 토큰 가드와 320px 반응형 단언이 모두 실패하는지 확인 → 되돌림. Evidence `.omo/evidence/01-foundation/task-12-quality.txt`, `lh-home.json`, `lh-404.json`
   Commit: Y | `test(foundation): 반응형·JS 예산·Lighthouse 품질 게이트 [FND-R03][FND-R10][FND-R21][FND-R22]`
   Recommended task executor category: unspecified-high — 여러 품질 게이트를 실행하고 미달 원인을 여러 파일에서 추적
+- [x] 13. 본문 영역 여백과 404 홈 링크 구분 [FND-R07, FND-R19] (F3에서 발견)
+  What to do: BaseLayout의 `<main>`에 헤더·푸터와 같은 컨테이너(토큰 `max-w-page`, 좌우 패딩 4/8, 상하 패딩)를 적용해 본문이 화면 끝에 붙지 않게 한다. 404 홈 링크에 밑줄을 둬 일반 텍스트와 구별한다. 토큰 클래스만 사용.
+  Acceptance criteria: `pnpm check` 0 errors, `pnpm test`·`pnpm test:e2e` 전체 통과, 390/1280 스크린샷에서 본문 좌측 여백이 헤더 사이트 이름과 정렬.
+  Evidence `.omo/evidence/01-foundation/task-13-main.txt`, `F3-*-after.png`
+  Commit: Y | `fix(foundation): 본문 여백과 404 링크 구분 [FND-R07][FND-R19]`
 
 ## Final verification wave
 > Runs in parallel after ALL todos. ALL must APPROVE. Surface results and wait for the user's explicit okay before declaring complete.
-- [ ] F1. Plan compliance audit — requirements.md 의 모든 ID 충족 여부 표 [FND-R01~R22]
+- [x] F1. Plan compliance audit — requirements.md 의 모든 ID 충족 여부 표 [FND-R01~R22]
   `docs/specs/01-foundation/requirements.md`의 FND-R01~R22 각 행에 대해 | ID | AC별 PASS/FAIL | 근거(명령·테스트명·evidence 경로) | 커밋 SHA | 표를 `.omo/evidence/01-foundation/F1-compliance.md`에 작성. 22행 전부 PASS여야 APPROVE. 또한 Must NOT have 목록을 하나씩 검사(`git diff --stat <첫 커밋>..HEAD -- docs/`가 design.md ink-muted 줄과 README 01 상태 칸만 변경, `package.json` 의존성이 허용 목록만, `src/pages`에 index·404만). 모든 커밋 메시지에 FND ID가 있는지 `git log --format=%s`로 확인.
   Recommended task executor category: unspecified-high — 스펙 대조 감사
-- [ ] F2. Code quality review — `pnpm check` 0 errors, `pnpm test`·`pnpm test:e2e` 전체 통과 재실행, `.skip`/`.only`/`waitForTimeout` 0건(`rg -n '\.skip\(|\.only\(|waitForTimeout' tests/`), TDD 순서 증거(task-5, task-6 evidence의 실패 출력) 존재, 불필요한 추상화·주석 없음. 결과 `.omo/evidence/01-foundation/F2-quality.txt`.
+- [x] F2. Code quality review — `pnpm check` 0 errors, `pnpm test`·`pnpm test:e2e` 전체 통과 재실행, `.skip`/`.only`/`waitForTimeout` 0건(`rg -n '\.skip\(|\.only\(|waitForTimeout' tests/`), TDD 순서 증거(task-5, task-6 evidence의 실패 출력) 존재, 불필요한 추상화·주석 없음. 결과 `.omo/evidence/01-foundation/F2-quality.txt`.
   Recommended task executor category: unspecified-high — 코드 품질 리뷰
-- [ ] F3. Real manual QA — browser 스킬(omowright, owned engine)로 preview 서버의 `/`와 `/not-exist-qa`를 열어 390×844, 1280×800에서 스크린샷, 키보드만으로 Tab → 본문 바로가기 → 모바일 메뉴 열기 → Esc 동선 수행, reduced-motion 에뮬레이션 비교. visual-qa 스킬 체크리스트로 토큰 밖 색·격침·잘림 확인. 스크린샷과 동작 로그를 `.omo/evidence/01-foundation/F3-*`에 저장. 종료 후 브라우저 닫기, `lsof -i :4321` 비어 있음 기록.
+- [x] F3. Real manual QA — browser 스킬(omowright, owned engine)로 preview 서버의 `/`와 `/not-exist-qa`를 열어 390×844, 1280×800에서 스크린샷, 키보드만으로 Tab → 본문 바로가기 → 모바일 메뉴 열기 → Esc 동선 수행, reduced-motion 에뮬레이션 비교. visual-qa 스킬 체크리스트로 토큰 밖 색·격침·잘림 확인. 스크린샷과 동작 로그를 `.omo/evidence/01-foundation/F3-*`에 저장. 종료 후 브라우저 닫기, `lsof -i :4321` 비어 있음 기록.
   Recommended task executor category: visual-engineering — 실제 화면 QA
-- [ ] F4. Ideal-state fidelity — 아래 Success criteria의 IS-1~IS-9를 실제 동작과 1:1 대조. 미달은 새 `- [ ] N.` todo로 추가(메모로 넘기지 않음). 결과 `.omo/evidence/01-foundation/F4-fidelity.md`.
+- [x] F4. Ideal-state fidelity — 아래 Success criteria의 IS-1~IS-9를 실제 동작과 1:1 대조. 미달은 새 `- [ ] N.` todo로 추가(메모로 넘기지 않음). 결과 `.omo/evidence/01-foundation/F4-fidelity.md`.
   Recommended task executor category: unspecified-high — 통합 판정
 
 모든 F가 APPROVE이면 결과를 사용자에게 보고하고 명시적 확인을 받은 뒤에만 `docs/specs/README.md` 01 상태를 `Done`으로 바꾼다 (`docs: 01-foundation Done [FND-R01~R22]`).
