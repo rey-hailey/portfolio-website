@@ -1,8 +1,12 @@
 ---
 // 사이트 푸터 (FND-R16): 하단 메뉴, 연락처(값이 있을 때만), RSS, 저작권(빌드 연도)
+// 연락처는 about 단일 문서에서 읽는다 (CNT-R09)
+import { getEntry } from 'astro:content';
 import { site } from '../config/site';
 
-const { email, linkedinUrl } = site.contact;
+const about = await getEntry('about', 'index');
+const email = about?.data.email;
+const linkedinUrl = about?.data.linkedinUrl;
 const year = new Date().getFullYear();
 ---
 

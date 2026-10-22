@@ -1,4 +1,4 @@
-// 사이트 설정 단일 출처 (design.md 4.1). FND-R11 메뉴 순서, FND-R16 연락처.
+// 사이트 설정 (design.md 4.1). FND-R11 메뉴 순서. 연락처는 about 문서로 옮김 (CNT-R09).
 // 전화번호, 주소, 생년월일 필드는 정의하지 않는다 (FND-R16 AC4).
 
 export interface NavItem {
@@ -10,7 +10,6 @@ export interface SiteConfig {
   name: string;
   nav: readonly NavItem[];
   cta: { label: string; href: '/resume.pdf' };
-  contact: { email?: string; linkedinUrl?: string };
 }
 
 export const site: SiteConfig = {
@@ -23,5 +22,4 @@ export const site: SiteConfig = {
     { label: 'Writing', href: '/writing' },
   ],
   cta: { label: '[TODO: 문구]', href: '/resume.pdf' },
-  contact: {},
 };
