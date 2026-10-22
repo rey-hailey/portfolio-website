@@ -9,6 +9,8 @@ import fontSubset from './integrations/font-subset.mjs';
 const isDev = process.argv.includes('dev');
 
 export default defineConfig({
+  // 사이트 주소: canonical·OG·sitemap·RSS 기준. 도메인(D3) 결정 후 SITE_URL로 설정 (10-launch)
+  site: process.env.SITE_URL ?? 'http://localhost:4321',
   output: 'static',
   integrations: [mdx(), fontSubset(), ...(isDev ? [react(), keystatic()] : [])],
   vite: { plugins: [tailwindcss()] },

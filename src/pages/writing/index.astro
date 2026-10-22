@@ -9,7 +9,7 @@ import { getPublished } from '../../lib/content';
 const posts = (await getPublished('writing')).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
 ---
 
-<BaseLayout title={`Writing | ${site.name}`} description="[TODO: 문구]">
+<BaseLayout title={`Writing | ${site.name}`} description="[TODO: 문구]" kind="Writing">
   <h1 class="font-display text-h1 font-semibold">Writing</h1>
   <p class="mt-4 text-small"><a href="/rss.xml" class="text-accent underline underline-offset-4">RSS</a></p>
   {

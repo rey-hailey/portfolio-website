@@ -5,6 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../config/site';
 import { getPublished } from '../../lib/content';
 import { otherTerms, relatedTerms, tocItems } from '../../lib/encyclopedia';
+import { breadcrumbLd, definedTermLd, faqPageLd } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const terms = await getPublished('encyclopedia');
@@ -13,6 +14,12 @@ export async function getStaticPaths() {
 
 const { term, terms } = Astro.props;
 const d = term.data;
+const url = (p: string) => new URL(p, Astro.site).href;
+const jsonLd = [
+  definedTermLd({ name: d.term, alternateName: [d.termEn, ...d.aliases], description: d.definition, url: url(Astro.url.pathname) }),
+  breadcrumbLd([{ name: site.name, url: url('/') }, { name: 'Encyclopedia', url: url('/encyclopedia') }, { name: d.term, url: url(Astro.url.pathname) }]),
+  ...(d.faq.length > 0 ? [faqPageLd(d.faq)] : []),
+];
 const { Content, headings } = await render(term);
 const links = terms.map((t) => ({ id: t.id, term: t.data.term, related: t.data.relatedTerms.map((r) => r.id) }));
 const byId = new Map(terms.map((t) => [t.id, t]));
@@ -23,7 +30,7 @@ const toc = tocItems(headings);
 const h2 = 'text-h2 font-semibold';
 ---
 
-<BaseLayout title={`${d.term} (${d.termEn}) | ${site.name}`} description={d.definition}>
+<BaseLayout title={`${d.term} (${d.termEn}) | ${site.name}`} description={d.definition} kind="Encyclopedia" jsonLd={jsonLd}>
   <nav aria-label="브레드크럼" class="text-small text-ink-muted">
     <ol class="flex flex-wrap gap-2">
       <li><a href="/" class="text-ink-muted">{site.name}</a> /</li>

@@ -7,6 +7,7 @@ import LabDetailLinks from '../../components/lab/LabDetailLinks.astro';
 import { site } from '../../config/site';
 import { getPublished } from '../../lib/content';
 import { isPublic } from '../../lib/content-filter';
+import { breadcrumbLd, creativeWorkLd } from '../../lib/seo';
 
 export async function getStaticPaths() {
   return (await getPublished('lab')).map((lab) => ({ params: { slug: lab.id }, props: { lab } }));
@@ -14,12 +15,17 @@ export async function getStaticPaths() {
 
 const { lab } = Astro.props;
 const d = lab.data;
+const url = (p: string) => new URL(p, Astro.site).href;
+const jsonLd = [
+  creativeWorkLd({ name: d.title, description: d.description, url: url(Astro.url.pathname), keywords: d.tools }),
+  breadcrumbLd([{ name: site.name, url: url('/') }, { name: 'Lab', url: url('/lab') }, { name: d.title, url: url(Astro.url.pathname) }]),
+];
 const { Content } = await render(lab);
 const writingEntry = d.relatedWriting ? await getEntry('writing', d.relatedWriting.id) : undefined;
 const writing = writingEntry && isPublic(writingEntry, import.meta.env.PROD) ? { slug: writingEntry.id, title: writingEntry.data.title } : undefined;
 ---
 
-<BaseLayout title={`${d.title} | ${site.name}`} description={d.description}>
+<BaseLayout title={`${d.title} | ${site.name}`} description={d.description} kind="Lab" jsonLd={jsonLd}>
   <article class="mx-auto flex max-w-page flex-col gap-12">
     <header class="flex max-w-prose flex-col gap-4">
       <p class="text-small text-ink-muted"><a href="/lab" class="text-ink-muted">Lab</a></p>

@@ -6,22 +6,44 @@ import SkipLink from '../components/SkipLink.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 
+import { canonicalUrl, jsonLdScript, ogImagePath } from '../lib/seo';
+
 interface Props {
   title: string;
   description: string;
+  /** OG 이미지 유형 레이블 (SEO-R02). 없으면 사이트 이름 */
+  kind?: string | undefined;
+  ogType?: 'website' | 'article' | undefined;
+  noindex?: boolean | undefined;
+  jsonLd?: readonly object[] | undefined;
 }
 
-const { title, description } = Astro.props;
+const { title, description, kind, ogType = 'website', noindex = false, jsonLd = [] } = Astro.props;
+const site = Astro.site?.href ?? 'http://localhost:4321';
+const canonical = canonicalUrl(site, Astro.url.pathname);
+const ogImage = new URL(ogImagePath(Astro.url.pathname), site).href;
 ---
 
 <!doctype html>
-<html lang="ko" class="no-js">
+<html lang="ko" class="no-js" data-og-kind={kind}>
   <head>
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="ko_KR" />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    {!noindex && <meta property="og:image" content={ogImage} />}
+    {!noindex && <meta property="og:image:width" content="1200" />}
+    {!noindex && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="application/rss+xml" title="Writing RSS" href="/rss.xml" />
+    {jsonLd.map((data) => <script type="application/ld+json" is:inline set:html={jsonLdScript(data)} />)}
     <link rel="preload" href={geistLatinWoff2} as="font" type="font/woff2" crossorigin />
   </head>
   <body>

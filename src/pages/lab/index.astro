@@ -10,7 +10,7 @@ import { sortLabs, toolOptions } from '../../lib/lab';
 const labs = sortLabs(await getPublished('lab'));
 ---
 
-<BaseLayout title={`Lab | ${site.name}`} description="[TODO: 문구]">
+<BaseLayout title={`Lab | ${site.name}`} description="[TODO: 문구]" kind="Lab">
   <h1 class="font-display text-h1 font-semibold">Lab</h1>
   {
     labs.length === 0 ? (

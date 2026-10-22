@@ -10,7 +10,7 @@ import { initialOf, statusText } from '../../lib/encyclopedia';
 const terms = (await getPublished('encyclopedia')).sort((a, b) => a.data.term.localeCompare(b.data.term, 'ko'));
 ---
 
-<BaseLayout title={`Encyclopedia | ${site.name}`} description="[TODO: 문구]">
+<BaseLayout title={`Encyclopedia | ${site.name}`} description="[TODO: 문구]" kind="Encyclopedia">
   <h1 class="font-display text-h1 font-semibold">Encyclopedia</h1>
   {
     terms.length === 0 ? (

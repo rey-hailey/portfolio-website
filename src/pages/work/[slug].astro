@@ -8,6 +8,7 @@ import WorkSummary from '../../components/work/WorkSummary.astro';
 import { site } from '../../config/site';
 import { getPublished } from '../../lib/content';
 import { neighbors, sortByOrder } from '../../lib/work';
+import { articleLd, breadcrumbLd, ogImagePath } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const works = sortByOrder(await getPublished('work'));
@@ -21,9 +22,14 @@ export async function getStaticPaths() {
 const { work, prev, next } = Astro.props;
 const { Content } = await render(work);
 const d = work.data;
+const url = (p: string) => new URL(p, Astro.site).href;
+const jsonLd = [
+  articleLd({ headline: d.title, description: d.description, url: url(Astro.url.pathname), image: url(ogImagePath(Astro.url.pathname)), datePublished: d.publishedAt, dateModified: d.updatedAt, author: '손병성' }),
+  breadcrumbLd([{ name: site.name, url: url('/') }, { name: 'Work', url: url('/work') }, { name: d.title, url: url(Astro.url.pathname) }]),
+];
 ---
 
-<BaseLayout title={`${d.title} | ${site.name}`} description={d.description}>
+<BaseLayout title={`${d.title} | ${site.name}`} description={d.description} kind="Work" ogType="article" jsonLd={jsonLd}>
   <article class="mx-auto flex max-w-page flex-col gap-12">
     <header class="flex max-w-prose flex-col gap-4">
       <p class="text-small text-ink-muted"><a href="/work" class="text-ink-muted">Work</a></p>

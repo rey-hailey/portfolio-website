@@ -7,6 +7,7 @@ import { site } from '../../config/site';
 import { getPublished } from '../../lib/content';
 import { isPublic } from '../../lib/content-filter';
 import { readingMinutes } from '../../lib/writing';
+import { articleLd, breadcrumbLd, ogImagePath } from '../../lib/seo';
 
 export async function getStaticPaths() {
   return (await getPublished('writing')).map((post) => ({ params: { slug: post.id }, props: { post } }));
@@ -14,6 +15,11 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const d = post.data;
+const url = (p: string) => new URL(p, Astro.site).href;
+const jsonLd = [
+  articleLd({ headline: d.title, description: d.description, url: url(Astro.url.pathname), image: url(ogImagePath(Astro.url.pathname)), datePublished: d.publishedAt, dateModified: d.updatedAt, author: '손병성' }),
+  breadcrumbLd([{ name: site.name, url: url('/') }, { name: 'Writing', url: url('/writing') }, { name: d.title, url: url(Astro.url.pathname) }]),
+];
 const { Content } = await render(post);
 const minutes = readingMinutes(post.body ?? '');
 const labEntry = d.relatedLab ? await getEntry('lab', d.relatedLab.id) : undefined;
@@ -21,7 +27,7 @@ const lab = labEntry && isPublic(labEntry, import.meta.env.PROD) ? labEntry : un
 const iso = (x: Date) => x.toISOString().slice(0, 10);
 ---
 
-<BaseLayout title={`${d.title} | ${site.name}`} description={d.description}>
+<BaseLayout title={`${d.title} | ${site.name}`} description={d.description} kind="Writing" ogType="article" jsonLd={jsonLd}>
   <article class="mx-auto flex max-w-prose flex-col gap-8">
     <header class="flex flex-col gap-4">
       <p class="text-small"><a href="/writing" class="text-ink-muted">Writing</a> · <span class="text-accent" data-field="category">{d.category}</span></p>

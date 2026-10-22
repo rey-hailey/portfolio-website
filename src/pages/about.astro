@@ -5,14 +5,16 @@ import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CareerTimeline from '../components/CareerTimeline.astro';
 import { site } from '../config/site';
+import { personLd } from '../lib/seo';
 
 const about = await getEntry('about', 'index');
 if (!about) throw new Error('src/content/about/index.mdx가 없다');
 const { Content } = await render(about);
 const { name, headline, photo, photoAlt, career, email, linkedinUrl, resumeFile } = about.data;
+const person = personLd({ name, email, linkedinUrl, url: new URL('/about', Astro.site).href });
 ---
 
-<BaseLayout title={`${name} 소개 | ${site.name}`} description={headline}>
+<BaseLayout title={`${name} 소개 | ${site.name}`} description={headline} kind="About" jsonLd={[person]}>
   <div class="mx-auto flex max-w-prose flex-col gap-16 md:gap-24">
     <section class="flex flex-col gap-6">
       {photo && photoAlt && <Image src={photo} alt={photoAlt} width={240} class="h-auto w-40 md:w-60" />}
