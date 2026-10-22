@@ -1,0 +1,44 @@
+---
+// Lab 상세 (LAB-R03)
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LabDetailLinks from '../../components/lab/LabDetailLinks.astro';
+import { site } from '../../config/site';
+import { getPublished } from '../../lib/content';
+import { isPublic } from '../../lib/content-filter';
+
+export async function getStaticPaths() {
+  return (await getPublished('lab')).map((lab) => ({ params: { slug: lab.id }, props: { lab } }));
+}
+
+const { lab } = Astro.props;
+const d = lab.data;
+const { Content } = await render(lab);
+const writingEntry = d.relatedWriting ? await getEntry('writing', d.relatedWriting.id) : undefined;
+const writing = writingEntry && isPublic(writingEntry, import.meta.env.PROD) ? { slug: writingEntry.id, title: writingEntry.data.title } : undefined;
+---
+
+<BaseLayout title={`${d.title} | ${site.name}`} description={d.description}>
+  <article class="mx-auto flex max-w-page flex-col gap-12">
+    <header class="flex max-w-prose flex-col gap-4">
+      <p class="text-small text-ink-muted"><a href="/lab" class="text-ink-muted">Lab</a></p>
+      <h1 class="font-display text-h1 font-semibold break-keep">{d.title}</h1>
+      <p class="text-h3 text-ink-muted break-keep">{d.oneLiner}</p>
+      <LabDetailLinks demoUrl={d.demoUrl} repoUrl={d.repoUrl} writing={writing} />
+    </header>
+    <dl class="grid gap-6 border-y border-ink-line py-8 sm:grid-cols-3">
+      <div><dt class="text-small text-ink-muted" data-field="status">[TODO: 문구]</dt><dd>{d.status}</dd></div>
+      <div><dt class="text-small text-ink-muted" data-field="tools">[TODO: 문구]</dt><dd>{d.tools.join(' · ')}</dd></div>
+      <div><dt class="text-small text-ink-muted" data-field="buildDuration">[TODO: 문구]</dt><dd>{d.buildDuration}</dd></div>
+    </dl>
+    <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[600, 1200]} sizes="(min-width: 1200px) 1200px, 100vw" class="h-auto w-full" />
+    <div class="mdx-body max-w-prose">
+      <h2>[TODO: 문구]</h2>
+      <p data-field="why">{d.why}</p>
+      <h2>[TODO: 문구]</h2>
+      <p data-field="learned">{d.learned}</p>
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,37 @@
+---
+// Lab 갤러리 (LAB-R01, R02, R04)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LabCard from '../../components/lab/LabCard.astro';
+import LabFilters from '../../components/lab/LabFilters.astro';
+import { site } from '../../config/site';
+import { getPublished } from '../../lib/content';
+import { sortLabs, toolOptions } from '../../lib/lab';
+
+const labs = sortLabs(await getPublished('lab'));
+---
+
+<BaseLayout title={`Lab | ${site.name}`} description="[TODO: 문구]">
+  <h1 class="font-display text-h1 font-semibold">Lab</h1>
+  {
+    labs.length === 0 ? (
+      <p class="mt-8 text-ink-muted" data-testid="lab-empty">[TODO: 문구]</p>
+    ) : (
+      <>
+        <LabFilters tools={toolOptions(labs)} total={labs.length} />
+        <ul class="mt-12 grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+          {labs.map((lab) => (
+            <LabCard
+              slug={lab.id}
+              title={lab.data.title}
+              oneLiner={lab.data.oneLiner}
+              tools={lab.data.tools}
+              status={lab.data.status}
+              thumbnail={lab.data.thumbnail}
+              thumbnailAlt={lab.data.thumbnailAlt}
+            />
+          ))}
+        </ul>
+      </>
+    )
+  }
+</BaseLayout>

@@ -1,0 +1,16 @@
+---
+// LAB-R03: 데모·저장소(새 창), 공개된 제작기 글 링크. 값이 없으면 그 링크를 만들지 않는다
+interface Props {
+  demoUrl?: string | null | undefined;
+  repoUrl?: string | null | undefined;
+  writing?: { slug: string; title: string } | undefined;
+}
+const { demoUrl, repoUrl, writing } = Astro.props;
+const external = { target: '_blank', rel: 'noopener noreferrer' };
+---
+
+<ul class="flex flex-wrap gap-4" data-testid="lab-links">
+  {demoUrl && <li><a href={demoUrl} {...external} data-field="demo" class="bg-accent px-4 py-2 text-bg no-underline">[TODO: 문구]</a></li>}
+  {repoUrl && <li><a href={repoUrl} {...external} data-field="repo" class="text-accent underline underline-offset-4">[TODO: 문구]</a></li>}
+  {writing && <li><a href={`/writing/${writing.slug}`} data-field="writing" class="text-accent underline underline-offset-4">{writing.title}</a></li>}
+</ul>

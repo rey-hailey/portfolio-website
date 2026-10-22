@@ -1,0 +1,28 @@
+---
+// LAB-R01: Lab 카드. data-tools·data-status는 필터 스크립트가 읽는다
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  slug: string;
+  title: string;
+  oneLiner: string;
+  tools: string[];
+  status: string;
+  thumbnail: ImageMetadata;
+  thumbnailAlt: string;
+}
+const { slug, title, oneLiner, tools, status, thumbnail, thumbnailAlt } = Astro.props;
+---
+
+<li data-tools={tools.join('|')} data-status={status} data-testid="lab-card">
+  <a href={`/lab/${slug}`} class="flex flex-col gap-3 text-ink no-underline">
+    <Image src={thumbnail} alt={thumbnailAlt} widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" class="h-auto w-full" />
+    <h2 class="text-h3 font-semibold break-keep">{title}</h2>
+    <p class="text-ink-muted break-keep">{oneLiner}</p>
+    <ul class="flex flex-wrap gap-2 text-small text-ink-muted">
+      {tools.map((tool) => <li class="border border-ink-line px-2">{tool}</li>)}
+    </ul>
+    <span class="text-small text-accent" data-field="status">{status}</span>
+  </a>
+</li>

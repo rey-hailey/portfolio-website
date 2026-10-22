@@ -1,0 +1,28 @@
+---
+// LAB-R02: 도구·상태 필터. JS가 없으면 링크만 남고 카드는 모두 보인다
+import { LAB_STATUSES } from '../../content/schemas';
+
+interface Props {
+  tools: string[];
+  total: number;
+}
+const { tools, total } = Astro.props;
+const link = 'border border-ink-line px-3 py-1 text-small text-ink no-underline aria-[current=true]:border-accent aria-[current=true]:text-accent';
+---
+
+<div class="mt-8 flex flex-col gap-4" data-testid="lab-filters">
+  <fieldset class="flex flex-wrap items-center gap-2">
+    <legend class="mb-2 text-small text-ink-muted">[TODO: 문구]</legend>
+    <a href="/lab" data-lab-filter class={link}>[TODO: 문구]</a>
+    {tools.map((tool) => <a href={`/lab?tool=${encodeURIComponent(tool)}`} data-lab-filter data-tool={tool} class={link}>{tool}</a>)}
+  </fieldset>
+  <fieldset class="flex flex-wrap items-center gap-2">
+    <legend class="mb-2 text-small text-ink-muted">[TODO: 문구]</legend>
+    {LAB_STATUSES.map((status) => <a href={`/lab?status=${status}`} data-lab-filter data-status-filter={status} class={link}>{status}</a>)}
+  </fieldset>
+  <p class="text-small text-ink-muted" aria-live="polite"><span data-lab-count>{total}</span></p>
+</div>
+
+<script>
+  import '../../scripts/lab-filter';
+</script>
