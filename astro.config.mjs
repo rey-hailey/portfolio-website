@@ -11,8 +11,13 @@ import sitemap from './integrations/sitemap.mjs';
 const isDev = process.argv.includes('dev');
 
 export default defineConfig({
-  // 사이트 주소: canonical·OG·sitemap·RSS 기준. 도메인(D3) 결정 후 SITE_URL로 설정 (10-launch)
-  site: process.env.SITE_URL ?? 'http://localhost:4321',
+  // 사이트 주소: canonical·OG·sitemap·RSS 기준 (LCH-R02).
+  // 우선순위: 명시적 SITE_URL(커스텀 도메인 D3) > Vercel 자동 주입 프로덕션 도메인 > 로컬
+  site:
+    process.env.SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : 'http://localhost:4321'),
   output: 'static',
   integrations: [mdx(), fontSubset(), ogImage({ siteName: '손병성 · Rey Son' }), sitemap(), ...(isDev ? [react(), keystatic()] : [])],
   vite: { plugins: [tailwindcss()] },
