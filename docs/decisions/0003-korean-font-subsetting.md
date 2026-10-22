@@ -1,6 +1,6 @@
 # 0003. 한글 폰트 빌드 타임 서브셋 (제안)
 
-- 상태: **Proposed** (2026-10-23) — 사이트 주인 결정 필요
+- 상태: **Accepted** (2026-10-23, 사용자 위임 승인 — 사이트 주인 검토 대기)
 - 관련: FND-R06, FND-R22, ABT-R07 AC3, PRD R4, 01 design 9절
 
 ## 맥락
@@ -21,6 +21,9 @@
 - 기준을 데스크톱 측정이나 여러 번 측정한 중앙값으로 바꾼다: PRD 8.1 변경이 필요하다.
 - 본문 한글을 시스템 글꼴로 바꾼다: PRD 7.3 디자인 결정 변경이 필요하다.
 
-## 현재 상태
+## 결정과 결과 (2026-10-23)
 
-결정 전까지 `/about`은 ABT-R07 AC3을 안정적으로 충족하지 못한다. 나머지 품질 기준(접근성 1.0, 권장사항 0.96, SEO 1.0, CLS 0, TBT 0)은 충족한다.
+- `subset-font` 2.9.0(devDependency, harfbuzz wasm)을 쓰는 Astro 통합 `integrations/font-subset.mjs`를 추가했다. 빌드가 끝나면 HTML마다 보이는 글자(+출력 가능한 ASCII)를 모아 Pretendard 가변 폰트 서브셋 1개를 만들고, 그 페이지 `<head>`에 `@font-face`(font-display: swap)를 넣는다. 같은 글자 집합은 파일 하나를 공유한다.
+- 개발 서버는 기존 다이내믹 서브셋 CSS를 그대로 쓴다.
+- 측정: 홈·About Performance 0.99(6회 반복 동일), 404 1.00, CLS 0. 페이지당 한글 폰트 38~66KB, 요청 1개.
+- 테스트: `tests/unit/font-subset.test.ts`(글자 추출·주입), layout.spec 폰트 케이스(Pretendard 전송량 < 전체 파일)는 그대로 통과.
