@@ -1,0 +1,27 @@
+// 사이트 설정 단일 출처 (design.md 4.1). FND-R11 메뉴 순서, FND-R16 연락처.
+// 전화번호, 주소, 생년월일 필드는 정의하지 않는다 (FND-R16 AC4).
+
+export interface NavItem {
+  label: string;
+  href: `/${string}`;
+}
+
+export interface SiteConfig {
+  name: string;
+  nav: readonly NavItem[];
+  cta: { label: string; href: '/resume.pdf' };
+  contact: { email?: string; linkedinUrl?: string };
+}
+
+export const site: SiteConfig = {
+  name: '[TODO: 사이트 이름]',
+  nav: [
+    { label: 'About', href: '/about' },
+    { label: 'Work', href: '/work' },
+    { label: 'Lab', href: '/lab' },
+    { label: 'Encyclopedia', href: '/encyclopedia' },
+    { label: 'Writing', href: '/writing' },
+  ],
+  cta: { label: '[TODO: 문구]', href: '/resume.pdf' },
+  contact: {},
+};
