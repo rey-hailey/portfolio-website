@@ -30,7 +30,7 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 03 | home | 메인 페이지 섹션 구성 | Done | `docs/specs/03-home/requirements.md` | `docs/specs/03-home/design.md` | `.omo/plans/03-home.md` |
 | 04 | about | 소개, 경력 타임라인, 이력서 PDF 다운로드 | Done | `docs/specs/04-about/requirements.md` | `docs/specs/04-about/design.md` | `.omo/plans/04-about.md` |
 | 05 | work | 케이스 스터디 목록/상세 (배경 → 문제 정의 → 가설 → 실행 → 결과 → 회고) | Done | `docs/specs/05-work/requirements.md` | `docs/specs/05-work/design.md` | `.omo/plans/05-work.md` |
-| 06 | lab | 갤러리 그리드(도구/상태 필터), 상세(데모 링크 또는 lazy-load 임베드, why/learned, 제작기 글 링크) | Draft (미작성) | `docs/specs/06-lab/requirements.md` | `docs/specs/06-lab/design.md` | `.omo/plans/06-lab.md` |
+| 06 | lab | 갤러리 그리드(도구/상태 필터), 상세(데모 링크 또는 lazy-load 임베드, why/learned, 제작기 글 링크) | Planned (2026-10-23 위임 승인) | `docs/specs/06-lab/requirements.md` | `docs/specs/06-lab/design.md` | `.omo/plans/06-lab.md` |
 | 07 | encyclopedia | 목록(검색, 카테고리, 초성, 페이지네이션), 상세(TOC, FAQ, 관련 용어 자동 역링크, 참고 문서) | Draft (미작성) | `docs/specs/07-encyclopedia/requirements.md` | `docs/specs/07-encyclopedia/design.md` | `.omo/plans/07-encyclopedia.md` |
 | 08 | writing | 글 목록/상세, 카테고리, RSS | Draft (미작성) | `docs/specs/08-writing/requirements.md` | `docs/specs/08-writing/design.md` | `.omo/plans/08-writing.md` |
 | 09 | seo-geo | 메타, OG 이미지, JSON-LD(Lab은 SoftwareApplication 또는 CreativeWork), sitemap, llms.txt | Draft (미작성) | `docs/specs/09-seo-geo/requirements.md` | `docs/specs/09-seo-geo/design.md` | `.omo/plans/09-seo-geo.md` |
