@@ -1,0 +1,33 @@
+---
+// ENC-R02: 검색(GET 폼)·카테고리·초성 링크. JS가 없으면 전체 목록이 보인다
+import { ENCYCLOPEDIA_CATEGORIES } from '../../content/schemas';
+import { INITIALS } from '../../lib/encyclopedia';
+
+interface Props {
+  status: string;
+}
+const { status } = Astro.props;
+const chip = 'border border-ink-line px-2 py-1 text-small text-ink no-underline aria-[current=true]:border-accent aria-[current=true]:text-accent';
+---
+
+<div class="mt-8 flex flex-col gap-6" data-testid="enc-filters">
+  <form role="search" action="/encyclopedia" method="get" class="flex flex-wrap items-end gap-2">
+    <label class="flex flex-col gap-1 text-small text-ink-muted">
+      [TODO: 문구]
+      <input type="search" name="q" class="border border-ink-line bg-bg px-3 py-2 text-ink" />
+    </label>
+    <button type="submit" class="bg-accent px-4 py-2 text-bg">[TODO: 문구]</button>
+  </form>
+  <nav aria-label="카테고리" class="flex flex-wrap gap-2">
+    <a href="/encyclopedia" data-enc-filter class={chip}>전체</a>
+    {ENCYCLOPEDIA_CATEGORIES.map((c) => <a href={`/encyclopedia?category=${encodeURIComponent(c)}`} data-enc-filter class={chip}>{c}</a>)}
+  </nav>
+  <nav aria-label="초성" class="flex flex-wrap gap-1">
+    {INITIALS.map((i) => <a href={`/encyclopedia?initial=${encodeURIComponent(i)}`} data-enc-filter class={chip}>{i}</a>)}
+  </nav>
+  <p class="text-small text-ink-muted" aria-live="polite" data-enc-status>{status}</p>
+</div>
+
+<script>
+  import '../../scripts/encyclopedia-filter';
+</script>

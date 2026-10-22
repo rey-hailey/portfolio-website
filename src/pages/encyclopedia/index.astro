@@ -1,0 +1,38 @@
+---
+// Encyclopedia 목록 (ENC-R02~R04)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EncyclopediaFilters from '../../components/encyclopedia/EncyclopediaFilters.astro';
+import TermCard from '../../components/encyclopedia/TermCard.astro';
+import { site } from '../../config/site';
+import { getPublished } from '../../lib/content';
+import { initialOf, statusText } from '../../lib/encyclopedia';
+
+const terms = (await getPublished('encyclopedia')).sort((a, b) => a.data.term.localeCompare(b.data.term, 'ko'));
+---
+
+<BaseLayout title={`Encyclopedia | ${site.name}`} description="[TODO: 문구]">
+  <h1 class="font-display text-h1 font-semibold">Encyclopedia</h1>
+  {
+    terms.length === 0 ? (
+      <p class="mt-8 text-ink-muted" data-testid="enc-empty">[TODO: 문구]</p>
+    ) : (
+      <>
+        <EncyclopediaFilters status={statusText(terms.length, 1, 1)} />
+        <ul class="mt-8">
+          {terms.map((t) => (
+            <TermCard
+              slug={t.id}
+              term={t.data.term}
+              termEn={t.data.termEn}
+              aliases={t.data.aliases}
+              definition={t.data.definition}
+              category={t.data.category}
+              initial={initialOf(t.data.term)}
+            />
+          ))}
+        </ul>
+        <nav aria-label="페이지" class="mt-8 flex flex-wrap gap-2" data-enc-pager />
+      </>
+    )
+  }
+</BaseLayout>

@@ -1,0 +1,107 @@
+---
+// Encyclopedia 상세 (ENC-R05, R07)
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../config/site';
+import { getPublished } from '../../lib/content';
+import { otherTerms, relatedTerms, tocItems } from '../../lib/encyclopedia';
+
+export async function getStaticPaths() {
+  const terms = await getPublished('encyclopedia');
+  return terms.map((term) => ({ params: { slug: term.id }, props: { term, terms } }));
+}
+
+const { term, terms } = Astro.props;
+const d = term.data;
+const { Content, headings } = await render(term);
+const links = terms.map((t) => ({ id: t.id, term: t.data.term, related: t.data.relatedTerms.map((r) => r.id) }));
+const byId = new Map(terms.map((t) => [t.id, t]));
+const related = relatedTerms(term.id, links).map((id) => byId.get(id)!);
+const others = otherTerms(term.id, links, related.map((r) => r.id)).map((id) => byId.get(id)!);
+const updated = (d.updatedAt ?? d.publishedAt).toISOString().slice(0, 10);
+const toc = tocItems(headings);
+const h2 = 'text-h2 font-semibold';
+---
+
+<BaseLayout title={`${d.term} (${d.termEn}) | ${site.name}`} description={d.definition}>
+  <nav aria-label="브레드크럼" class="text-small text-ink-muted">
+    <ol class="flex flex-wrap gap-2">
+      <li><a href="/" class="text-ink-muted">{site.name}</a> /</li>
+      <li><a href="/encyclopedia" class="text-ink-muted">Encyclopedia</a> /</li>
+      <li aria-current="page">{d.term}</li>
+    </ol>
+  </nav>
+  <div class="mt-8 grid gap-12 lg:grid-cols-4">
+    <aside>
+      {
+        toc.length > 0 && (
+          <details class="lg:sticky lg:top-8" open data-testid="term-toc">
+            <summary class="cursor-pointer text-small text-ink-muted">[TODO: 문구]</summary>
+            <ol class="mt-3 flex flex-col gap-2 text-small">
+              {toc.map((item) => (
+                <li><a href={`#${item.slug}`} class="text-ink">{item.text}</a></li>
+              ))}
+            </ol>
+          </details>
+        )
+      }
+    </aside>
+    <article class="flex max-w-prose flex-col gap-8 lg:col-span-3">
+      <header class="flex flex-col gap-3">
+        <h1 class="font-display text-h1 font-semibold break-keep">{d.term} <span class="text-h3 font-normal text-ink-muted">{d.termEn}</span></h1>
+        <p class="text-small text-ink-muted"><time datetime={updated} data-field="updated">{updated}</time></p>
+        <p class="text-h3 break-keep" data-testid="term-definition">{d.definition}</p>
+      </header>
+      <div class="mdx-body"><Content /></div>
+      {
+        d.faq.length > 0 && (
+          <section aria-labelledby="term-faq" class="flex flex-col gap-4">
+            <h2 id="term-faq" class={h2}>[TODO: 문구]</h2>
+            {d.faq.map((f) => (
+              <details class="border-t border-ink-line py-4" data-testid="term-faq-item">
+                <summary class="cursor-pointer font-semibold break-keep">{f.question}</summary>
+                <p class="mt-3 text-ink-muted break-keep">{f.answer}</p>
+              </details>
+            ))}
+          </section>
+        )
+      }
+      {
+        d.references.length > 0 && (
+          <section aria-labelledby="term-refs" class="flex flex-col gap-4">
+            <h2 id="term-refs" class={h2}>[TODO: 문구]</h2>
+            <ul class="flex list-disc flex-col gap-2 pl-6">
+              {d.references.map((r) => (
+                <li><a href={r.url} target="_blank" rel="noopener noreferrer" class="text-accent underline underline-offset-4">{r.title}</a></li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+      {
+        related.length > 0 && (
+          <section aria-labelledby="term-related" class="flex flex-col gap-4" data-testid="term-related">
+            <h2 id="term-related" class={h2}>[TODO: 문구]</h2>
+            <ul class="flex flex-wrap gap-2">
+              {related.map((r) => (
+                <li><a href={`/encyclopedia/${r.id}`} class="border border-ink-line px-3 py-1 text-ink no-underline">{r.data.term}</a></li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+    </article>
+  </div>
+  {
+    others.length > 0 && (
+      <section aria-labelledby="term-others" class="mt-24 border-t border-ink-line pt-8" data-testid="term-others">
+        <h2 id="term-others" class={h2}>[TODO: 문구]</h2>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {others.map((o) => (
+            <li><a href={`/encyclopedia/${o.id}`} class="flex flex-col gap-1 text-ink no-underline"><span class="font-semibold">{o.data.term}</span><span class="text-small text-ink-muted break-keep">{o.data.definition}</span></a></li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>

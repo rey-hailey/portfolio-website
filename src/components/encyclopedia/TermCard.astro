@@ -1,0 +1,25 @@
+---
+// ENC-R04: 용어 카드. data 속성은 필터 스크립트가 읽는다 (ENC-R02)
+import type { TermCardData } from '../../lib/encyclopedia';
+
+interface Props extends TermCardData {
+  slug: string;
+}
+const { slug, term, termEn, aliases, definition, category, initial } = Astro.props;
+---
+
+<li
+  data-testid="term-card"
+  data-term={term}
+  data-term-en={termEn}
+  data-aliases={aliases.join('|')}
+  data-definition={definition}
+  data-category={category}
+  data-initial={initial}
+  class="border-t border-ink-line"
+>
+  <a href={`/encyclopedia/${slug}`} class="flex flex-col gap-2 py-6 text-ink no-underline">
+    <h2 class="text-h3 font-semibold break-keep">{term} <span class="font-display text-small font-normal text-ink-muted">{termEn}</span></h2>
+    <p class="text-ink-muted break-keep">{definition}</p>
+  </a>
+</li>
