@@ -13,7 +13,7 @@ export interface SiteConfig {
 }
 
 export const site: SiteConfig = {
-  name: '[TODO: 사이트 이름]',
+  name: '손병성 · Rey Son',
   nav: [
     { label: 'About', href: '/about' },
     { label: 'Work', href: '/work' },

@@ -1,0 +1,20 @@
+---
+// HOME-R04: 성과 숫자 카드 4개
+interface Props {
+  metrics: { value: string; label: string }[];
+}
+---
+
+<section aria-labelledby="home-metrics" class="border-t border-ink-line py-16 md:py-32">
+  <h2 id="home-metrics" class="text-h2 font-semibold break-keep">[TODO: 문구]</h2>
+  <ul class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      Astro.props.metrics.map((m) => (
+        <li class="flex flex-col gap-2 border-t border-ink-line pt-6" data-testid="home-metric">
+          <span class="font-display text-h1 font-semibold text-accent" data-testid="home-metric-value">{m.value}</span>
+          <span class="text-ink-muted break-keep">{m.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>

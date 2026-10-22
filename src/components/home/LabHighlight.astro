@@ -1,0 +1,25 @@
+---
+// HOME-R07: Lab 하이라이트 최대 3개. 없으면 렌더링하지 않는다
+interface Props {
+  labs: { slug: string; title: string; oneLiner: string }[];
+}
+const { labs } = Astro.props;
+---
+
+{
+  labs.length > 0 && (
+    <section aria-labelledby="home-lab" class="border-t border-ink-line py-16 md:py-32" data-testid="home-lab">
+      <h2 id="home-lab" class="text-h2 font-semibold break-keep">[TODO: 문구]</h2>
+      <ul class="mt-12 grid gap-8 md:grid-cols-3">
+        {labs.map((l) => (
+          <li>
+            <a href={`/lab/${l.slug}`} class="flex flex-col gap-2 text-ink no-underline">
+              <span class="text-h3 font-semibold break-keep">{l.title}</span>
+              <span class="text-ink-muted break-keep">{l.oneLiner}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

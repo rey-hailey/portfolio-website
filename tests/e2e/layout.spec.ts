@@ -5,16 +5,15 @@ import { expect, test } from '@playwright/test';
 const ACCENT = 'rgb(47, 91, 255)';
 
 test.describe('기본 레이아웃 /', () => {
-  test('lang, 랜드마크, title, description, 임시 홈 본문 (FND-R07, FND-R20)', async ({ page }) => {
+  test('lang, 랜드마크, title, description (FND-R07; 임시 홈 FND-R20은 03-home으로 교체됨)', async ({ page }) => {
     const response = await page.goto('/');
     expect(response?.status()).toBe(200);
     await expect(page.locator('html')).toHaveAttribute('lang', 'ko');
     await expect(page.locator('header')).toHaveCount(1);
     await expect(page.locator('main#main')).toHaveCount(1);
     await expect(page.locator('footer')).toHaveCount(1);
-    await expect(page).toHaveTitle('[TODO: 사이트 이름]');
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', '[TODO: 문구]');
-    expect((await page.locator('main').innerText()).trim()).toBe('[TODO: 문구]');
+    await expect(page).toHaveTitle('손병성 · Rey Son');
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'AI 제품을 직접 만들고, 그 제품을 해외 B2B 매출로 키운 5년 차 PM 손병성입니다.');
   });
 
   test('본문 바로가기: 평소 숨김, 첫 Tab에 보이고 Enter로 main 포커스 (FND-R08)', async ({ page }) => {

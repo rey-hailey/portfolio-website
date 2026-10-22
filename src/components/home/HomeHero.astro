@@ -1,0 +1,13 @@
+---
+// HOME-R01: 로고타입(사이트 이름) + 한 줄 정체성(H1)
+interface Props {
+  siteName: string;
+  headline: string;
+}
+const { siteName, headline } = Astro.props;
+---
+
+<section class="flex flex-col gap-6 pb-16 md:pb-32">
+  <p class="font-display text-h3 font-semibold">{siteName}</p>
+  <h1 class="font-display text-display leading-tight font-semibold break-keep">{headline}</h1>
+</section>

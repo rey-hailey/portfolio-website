@@ -1,0 +1,28 @@
+---
+// HOME-R05: 대표 Work 최대 3개. 없으면 렌더링하지 않는다
+interface Props {
+  works: { slug: string; title: string; summary: string }[];
+}
+const { works } = Astro.props;
+---
+
+{
+  works.length > 0 && (
+    <section aria-labelledby="home-work" class="border-t border-ink-line py-16 md:py-32" data-testid="home-featured-work">
+      <h2 id="home-work" class="text-h2 font-semibold break-keep">[TODO: 문구]</h2>
+      <ol class="mt-12 flex flex-col">
+        {works.map((w, i) => (
+          <li class="border-t border-ink-line">
+            <a href={`/work/${w.slug}`} class="flex flex-col gap-2 py-8 text-ink no-underline md:flex-row md:gap-12">
+              <span class="font-display text-h2 text-accent">{String(i + 1).padStart(2, '0')}</span>
+              <span class="flex flex-col gap-2">
+                <span class="text-h3 font-semibold break-keep">{w.title}</span>
+                <span class="text-ink-muted break-keep">{w.summary}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}

@@ -1,0 +1,28 @@
+---
+// HOME-R08: 최신 글 최대 3개(없으면 목록 생략) + Encyclopedia 바로가기(항상)
+interface Props {
+  writings: { slug: string; title: string; summary: string; publishedAt: Date }[];
+}
+const { writings } = Astro.props;
+const date = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<section aria-labelledby="home-writing" class="border-t border-ink-line py-16 md:py-32">
+  <h2 id="home-writing" class="text-h2 font-semibold break-keep">[TODO: 문구]</h2>
+  {
+    writings.length > 0 && (
+      <ul class="mt-12 flex flex-col" data-testid="home-writing-list">
+        {writings.map((w) => (
+          <li class="border-t border-ink-line">
+            <a href={`/writing/${w.slug}`} class="flex flex-col gap-1 py-6 text-ink no-underline">
+              <span class="text-h3 font-semibold break-keep">{w.title}</span>
+              <span class="text-ink-muted break-keep">{w.summary}</span>
+              <time datetime={date(w.publishedAt)} class="text-small text-ink-muted">{date(w.publishedAt)}</time>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  <a href="/encyclopedia" class="mt-12 inline-block text-accent underline underline-offset-4">[TODO: 문구]</a>
+</section>

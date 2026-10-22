@@ -21,3 +21,15 @@ export function selectLabHighlights<T extends { data: { order?: number | null; p
 export function selectLatestWritings<T extends { data: { publishedAt: Date } }>(writings: readonly T[]): T[] {
   return [...writings].sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()).slice(0, LIMIT);
 }
+
+// HOME-R02 AC2: 강점 근거 slug가 공개된 Work/Lab이면 상세 경로, 아니면 링크 없음
+export function evidenceHref(
+  evidence: string | null | undefined,
+  publicWorkSlugs: ReadonlySet<string>,
+  publicLabSlugs: ReadonlySet<string>,
+): string | undefined {
+  if (!evidence) return undefined;
+  if (publicWorkSlugs.has(evidence)) return `/work/${evidence}`;
+  if (publicLabSlugs.has(evidence)) return `/lab/${evidence}`;
+  return undefined;
+}

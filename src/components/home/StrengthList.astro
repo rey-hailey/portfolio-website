@@ -1,0 +1,22 @@
+---
+// HOME-R02: 강점 3개. href는 근거 콘텐츠가 공개된 경우에만 넘어온다
+interface Props {
+  strengths: { title: string; description: string; href?: string | undefined }[];
+}
+const { strengths } = Astro.props;
+---
+
+<section aria-labelledby="home-strengths" class="border-t border-ink-line py-16 md:py-32">
+  <h2 id="home-strengths" class="text-h2 font-semibold break-keep">[TODO: 문구]</h2>
+  <ol class="mt-12 grid gap-12 md:grid-cols-3 md:gap-8">
+    {
+      strengths.map((s, i) => (
+        <li class="flex flex-col gap-3">
+          <span class="font-display text-small text-accent">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="text-h3 font-semibold break-keep">{s.href ? <a href={s.href} class="text-ink underline-offset-4 hover:underline">{s.title}</a> : s.title}</h3>
+          <p class="text-ink-muted break-keep">{s.description}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>

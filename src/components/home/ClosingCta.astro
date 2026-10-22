@@ -1,0 +1,16 @@
+---
+// HOME-R09: 마무리 문장 + 이력서 다운로드·이메일 CTA
+interface Props {
+  closing: string;
+  email: string;
+}
+const { closing, email } = Astro.props;
+---
+
+<section class="border-t border-ink-line py-16 md:py-32 flex flex-col gap-8">
+  <p class="font-display text-h1 font-semibold break-keep" data-testid="home-closing">{closing}</p>
+  <div class="flex flex-wrap items-center gap-6">
+    <a href="/resume.pdf" download class="bg-accent px-4 py-2 text-bg no-underline">[TODO: 문구]</a>
+    <a href={`mailto:${email}`} class="text-accent underline underline-offset-4">{email}</a>
+  </div>
+</section>

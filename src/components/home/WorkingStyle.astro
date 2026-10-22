@@ -1,0 +1,21 @@
+---
+// HOME-R06: 일하는 방식 4가지 (D12). 제목 "이렇게 일합니다"는 포트폴리오 30쪽 원문
+interface Props {
+  items: { title: string; description: string }[];
+}
+---
+
+<section aria-labelledby="home-style" class="border-t border-ink-line py-16 md:py-32">
+  <h2 id="home-style" class="text-h2 font-semibold break-keep">이렇게 일합니다</h2>
+  <ol class="mt-12 grid gap-12 md:grid-cols-2">
+    {
+      Astro.props.items.map((item, i) => (
+        <li class="flex flex-col gap-3" data-testid="home-style-item">
+          <span class="font-display text-small text-accent">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="text-h3 font-semibold break-keep">{item.title}</h3>
+          <p class="text-ink-muted break-keep">{item.description}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>

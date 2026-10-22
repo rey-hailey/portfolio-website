@@ -1,0 +1,11 @@
+---
+// HOME-R03: 문제의식
+interface Props {
+  problem: string;
+}
+---
+
+<section aria-labelledby="home-problem" class="border-t border-ink-line py-16 md:py-32">
+  <h2 id="home-problem" class="text-h2 font-semibold break-keep">[TODO: 문구]</h2>
+  <p class="mt-8 max-w-prose text-h3 break-keep" data-testid="home-problem">{Astro.props.problem}</p>
+</section>
