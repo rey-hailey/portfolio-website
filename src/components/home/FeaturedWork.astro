@@ -8,7 +8,7 @@ const { works } = Astro.props;
 
 {
   works.length > 0 && (
-    <section aria-labelledby="home-work" class="border-t border-ink-line py-16 md:py-32" data-testid="home-featured-work">
+    <section aria-labelledby="home-work" class="border-t border-ink-line py-16 md:py-32" data-testid="home-featured-work" data-reveal>
       <h2 id="home-work" class="text-h2 font-semibold break-keep">대표 작업</h2>
       <ol class="mt-12 flex flex-col">
         {works.map((w, i) => (

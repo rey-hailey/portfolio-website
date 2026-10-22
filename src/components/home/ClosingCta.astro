@@ -7,7 +7,7 @@ interface Props {
 const { closing, email } = Astro.props;
 ---
 
-<section class="border-t border-ink-line py-16 md:py-32 flex flex-col gap-8">
+<section class="border-t border-ink-line py-16 md:py-32 flex flex-col gap-8" data-reveal>
   <p class="font-display text-h1 font-semibold break-keep" data-testid="home-closing">{closing}</p>
   <div class="flex flex-wrap items-center gap-6">
     <a href="/resume.pdf" download class="bg-accent px-4 py-2 text-bg no-underline">이력서 다운로드</a>
