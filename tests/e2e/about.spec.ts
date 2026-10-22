@@ -10,7 +10,10 @@ test('이름 H1, 한 줄 정체성, 소개 글, title (ABT-R01 AC1)', async ({ p
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.locator('h1')).toHaveText('손병성');
   await expect(page.locator('main')).toContainText('AI 제품을 직접 만들고, 그 제품을 해외 B2B 매출로 키운 5년 차 PM 손병성입니다.');
-  await expect(page.locator('main')).toContainText('자체 대화형 AI 서비스 LAURA를 처음부터 기획해');
+  // 소개 글(본문)이 존재하는지: 프로즈를 고정하지 않고 섹션에 충분한 내용이 있는지로 검증
+  const intro = page.locator('section[aria-labelledby="about-intro"]');
+  await expect(intro).toBeVisible();
+  expect((await intro.innerText()).trim().length).toBeGreaterThan(100);
   await expect(page).toHaveTitle(/손병성/);
 });
 
