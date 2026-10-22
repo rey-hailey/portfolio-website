@@ -27,7 +27,7 @@ const { title, description } = Astro.props;
   <body>
     <SkipLink />
     <SiteHeader />
-    <main id="main" tabindex="-1"><slot /></main>
+    <main id="main" tabindex="-1" class="mx-auto max-w-page px-4 py-12 md:px-8"><slot /></main>
     <SiteFooter />
     <script>
       import '../scripts/smooth-scroll';
