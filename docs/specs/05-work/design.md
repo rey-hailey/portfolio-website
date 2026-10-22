@@ -23,7 +23,7 @@ work/[slug].astro → BaseLayout
   └─ nav[aria-label="케이스 이동"] > 이전 / 다음 (WorkPager)
 ```
 
-- dl 항목 레이블(회사·역할·기간·팀·핵심 숫자)과 이전/다음 레이블은 원문이 없어 `[TODO: 문구]`가 아니라 **필드 이름 그대로의 고정 레이블**로 둔다? → 아니다. AGENTS.md 7절에 따라 `[TODO: 문구]` 대신 쓸 수 있는 고정 레이블은 01에서 정한 것뿐이므로, 화면 레이블은 `[TODO: 문구]`로 두고 `<dt>`에 `data-field` 속성으로 의미를 남긴다. 단 "Work"(메뉴명)는 01 고정 레이블.
+- dl 항목 레이블(회사·역할·기간·팀·핵심 숫자), 이전/다음 레이블, 익명 표시는 원문이 없어 `[TODO: 문구]`로 두고 `<dt>`·링크에 `data-field` 속성으로 의미를 남긴다 (AGENTS.md 7절). "Work"(메뉴명)는 01 고정 레이블.
 - MDX 본문 스타일: 전역 CSS에 `.mdx-body` 규칙(h2: text-h2·mt-16, p: mt-4, ul: list-disc pl-6 mt-4)을 토큰으로 정의.
 
 ## 3. 유틸 (`src/lib/work.ts`)
