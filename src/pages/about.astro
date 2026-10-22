@@ -1,0 +1,46 @@
+---
+// About 페이지 (ABT-R01~R05). 내용은 about 단일 문서(src/content/about/index.mdx)에서 읽는다.
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CareerTimeline from '../components/CareerTimeline.astro';
+import { site } from '../config/site';
+
+const about = await getEntry('about', 'index');
+if (!about) throw new Error('src/content/about/index.mdx가 없다');
+const { Content } = await render(about);
+const { name, headline, photo, photoAlt, career, email, linkedinUrl, resumeFile } = about.data;
+---
+
+<BaseLayout title={`${name} 소개 | ${site.name}`} description={headline}>
+  <div class="mx-auto flex max-w-prose flex-col gap-16 md:gap-24">
+    <section class="flex flex-col gap-6">
+      {photo && photoAlt && <Image src={photo} alt={photoAlt} width={240} class="h-auto w-40 md:w-60" />}
+      <h1 class="font-display text-h1 font-semibold">{name}</h1>
+      <p class="text-h3 break-keep">{headline}</p>
+    </section>
+
+    <section aria-labelledby="about-intro" class="flex flex-col gap-6">
+      <h2 id="about-intro" class="text-h2 font-semibold">[TODO: 문구]</h2>
+      <div class="flex flex-col gap-4 break-keep">
+        <Content />
+      </div>
+    </section>
+
+    <section aria-labelledby="about-career" class="flex flex-col gap-8">
+      <h2 id="about-career" class="text-h2 font-semibold">[TODO: 문구]</h2>
+      <CareerTimeline career={career} />
+    </section>
+
+    <section aria-labelledby="about-contact" class="flex flex-col gap-6" data-testid="about-contact">
+      <h2 id="about-contact" class="text-h2 font-semibold">[TODO: 문구]</h2>
+      <ul class="flex flex-col gap-3">
+        <li><a href={`mailto:${email}`} class="text-accent underline underline-offset-4">{email}</a></li>
+        <li>
+          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" class="text-accent underline underline-offset-4">LinkedIn</a>
+        </li>
+      </ul>
+      <a href={resumeFile} download class="self-start bg-accent px-4 py-2 text-bg no-underline">[TODO: 문구]</a>
+    </section>
+  </div>
+</BaseLayout>

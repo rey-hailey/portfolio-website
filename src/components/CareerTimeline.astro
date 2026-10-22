@@ -1,0 +1,39 @@
+---
+// 경력 타임라인 (ABT-R02): 최신순 ol, 회사·역할·기간·핵심 성과
+import { formatPeriod, sortCareer } from '../lib/period';
+
+interface CareerItem {
+  company: string;
+  role: string;
+  start: string;
+  end?: string | null;
+  highlights: string[];
+}
+
+interface Props {
+  career: CareerItem[];
+}
+
+const items = sortCareer(Astro.props.career);
+---
+
+<ol class="flex flex-col gap-12">
+  {
+    items.map((item) => (
+      <li class="border-t border-ink-line pt-6">
+        <h3 class="font-display text-h3 font-semibold">{item.company}</h3>
+        <p class="mt-1 text-ink-muted">{item.role}</p>
+        <p class="mt-1 text-small text-ink-muted">
+          <time datetime={item.start}>{formatPeriod(item.start, item.end)}</time>
+        </p>
+        {item.highlights.length > 0 && (
+          <ul class="mt-4 flex list-disc flex-col gap-2 pl-6">
+            {item.highlights.map((highlight) => (
+              <li>{highlight}</li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))
+  }
+</ol>
