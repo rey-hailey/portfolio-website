@@ -12,7 +12,8 @@ interface Props {
   wide?: boolean | undefined;
 }
 const { src, alt, plain = false, wide = false } = Astro.props;
-const slot = Math.floor(((wide ? WIDE : PROSE) - 32) / 2);
+// 15-visual-rhythm (VIS-R05): 그림 칸 = FigureGroup 2장 칸과 같은 폭(간격 16)
+const slot = Math.floor(((wide ? WIDE : PROSE) - 16) / 2);
 ---
 
 <figure class:list={['media-pair not-prose', wide && 'media-wide']}>
