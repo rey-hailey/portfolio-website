@@ -1,6 +1,7 @@
 ---
 // 12-case-visuals: 같은 문맥 이미지 2~3장을 데스크톱 나란히 / 모바일 세로로 묶는다. 각 이미지 라이트박스.
 // 13-work-readability: wide(WRR-R03), 항목별 캡션·바깥 <figure>(WRR-R05).
+// 15-visual-rhythm (VIS-R02): frame(예: "1/1")이 있으면 모든 항목을 같은 비율 틀에 contain으로 넣어 높이를 맞춘다.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { PROSE, WIDE } from './widths';
@@ -16,9 +17,10 @@ interface Props {
   caption?: string | undefined;
   cols?: number | undefined;
   wide?: boolean | undefined;
+  frame?: string | undefined;
   class?: string | undefined;
 }
-const { items, caption, cols, wide = false, class: cls = '' } = Astro.props;
+const { items, caption, cols, wide = false, frame, class: cls = '' } = Astro.props;
 const n = Math.min(cols ?? items.length, 5);
 const slot = Math.floor(((wide ? WIDE : PROSE) - (n - 1) * 16) / n);
 const widthsFor = (w: number) =>
@@ -28,7 +30,7 @@ const widthsFor = (w: number) =>
 ---
 
 <figure class:list={['media-groupwrap not-prose', wide && 'media-wide', cls]}>
-  <div class="media-group" style={`--cols:${n}`}>
+  <div class:list={['media-group', frame && 'media-group--framed']} style={`--cols:${n}` + (frame ? `;--frame:${frame}` : '')}>
     {
       items.map((it) => (
         <figure class:list={['media-figure media-group-item', it.plain && 'media-figure--plain']} data-figure>
