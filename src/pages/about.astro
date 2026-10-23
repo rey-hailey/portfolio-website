@@ -18,7 +18,7 @@ const person = personLd({ name, email, linkedinUrl, url: new URL('/about', Astro
 <BaseLayout title={`${name} 소개 | ${site.name}`} description={headline} kind="About" jsonLd={[person]}>
   <div class="mx-auto flex max-w-prose flex-col gap-16 md:gap-24">
     <section class="flex flex-col gap-6">
-      <Image src={photo ?? profilePhoto} alt={photo ? photoAlt : name} width={240} widths={[160, 240, 480]} sizes="(min-width:768px) 240px, 160px" class="h-auto w-40 md:w-60" />
+      <Image src={photo ?? profilePhoto} alt={photo ? (photoAlt ?? name) : name} width={240} widths={[160, 240, 480]} sizes="(min-width:768px) 240px, 160px" class="h-auto w-40 md:w-60" />
       <h1 class="font-display text-h1 font-semibold">{name}</h1>
       <p class="text-h3 break-keep">{headline}</p>
     </section>
