@@ -38,7 +38,12 @@ import BarCompare from '../../components/media/BarCompare.astro';
 import reading5 from '../../assets/images/work/laura/reading-5step.webp';
 import chat from '../../assets/images/work/laura/chat.webp';
 import levels from '../../assets/images/work/laura/levels.webp';
-import activityFlow from '../../assets/images/work/laura/activity-flow.svg';
+import activityFlow from '../../assets/images/work/laura/activity-flow.webp';
+import sentenceBefore1 from '../../assets/images/work/laura/sentence-before-1.webp';
+import sentenceBefore2 from '../../assets/images/work/laura/sentence-before-2.webp';
+import sentenceAfter1 from '../../assets/images/work/laura/sentence-after-1.webp';
+import sentenceAfter2 from '../../assets/images/work/laura/sentence-after-2.webp';
+import sentenceAfter3 from '../../assets/images/work/laura/sentence-after-3.webp';
 import reportLetter from '../../assets/images/work/laura/report-letter.webp';
 import reportPron from '../../assets/images/work/laura/report-pronunciation.webp';
 import reportCorr from '../../assets/images/work/laura/report-correction.webp';
@@ -78,9 +83,9 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 2. **열린 질문으로 말 끌어내기.** 기존에는 정해진 질문에 정해진 답을 했습니다. LAURA에서는 AI가 열린 질문을 던지고, 아이가 자기 문장을 만듭니다.
 3. **틀려도 멈추지 않게.** 기존에는 점수와 교정이 먼저 보여 말을 멈췄습니다. LAURA에서는 대화 중엔 고치지 않고 끝난 뒤 리포트로, 난이도는 아이 수준에 맞춥니다.
 
-<FigureGroup items={[{ src: chat, alt: "LAURA 캐릭터 대화 화면: 책 속 인물과 대화, 아이가 만든 질문, Help 제안 (아이 얼굴 흐림)" }, { src: levels, alt: "LAURA 수준별 답변: 같은 질문에 Elementary · Pre-intermediate · Intermediate 수준으로 다르게 답함" }]} />
+<FigureGroup items={[{ src: chat, alt: "LAURA 캐릭터 대화 화면: 책 속 인물과 대화, 아이가 만든 질문, Help 제안 (아이 얼굴 흐림)" }, { src: levels, alt: "LAURA 수준별 답변: 같은 질문에 Elementary · Pre-intermediate · Intermediate 수준으로 다르게 답함", plain: true }]} />
 
-<Figure src={activityFlow} alt="Role-play · Describe the Scene · Book Quiz 활동 흐름도" caption="같은 뼈대 위에 활동마다 다른 대화를 설계하고 구현했습니다" />
+<Figure src={activityFlow} alt="Role-play · Describe the Scene · Book Quiz 활동 흐름도" caption="같은 뼈대 위에 활동마다 다른 대화를 설계하고 구현했습니다" plain />
 
 ### Sentence Practice
 
@@ -91,7 +96,24 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 - **액션.** 활동 전에 책 속 핵심 문장을 2번 따라 말하는 단계 추가 · 따라 말하기 → Keywords → 그림 질문 → 꼬리질문 순으로 변경
 - **가설 → 결과.** 핵심 문장을 먼저 따라 말하면, 활동을 완주할 것이다. 1~7월 완료율 49.7% → 69.8% (+20.1%p · 같은 기간 다른 활동 상승(+8.4%p)의 약 2.4배)
 
-<BeforeAfter before={{ label: "개선 전", steps: ["① Remember the Keywords", "② 활동"] }} after={{ label: "개선 후", steps: ["① Repeat the answer", "② Remember the Keywords", "③ 활동"] }} />
+<BeforeAfter visualRows={[
+  {
+    label: "개선 전 · Keywords만 보고 바로 답하기",
+    items: [
+      { src: sentenceBefore1, alt: "Sentence Practice 개선 전: Remember the Keywords 화면", chip: "① Keywords" },
+      { src: sentenceBefore2, alt: "Sentence Practice 개선 전: 그림 질문에 바로 답하는 활동 화면", chip: "② 활동 · 바로 답하기" },
+    ],
+  },
+  {
+    label: "개선 후 · 두 번 따라 말하고, Keywords 본 뒤 활동 시작",
+    accent: true,
+    items: [
+      { src: sentenceAfter1, alt: "Sentence Practice 개선 후: 책 속 핵심 문장 따라 말하기 화면", chip: "① 따라 말하기 ×2" },
+      { src: sentenceAfter2, alt: "Sentence Practice 개선 후: Remember the Keywords 화면", chip: "② Keywords" },
+      { src: sentenceAfter3, alt: "Sentence Practice 개선 후: 그림 질문에 답하는 활동 화면", chip: "③ 활동 · 같은 질문" },
+    ],
+  },
+]} />
 
 ### LAURA 리포트
 
@@ -110,7 +132,7 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 
 North Star인 활동 완료율이 오르고, 아이들은 다음 달에도 다시 찾아왔습니다.
 
-<Figure src={completionGraph} alt="월별 평균 활동 완료율 2025.01–2026.07" caption="월별 평균 활동 완료율 2025.01–2026.07" />
+<Figure src={completionGraph} alt="월별 평균 활동 완료율 2025.01–2026.07" caption="월별 평균 활동 완료율 2025.01–2026.07" plain />
 
 - **활동 완료율** 54.5% → 65.6% (+11.1%p) · Sentence Practice를 빼도 55.9% → 64.3% (+8.4%p)
 - **다음 달 재방문** 48.9% → 63.0% (+14.1%p)
