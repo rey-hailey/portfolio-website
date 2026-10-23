@@ -5,7 +5,9 @@ import emotions from '../../assets/images/home/strengths/emotions.webp';
 import logoOrc from '../../assets/images/home/strengths/logo-orc.webp';
 import logoBrc from '../../assets/images/home/strengths/logo-brc.webp';
 import logoOlb from '../../assets/images/home/strengths/logo-olb.webp';
-import actsTts from '../../assets/images/home/strengths/acts-tts.webp';
+import langZh from '../../assets/images/work/briefs/harmony-hills/lang-zh.webp';
+import langRu from '../../assets/images/work/briefs/harmony-hills/lang-ru.webp';
+import langVi from '../../assets/images/work/briefs/harmony-hills/lang-vi.webp';
 
 interface Props {
   strengths: { title: string; description: string; href?: string | undefined }[];
@@ -34,7 +36,13 @@ const partnerLogos = [
                 ))}
               </div>
             )}
-            {i === 2 && <Image src={actsTts} alt="직접 만든 ACTS TTS Studio 화면: 낭독 지시문, 언어·억양 선택, 캐릭터별 성우 프리셋" widths={[320, 640]} sizes="(min-width:768px) 320px, 100vw" class="strength-visual-img" loading="lazy" />}
+            {i === 2 && (
+              <div class="strength-langs">
+                <Image src={langZh} alt="Run Coco, Run! 중국어 화면" widths={[96, 192, langZh.width]} sizes="96px" class="strength-lang" loading="lazy" />
+                <Image src={langRu} alt="Run Coco, Run! 러시아어 화면" widths={[96, 192, langRu.width]} sizes="96px" class="strength-lang" loading="lazy" />
+                <Image src={langVi} alt="Run Coco, Run! 베트남어 화면" widths={[96, 192, langVi.width]} sizes="96px" class="strength-lang" loading="lazy" />
+              </div>
+            )}
           </div>
           <span class="font-display text-small text-accent">{String(i + 1).padStart(2, '0')}</span>
           <h3 class="text-h3 font-semibold break-keep">{s.title}</h3>
