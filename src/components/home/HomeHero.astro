@@ -11,8 +11,8 @@ const { title, headline, subhead, metrics } = Astro.props;
 const headlineHtml = headline
   .replace('만들고, ', '만들고, <br class="hidden md:inline" />')
   .replace('키운 ', '키운 <br class="hidden md:inline" />');
-// DSP-R08 카운트업은 숫자로 시작하는 값에만 (예: "1명 · 약 2개월"은 0→1 애니메이션이 어색하다)
-const countable = (v: string) => /^[+\-−]?\d/.test(v);
+// DSP-R08 카운트업은 두 자리 이상 또는 소수 숫자로 시작하는 값에만 ("1명 · 약 2개월"은 0→1 애니메이션이 어색하다)
+const countable = (v: string) => /^[+\-−]?(\d{2,}|\d+[.,]\d)/.test(v);
 ---
 
 <section class="flex flex-col gap-8 pt-6 pb-16 md:pt-10 md:pb-28">
@@ -26,7 +26,7 @@ const countable = (v: string) => /^[+\-−]?\d/.test(v);
       metrics.map((m) => {
         const inner = (
           <>
-            <span class="font-display text-h2 font-semibold whitespace-nowrap text-accent" data-testid="home-metric-value" data-count-up={countable(m.value) ? '' : undefined}>
+            <span class="font-display text-h2 font-semibold break-keep text-accent" data-testid="home-metric-value" data-count-up={countable(m.value) ? '' : undefined}>
               {m.value}
             </span>
             <span class="text-small text-ink-muted break-keep">{m.label}</span>

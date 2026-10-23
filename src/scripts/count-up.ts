@@ -27,7 +27,8 @@ function initCountUp() {
     };
     const start = performance.now();
     const frame = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
+      // rAF 타임스탬프가 start(performance.now)보다 앞설 수 있어 첫 프레임에 음수가 나오지 않게 0으로 고정한다
+      const t = Math.min(1, Math.max(0, (now - start) / duration));
       const eased = 1 - Math.pow(1 - t, 3);
       if (t < 1) {
         el.textContent = fmt(target * eased);
