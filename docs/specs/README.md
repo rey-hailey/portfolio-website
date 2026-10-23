@@ -37,6 +37,7 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 10 | launch | Vercel 배포, 도메인, 분석, 최종 QA | Draft (미작성) | `docs/specs/10-launch/requirements.md` | `docs/specs/10-launch/design.md` | `.omo/plans/10-launch.md` |
 | 11 | design-polish | 타이포·섹션 리듬·헤더 거동·카드 상호작용·View Transitions·상세 목차·카운트업 | Draft | `docs/specs/11-design-polish/requirements.md` | `docs/specs/11-design-polish/design.md` | `.omo/plans/11-design-polish.md` |
 | 12 | case-visuals | 원본 덱 화면·도식을 케이스/홈/About/Lab/추가 사례에 배치, 미디어 컴포넌트, 썸네일 교체 | Done | `docs/specs/12-case-visuals/requirements.md` | `docs/specs/12-case-visuals/design.md` | 위임 단건(계획 없음) |
+| 13 | work-readability | Work 상세 상단 30초 요약·넓은 그림·캡션·글-그림 짝·추가 사례 카드 정리, Figma 도식 polish | Draft | `docs/specs/13-work-readability/requirements.md` | `docs/specs/13-work-readability/design.md` | `.omo/plans/13-work-readability.md` |
 
 ## Requirement ID 접두어
 
@@ -54,3 +55,4 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 10-launch | `LCH` |
 | 11-design-polish | `DSP` |
 | 12-case-visuals | `CVS` |
+| 13-work-readability | `WRR` |
