@@ -1,5 +1,6 @@
 ---
 // Work 목록 (WRK-R01) + 12-case-visuals: 공개 work 카드 + 하단 '추가 사례' BriefCard 4건
+// 13-work-readability (WRR-R07): BRC·OLB 구조도는 썸네일 대신 '자세히 보기' 안에서 라이트박스로
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BriefCard from '../../components/work/BriefCard.astro';
@@ -76,7 +77,8 @@ const sdPairs = [
   <section aria-labelledby="work-briefs" class="mt-24 border-t border-ink-line pt-16">
     <h2 id="work-briefs" class="text-h2 font-semibold break-keep">추가 사례</h2>
     <div class="mt-12 grid gap-8 md:grid-cols-2">
-      <BriefCard {...byId['brc']} image={brcSettings} imageAlt="As-is 세 화면 과제 배정 흐름과 To-be 한 화면 모달 비교" imageCaption="개선. 나뉘어 있던 설정을 한 화면으로" imagePlain>
+      <BriefCard {...byId['brc']}>
+        <Figure src={brcSettings} alt="As-is 세 화면 과제 배정 흐름과 To-be 한 화면 모달 비교" caption="개선. 나뉘어 있던 설정을 한 화면으로" plain class="my-0" />
         <div>
           <p class="brief-extra-label">그 밖에 · 원장·선생님이 매일 쓰는 화면도 함께</p>
           <dl class="brief-table">
@@ -87,7 +89,9 @@ const sdPairs = [
         </div>
       </BriefCard>
 
-      <BriefCard {...byId['olb']} image={olbMiddleware} imageAlt="OLB Middleware As-is / To-be 구조도 (보안 상세는 가림 처리)" imagePlain />
+      <BriefCard {...byId['olb']}>
+        <Figure src={olbMiddleware} alt="OLB Middleware As-is / To-be 구조도 (보안 상세는 가림 처리)" caption="OLB Middleware As-is / To-be" plain class="my-0" />
+      </BriefCard>
 
       <BriefCard {...byId['harmony-hills']} image={hhTablet} imageAlt="태블릿에서 펼친 Harmony Hills 도서 화면">
         <FigureGroup cols={5} items={hhLangs} caption="Run Coco, Run! 10–11쪽 · 영어 원문과 중·러·베 3개 언어" />
