@@ -52,3 +52,38 @@ test('이전/다음: 첫 케이스는 다음만, 마지막은 이전만 (WRK-R04
   await expect(pager.locator('a[rel="next"]')).toHaveCount(0);
   await expect(pager.locator('a[rel="prev"]')).toHaveAttribute('href', '/work/orc-laura');
 });
+
+// 13-work-readability
+for (const slug of SLUGS) {
+  test(`상세 ${slug}: 한눈에 보기 3칸이 첫 화면에 보인다 (WRR-R01 AC1, WRR-R02)`, async ({ page }, info) => {
+    test.skip(info.project.name !== 'desktop', '첫 화면 기준은 데스크톱');
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`/work/${slug}`);
+    const glance = page.getByTestId('work-glance');
+    for (const field of ['problem', 'action', 'result']) {
+      const row = glance.locator(`[data-field="${field}"]`);
+      await expect(row).toBeInViewport();
+      expect((await row.boundingBox())!.y + (await row.boundingBox())!.height).toBeLessThanOrEqual(900);
+    }
+    await expect(glance.locator('figure figcaption')).toHaveCount(1);
+  });
+
+  test(`상세 ${slug}: 본문 그림마다 캡션·제목이 있고 가로 스크롤이 없다 (WRR-R03 AC2, WRR-R05)`, async ({ page }) => {
+    await page.goto(`/work/${slug}`);
+    const missing = await page.locator('.mdx-body > :is(figure, .media-bars)').evaluateAll((els) =>
+      els.filter((el) => !el.querySelector(':scope > figcaption, .media-caption, .media-pair-text, .media-bars-title, .media-bars-note, .media-ba-visualrow-label, .media-step-label')).map((el) => el.outerHTML.slice(0, 120)),
+    );
+    expect(missing).toEqual([]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+}
+
+test('목록 추가 사례: BRC·OLB 구조도는 썸네일이 아니라 펼침 안에 있다 (WRR-R07 AC1)', async ({ page }) => {
+  await page.goto('/work');
+  const cards = page.locator('.brief-card');
+  await expect(cards).toHaveCount(4);
+  for (const i of [0, 1]) {
+    await expect(cards.nth(i).locator(':scope > figure')).toHaveCount(0);
+    await expect(cards.nth(i).locator('details figure .media-trigger img')).toHaveCount(1);
+  }
+});
