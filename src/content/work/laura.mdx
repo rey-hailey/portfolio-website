@@ -33,9 +33,8 @@ promotedFromLab: null
 import Figure from '../../components/media/Figure.astro';
 import FigureGroup from '../../components/media/FigureGroup.astro';
 import BeforeAfter from '../../components/media/BeforeAfter.astro';
-import MemorySteps from '../../components/media/MemorySteps.astro';
 import MediaPair from '../../components/media/MediaPair.astro';
-import ScreenFlow from '../../components/media/ScreenFlow.astro';
+import MediaStrip from '../../components/media/MediaStrip.astro';
 import BarCompare from '../../components/media/BarCompare.astro';
 import reading5 from '../../assets/images/work/laura/reading-5step.webp';
 import chat from '../../assets/images/work/laura/chat.webp';
@@ -102,7 +101,7 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 
 <Figure src={activityFlow} alt="Role-play · Describe the Scene · Book Quiz 활동 흐름도" caption="같은 뼈대 위에 활동마다 다른 대화를 설계하고 구현했습니다" plain wide />
 
-<ScreenFlow wide caption="Meet the Character" steps={[
+<MediaStrip wide caption="Meet the Character" steps={[
   { label: "최초 진입 시", src: meetEnter, alt: "Coco가 먼저 말을 건다: Ouch… a bee stung me.", speaker: "Coco", line: "Ouch… a bee stung me." },
   { label: "코코 발화 → 대기", src: meetAsk, alt: "Coco가 묻고 아이의 말을 기다린다: It really hurts. What do you want to know?", speaker: "Coco", line: "It really hurts. What do you want to know?" },
   { label: "음성 인식 중", src: meetChild, alt: "아이가 자기 질문을 말한다: Oh no! Are you okay? Does it hurt a lot?", speaker: "아이", line: "Oh no! Are you okay? Does it hurt a lot?" },
@@ -149,7 +148,7 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 
 <Figure src={reportLetter} alt="칭찬 편지: 대화에서 이런 내용이 좋았어요" caption="칭찬 편지" />
 
-<FigureGroup wide items={[{ src: reportScore, alt: "LAURA Report Score: 종합 점수 86점, 자연스러움 78점, 발음 정확도 92점, 유창성 90점", caption: "Score" }, { src: reportReview, alt: "LAURA Report Review: 아이가 말한 문장과 LAURA's Correction의 Original Text · Revised Text 비교와 설명", caption: "Review · LAURA's Correction" }]} caption="점수 · 교정 확인" />
+<FigureGroup wide frame="1/1" items={[{ src: reportScore, alt: "LAURA Report Score: 종합 점수 86점, 자연스러움 78점, 발음 정확도 92점, 유창성 90점", caption: "Score" }, { src: reportReview, alt: "LAURA Report Review: 아이가 말한 문장과 LAURA's Correction의 Original Text · Revised Text 비교와 설명", caption: "Review · LAURA's Correction" }]} caption="점수 · 교정 확인" />
 
 ## 결과
 
@@ -171,7 +170,7 @@ North Star인 활동 완료율이 오르고, 아이들은 다음 달에도 다�
 지난번에 한 이야기를 캐릭터가 기억해 주면, 아이는 다시 말을 걸 이유가 생깁니다.
 베타 체험단 지속 이용 의향 4.51 / 5 · 학습 흥미도 4.01 / 5 (설문). 정식 출시 전, 재방문으로 이어지는지 검증하던 단계입니다.
 
-<MemorySteps steps={[{ label: "기억으로 저장", src: memory1, alt: "아이: Ellie is a small dog, but she's smart. She plays soccer with me." }, { label: "그 아이의 기억만 찾기", src: memory2, alt: "아이: Do you remember my dog's name?" }, { label: "캐릭터 말투로 대답", src: memory3, alt: "Coco: Yes! Your dog's name is Ellie." }]} />
+<MediaStrip wide caption="관계형 AI · 기억 3단계" steps={[{ label: "기억으로 저장", src: memory1, alt: "아이: Ellie is a small dog, but she's smart. She plays soccer with me.", plain: true }, { label: "그 아이의 기억만 찾기", src: memory2, alt: "아이: Do you remember my dog's name?", plain: true }, { label: "캐릭터 말투로 대답", src: memory3, alt: "Coco: Yes! Your dog's name is Ellie.", plain: true }]} />
 
 ## 회고
 
