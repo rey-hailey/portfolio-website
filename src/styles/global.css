@@ -76,14 +76,10 @@
 /* 스크롤 진입 효과 (wndtn 레퍼런스). 동작 줄이기·no-JS면 항상 보인다 (FND-R18) */
 @media (prefers-reduced-motion: no-preference) {
   html.js [data-reveal] {
-    opacity: 0;
-    transform: translateY(24px);
-    transition:
-      opacity 0.7s var(--ease-out),
-      transform 0.7s var(--ease-out);
+    transform: translateY(16px);
+    transition: transform 0.6s var(--ease-out);
   }
   html.js [data-reveal].is-visible {
-    opacity: 1;
     transform: none;
   }
 }
