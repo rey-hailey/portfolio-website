@@ -1,13 +1,49 @@
 ---
-// Work 목록 (WRK-R01). 공개 work를 order 순 카드로
+// Work 목록 (WRK-R01) + 12-case-visuals: 공개 work 카드 + 하단 '추가 사례' BriefCard 4건
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import BriefCard from '../../components/work/BriefCard.astro';
+import Figure from '../../components/media/Figure.astro';
+import FigureGroup from '../../components/media/FigureGroup.astro';
+import BeforeAfter from '../../components/media/BeforeAfter.astro';
 import { site } from '../../config/site';
 import { getPublished } from '../../lib/content';
 import { formatDatePeriod } from '../../lib/period';
 import { sortByOrder } from '../../lib/work';
+import { workBriefs } from '../../data/work-briefs';
+import brcSettings from '../../assets/images/work/briefs/brc/settings.webp';
+import olbMiddleware from '../../assets/images/work/briefs/olb/middleware.webp';
+import hhTablet from '../../assets/images/work/briefs/harmony-hills/tablet.webp';
+import hhTable from '../../assets/images/work/briefs/harmony-hills/production-table.webp';
+import hhEn from '../../assets/images/work/briefs/harmony-hills/lang-en.webp';
+import hhKo from '../../assets/images/work/briefs/harmony-hills/lang-ko.webp';
+import hhZh from '../../assets/images/work/briefs/harmony-hills/lang-zh.webp';
+import hhRu from '../../assets/images/work/briefs/harmony-hills/lang-ru.webp';
+import hhVi from '../../assets/images/work/briefs/harmony-hills/lang-vi.webp';
+import sdLaunch3 from '../../assets/images/work/briefs/story-dive/launch-3.webp';
+import sdMvp1 from '../../assets/images/work/briefs/story-dive/mvp-1.webp';
+import sdMvp2 from '../../assets/images/work/briefs/story-dive/mvp-2.webp';
+import sdMvp3 from '../../assets/images/work/briefs/story-dive/mvp-3.webp';
+import sdMvp5 from '../../assets/images/work/briefs/story-dive/mvp-5.webp';
+import sdLaunch1 from '../../assets/images/work/briefs/story-dive/launch-1.webp';
+import sdLaunch2 from '../../assets/images/work/briefs/story-dive/launch-2.webp';
+import sdLaunch5 from '../../assets/images/work/briefs/story-dive/launch-5.webp';
 
 const works = sortByOrder(await getPublished('work'));
+const byId = Object.fromEntries(workBriefs.map((b) => [b.id, b]));
+const hhLangs = [
+  { src: hhEn, alt: 'Run Coco, Run! 10–11쪽 · 영어 원문' },
+  { src: hhKo, alt: 'Run Coco, Run! 10–11쪽 · 한국어' },
+  { src: hhZh, alt: 'Run Coco, Run! 10–11쪽 · 중국어' },
+  { src: hhRu, alt: 'Run Coco, Run! 10–11쪽 · 러시아어' },
+  { src: hhVi, alt: 'Run Coco, Run! 10–11쪽 · 베트남어' },
+];
+const sdPairs = [
+  { label: '1 시작', before: { src: sdMvp1, alt: 'MVP 1 시작 화면' }, after: { src: sdLaunch1, alt: '출시 1 시작 화면' } },
+  { label: '2 역할 선택', before: { src: sdMvp2, alt: 'MVP 2 역할 선택 화면' }, after: { src: sdLaunch2, alt: '출시 2 역할 선택 화면' } },
+  { label: '3 LAURA 대화', before: { src: sdMvp3, alt: 'MVP 3 LAURA 대화 화면' }, after: { src: sdLaunch3, alt: '출시 3 LAURA 대화 화면' } },
+  { label: '5 라이브 녹화', before: { src: sdMvp5, alt: 'MVP 5 라이브 녹화 화면' }, after: { src: sdLaunch5, alt: '출시 5 라이브 녹화 화면' } },
+];
 ---
 
 <BaseLayout title={`Work | ${site.name}`} description="AI 제품을 기획하고 직접 만들어 해외 매출로 키운 대표 작업을 정리했습니다." kind="Work">
@@ -17,8 +53,8 @@ const works = sortByOrder(await getPublished('work'));
       works.map((work) => (
         <li data-testid="work-card">
           <a href={`/work/${work.id}`} class="group flex flex-col gap-4 text-ink no-underline">
-            <div class="overflow-hidden">
-              <Image src={work.data.thumbnail} alt={work.data.thumbnailAlt} widths={[400, 800]} sizes="(min-width: 768px) 50vw, 100vw" class="h-auto w-full transition-transform duration-500 group-hover:scale-[1.04] group-focus-within:scale-[1.04]" transition:name={`work-thumb-${work.id}`} />
+            <div class="thumb-frame overflow-hidden">
+              <Image src={work.data.thumbnail} alt={work.data.thumbnailAlt} widths={[400, 800]} sizes="(min-width: 768px) 50vw, 100vw" class="thumb-frame-img transition-transform duration-500 group-hover:scale-[1.04] group-focus-within:scale-[1.04]" transition:name={`work-thumb-${work.id}`} />
             </div>
             <h2 class="flex items-center gap-2 text-h3 font-semibold break-keep transition-colors group-hover:text-accent group-focus-within:text-accent" transition:name={`work-title-${work.id}`}>{work.data.title} <span class="text-accent opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100" aria-hidden="true">→</span></h2>
             <p class="text-ink-muted break-keep">{work.data.summary}</p>
@@ -36,4 +72,39 @@ const works = sortByOrder(await getPublished('work'));
       ))
     }
   </ol>
+
+  <section aria-labelledby="work-briefs" class="mt-24 border-t border-ink-line pt-16">
+    <h2 id="work-briefs" class="text-h2 font-semibold break-keep">추가 사례</h2>
+    <div class="mt-12 grid gap-8 md:grid-cols-2">
+      <BriefCard {...byId['brc']} image={brcSettings} imageAlt="개선. 나뉘어 있던 설정을 한 화면으로: 세 화면의 과제 배정 흐름을 한 모달로">
+        <div>
+          <p class="brief-extra-label">그 밖에 · 원장·선생님이 매일 쓰는 화면도 함께</p>
+          <dl class="brief-table">
+            <div class="brief-table-row"><dt>학습 기록 다운로드</dt><dd>반별 조회 → 기관 전체 기록을 한 번에 추출</dd></div>
+            <div class="brief-table-row"><dt>학생 학습 현황</dt><dd>학습량과 도서별 학습 시간을 함께 확인</dd></div>
+            <div class="brief-table-row"><dt>반 정보 수정</dt><dd>별도 패널 → 보던 자리에서 바로 수정</dd></div>
+          </dl>
+        </div>
+      </BriefCard>
+
+      <BriefCard {...byId['olb']} image={olbMiddleware} imageAlt="OLB Middleware As-is / To-be 구조도 (보안 상세는 가림 처리)" />
+
+      <BriefCard {...byId['harmony-hills']} image={hhTablet} imageAlt="태블릿에서 펼친 Harmony Hills 도서 화면">
+        <FigureGroup cols={5} items={hhLangs} caption="Run Coco, Run! 10–11쪽 · 영어 원문과 중·러·베 3개 언어" />
+        <Figure src={hhTable} alt="제작 흐름. 단계마다 AI 자동화와 사람 검수를 나눴습니다 (36권 × 3개 언어 · 2주 내 납품)" caption="제작 흐름 · 단계별 AI 자동화와 사람 검수" />
+      </BriefCard>
+
+      <BriefCard {...byId['story-dive']} image={sdLaunch3} imageAlt="출시 3 LAURA 대화 화면">
+        <BeforeAfter headers={['MVP', '출시']} pairs={sdPairs} caption="직접 만든 MVP 화면(위) → 출시된 최종 디자인(아래)" />
+        <div>
+          <p class="brief-extra-label">학원 인터뷰의 불편 → Story Dive의 해법</p>
+          <dl class="brief-table">
+            <div class="brief-table-row"><dt>“학부모에게 보여줄 결과물이 없다”</dt><dd>발표 영상을 바로 다운로드·공유 · 아이가 말한 영어를 학부모가 직접 확인</dd></div>
+            <div class="brief-table-row"><dt>“고레벨 스피킹 수업은 강사를 더 뽑아야 한다”</dt><dd>LAURA가 대화 상대·피드백까지 · 강사를 늘리지 않고 고레벨 반 운영</dd></div>
+            <div class="brief-table-row"><dt>“기존 활동은 고레벨에게 짧고 쉽다”</dt><dd>대화 → 대본 → 발표 · 한 활동 안에서 말하기·쓰기·발표까지</dd></div>
+          </dl>
+        </div>
+      </BriefCard>
+    </div>
+  </section>
 </BaseLayout>
