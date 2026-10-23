@@ -84,17 +84,33 @@
 | WRR-R07 | `src/pages/work/index.astro`, `BriefCard.astro` | Playwright + 수동 |
 | WRR-R08 | 전체 | Vitest + Playwright + Lighthouse |
 
-## 부록 A. 도식 가독성 측정표 (구현 시 채움)
+## 부록 A. 도식 가독성 측정표 (2026-10-23, 1440 데스크톱 · 본문 열 864px)
 
-| 케이스 | 그림 | 원본 폭(px) | 원본 본문 글자(px) | 현재 표시 폭 | 현재 화면 글자(px) | wide 후 | 조치 |
-|--------|------|-------------|--------------------|--------------|--------------------|---------|------|
-| laura | activity-flow | 2400 | | 680 | | 960 | |
-| laura | sentence before/after | | | ~210/장 | | | |
-| the-life-of-our-lord | production-flow | | | 680 | | 960 | |
-| orc-laura | 3단계 레슨 4장 | | | ~160/장 | | | |
-| /work | brc·olb 구조도 | | | 카드 | | 펼침 | |
+화면 글자 = 원본 글자 높이(px) × 표시 폭 / 원본 폭. 원본 글자 높이는 원본 해상도에서 육안 측정(±2px).
 
-## 부록 B. Figma 출처 (구현 시 채움)
+| 케이스 | 그림 | 원본 폭 | 원본 본문 글자 | 표시 폭 (전 → 후) | 화면 글자 (전 → 후) | 판정 | 조치 |
+|--------|------|---------|----------------|-------------------|---------------------|------|------|
+| laura | activity-flow | 2400 | 22–28 | 680 → 864 | 6–8 → 8–10 | ❌ | wide + 라이트박스. Figma 원본 프레임으로 다시 그려야 함(후속, 원본 프레임 위치 필요) |
+| laura | Sentence Practice 개선 후 3장 | 1007 | 앱 UI 20–24 | 210 → 277 | 4–5 → 6–7 | ❌ (앱 화면) | 각 화면 아래 단계 라벨이 의미를 전달, 세부는 라이트박스 |
+| laura | Meet the Character 흐름 5장 (신규) | 1600 | 자막 28 | — → 277 | — → 5 | ✅ (텍스트 대체) | 자막을 화면 아래 본문 텍스트로 옮겨 적음(ScreenFlow `line`) |
+| laura | LAURA Report Score·Review (신규) | 718 | 28–32 | — → 416 | — → 16–18 | ✅ | Figma 2x 내보내기 |
+| the-life-of-our-lord | production-flow | 2300 | 28–36 | 680 → 864 | 8–11 → 10–14 | △ | 제목 줄은 통과, 보조 줄 미달. Figma 재작성 후속 |
+| orc-laura | goal-box | 1930 | 36 | 680 → 864 | 13 → 16 | ✅ | wide |
+| orc-laura | 3단계 레슨 4장 | 800–2190 | 앱 UI | 160 → 424 | 미달 → 개선 | △ (앱 화면) | 4열 → wide 2열 |
+| /work | BRC·OLB 구조도 | 1300·1880 | 18–24 | 카드 510 → 펼침 안 | 7–9 → 라이트박스 | ✅ (WRR-R07) | 썸네일에서 제외, 펼침 안 라이트박스 |
 
-| 이미지 | Figma URL | 노드 ID | 내보낸 날짜 |
-|--------|-----------|---------|-------------|
+## 부록 B. Figma 출처 (2026-10-23)
+
+원본 프레임은 수정하지 않았다. 고친 화면은 같은 페이지 오른쪽에 `[Portfolio] …` 이름의 복제본으로 두고 그 복제본에서 내보냈다.
+
+| 이미지 | 파일 | 노드 ID | 수정 |
+|--------|------|---------|------|
+| `laura/report-score.webp` | LAURA Report (`kAuzeqUlMuXKbE7OEkAYEn`) | 복제본 `40000015:62504` ← 원본 `2742:4517` (AI Tutor Report/Mobile/Interview the Main Character) | 점수 49·48·58·48 → 86·78·92·90 (원본 포트폴리오 덱의 리포트 점수와 같게). 2x 내보낸 뒤 Score 카드만 잘라냄 |
+| `laura/report-review.webp` | 같은 파일 | 복제본 `40000015:62504` | 수정 없음. Review 첫 교정 구간만 잘라냄(아이 이름이 나오는 Summary·뒤쪽 대화 제외) |
+| `laura/meet-enter.webp` | Meet the Character (`J0nZkXT0CqBS23CtPsrwEb`) | `223:1496` <최초 진입 시> | 없음 |
+| `laura/meet-ask.webp` | 같은 파일 | `262:4485` <코코발화-> 대기> | 없음 |
+| `laura/meet-child.webp` | 같은 파일 | 복제본 `40000012:15934` ← `265:4861` <음성 인식 중> | 학습자 이름 `Chaeyoung` → `Me` |
+| `laura/meet-coco.webp` | 같은 파일 | `287:3579` <코코 발화 중> | 없음 |
+| `laura/meet-bye.webp` | 같은 파일 | 복제본 `40000012:15980` ← `245:2408` <최종 인사> | 자막 앞 불필요한 `"` 제거 |
+
+내보내기: `download_assets` scale 2 → `_private/figma/`(gitignore) → PIL webp q85. Meet the Character는 2048×1536 → 1600×1200으로 축소(확대 없음).
