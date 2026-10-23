@@ -38,7 +38,7 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 11 | design-polish | 타이포·섹션 리듬·헤더 거동·카드 상호작용·View Transitions·상세 목차·카운트업 | Draft | `docs/specs/11-design-polish/requirements.md` | `docs/specs/11-design-polish/design.md` | `.omo/plans/11-design-polish.md` |
 | 12 | case-visuals | 원본 덱 화면·도식을 케이스/홈/About/Lab/추가 사례에 배치, 미디어 컴포넌트, 썸네일 교체 | Done | `docs/specs/12-case-visuals/requirements.md` | `docs/specs/12-case-visuals/design.md` | 위임 단건(계획 없음) |
 | 13 | work-readability | Work 상세 상단 30초 요약·넓은 그림·캡션·글-그림 짝·추가 사례 카드 정리, Figma 도식 polish | In progress (WRR-R04 도식 2건 Figma 재작성 남음) | `docs/specs/13-work-readability/requirements.md` | `docs/specs/13-work-readability/design.md` | `.omo/plans/13-work-readability.md` |
-| 14 | hire-readability | 서류 통과 관점 리뷰: 홈 카드 인과 3줄·강점 근거·히어로 숫자 1:1·상세 결과 그림 확대·숫자 표기 통일 | In progress | `docs/specs/14-hire-readability/requirements.md` | `docs/specs/14-hire-readability/design.md` | `.omo/plans/14-hire-readability.md` |
+| 14 | hire-readability | 서류 통과 관점 리뷰: 홈 카드 인과 3줄·강점 근거·히어로 숫자 1:1·상세 결과 그림 확대·숫자 표기 통일 | Done | `docs/specs/14-hire-readability/requirements.md` | `docs/specs/14-hire-readability/design.md` | `.omo/plans/14-hire-readability.md` |
 
 ## Requirement ID 접두어
 
