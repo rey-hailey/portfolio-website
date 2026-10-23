@@ -41,6 +41,7 @@
   }
   .mdx-body h2 {
     margin-top: calc(var(--spacing) * 16);
+    scroll-margin-top: calc(var(--spacing) * 20);
     font-size: var(--text-h2);
     font-weight: 600;
     line-height: 1.4;

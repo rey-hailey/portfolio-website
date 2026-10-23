@@ -6,6 +6,7 @@ import SkipLink from '../components/SkipLink.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 
+import { ClientRouter } from 'astro:transitions';
 import { canonicalUrl, jsonLdScript, ogImagePath } from '../lib/seo';
 
 interface Props {
@@ -46,6 +47,7 @@ const ogImage = new URL(ogImagePath(Astro.url.pathname), site).href;
     <link rel="alternate" type="application/rss+xml" title="Writing RSS" href="/rss.xml" />
     {jsonLd.map((data) => <script type="application/ld+json" is:inline set:html={jsonLdScript(data)} />)}
     <link rel="preload" href={geistLatinWoff2} as="font" type="font/woff2" crossorigin />
+    <ClientRouter />
   </head>
   <body>
     <SkipLink />
@@ -55,6 +57,9 @@ const ogImage = new URL(ogImagePath(Astro.url.pathname), site).href;
     <script>
       import '../scripts/smooth-scroll';
       import '../scripts/reveal';
+      import '../scripts/header-scroll';
+      import '../scripts/count-up';
+      import '../scripts/reading-progress';
     </script>
   </body>
 </html>

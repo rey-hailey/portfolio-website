@@ -7,7 +7,7 @@ import MobileMenu from './MobileMenu.astro';
 const { pathname } = Astro.url;
 ---
 
-<header class="border-b border-ink-line">
+<header class="site-header sticky top-0 z-40 border-b border-ink-line bg-bg/85 backdrop-blur transition-transform duration-300">
   <div class="mx-auto flex max-w-page flex-wrap items-center gap-x-8 gap-y-2 px-4 py-4 md:px-8">
     <a href="/" class="font-display font-semibold text-ink no-underline">{site.name}</a>
     <nav aria-label="주 메뉴" class="hidden md:ml-auto md:block">
@@ -37,3 +37,9 @@ const { pathname } = Astro.url;
     <MobileMenu />
   </div>
 </header>
+
+<style>
+  .site-header.is-hidden {
+    transform: translateY(-100%);
+  }
+</style>

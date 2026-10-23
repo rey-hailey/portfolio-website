@@ -7,19 +7,23 @@ interface Props {
   metrics: { value: string; label: string }[];
 }
 const { title, headline, subhead, metrics } = Astro.props;
+// DSP-R01: 데스크톱만 의미 단위 줄바꿈(br은 md 이상에서만 보임), 모바일은 자동 줄바꿈
+const headlineHtml = headline
+  .replace('만들고, ', '만들고, <br class="hidden md:inline" />')
+  .replace('키운 ', '키운 <br class="hidden md:inline" />');
 ---
 
 <section class="flex flex-col gap-8 pt-6 pb-16 md:pt-10 md:pb-28">
   <div class="flex flex-col gap-5">
     <p class="eyebrow">{title}</p>
-    <h1 class="font-display text-display font-semibold leading-tight break-keep max-w-[22ch]">{headline}</h1>
+    <h1 class="font-display text-display font-bold leading-tight tracking-[-0.03em] break-keep max-w-[22ch]" set:html={headlineHtml} />
     <p class="max-w-prose text-h3 text-ink-muted break-keep" data-testid="home-problem">{subhead}</p>
   </div>
   <ul class="grid grid-cols-2 gap-x-8 gap-y-6 border-t border-ink-line pt-8 md:grid-cols-4">
     {
       metrics.map((m) => (
         <li class="flex flex-col gap-1" data-testid="home-metric">
-          <span class="font-display text-h2 font-semibold whitespace-nowrap text-accent" data-testid="home-metric-value">
+          <span class="font-display text-h2 font-semibold whitespace-nowrap text-accent" data-testid="home-metric-value" data-count-up>
             {m.value}
           </span>
           <span class="text-small text-ink-muted break-keep">{m.label}</span>
