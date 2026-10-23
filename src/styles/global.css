@@ -515,15 +515,10 @@
   }
 
   /* 13-work-readability: 상세 상단 '한눈에 보기' (WRR-R01·R02) */
+  /* 14-hire-readability (HIR-R05): 3줄 아래 결과 그림을 본문 전체 폭으로 (1열) */
   .glance {
     display: grid;
     gap: calc(var(--spacing) * 8);
-    align-items: center;
-  }
-  @media (min-width: 1024px) {
-    .glance {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    }
   }
   .glance-list {
     display: flex;
@@ -551,6 +546,7 @@
   .glance-visual {
     margin: 0;
     min-width: 0;
+    width: 100%;
   }
   .glance-visual .media-bars {
     margin: 0;
