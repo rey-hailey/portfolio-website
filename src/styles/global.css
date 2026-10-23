@@ -137,7 +137,12 @@
     display: block;
     width: 100%;
     height: auto;
-    border: 1px solid var(--color-ink-line);
+    border-radius: var(--radius-media);
+    box-shadow: var(--shadow-media);
+  }
+  .media-figure--plain .media-img {
+    border-radius: 0;
+    box-shadow: none;
   }
   .media-caption {
     margin-top: calc(var(--spacing) * 2);
@@ -268,6 +273,39 @@
     flex-direction: column;
     gap: calc(var(--spacing) * 4);
   }
+  .media-ba-visualrows {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 6);
+  }
+  .media-ba-visualrow {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 3);
+  }
+  .media-ba-visualrow-label {
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+  }
+  .media-ba-visualrow--accent .media-ba-visualrow-label,
+  .media-ba-visualrow--accent .media-ba-chip {
+    color: var(--color-accent);
+  }
+  .media-ba-visuals {
+    display: grid;
+    grid-template-columns: repeat(var(--visual-cols), minmax(0, 1fr));
+    gap: calc(var(--spacing) * 4);
+  }
+  .media-ba-visualitem {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 2);
+  }
+  .media-ba-visualfig {
+    margin: 0;
+  }
   .media-ba-heads {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -287,6 +325,9 @@
     margin: 0;
   }
   @media (max-width: 767px) {
+    .media-ba-visuals {
+      grid-template-columns: 1fr;
+    }
     .media-ba-pair {
       grid-template-columns: 1fr;
     }
@@ -373,15 +414,17 @@
     display: block;
     width: 100%;
     aspect-ratio: 4 / 3;
-    background: rgb(26 26 26 / 0.04);
-    border: 1px solid var(--color-ink-line);
-    padding: calc(var(--spacing) * 2);
   }
   .thumb-frame-img,
   .brief-frame-img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+  .thumb-frame-img,
+  .brief-frame-img--screen {
+    border-radius: var(--radius-media);
+    box-shadow: var(--shadow-media);
   }
 
   /* BriefCard */
@@ -437,13 +480,10 @@
 
   /* 홈 강점 시각 자료 (높이 통일, contain) */
   .strength-visual {
-    height: 7rem;
+    height: calc(var(--spacing) * 24);
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: rgb(26 26 26 / 0.04);
-    border: 1px solid var(--color-ink-line);
-    padding: calc(var(--spacing) * 3);
+    justify-content: flex-start;
   }
   .strength-visual-img {
     max-height: 100%;
@@ -453,12 +493,22 @@
   .strength-logos {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: calc(var(--spacing) * 4);
   }
   .strength-logo {
-    max-height: 1.75rem;
+    height: calc(var(--spacing) * 6);
+    width: auto;
+    object-fit: contain;
+  }
+  .strength-langs {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 2);
+  }
+  .strength-lang {
+    height: calc(var(--spacing) * 18);
     width: auto;
     object-fit: contain;
   }

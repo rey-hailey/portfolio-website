@@ -22,6 +22,9 @@ export async function getStaticPaths() {
 const { work, prev, next } = Astro.props;
 const { Content, headings } = await render(work);
 const d = work.data;
+const thumbnailWidths = [600, 1200, d.thumbnail.width]
+  .filter((width) => width <= d.thumbnail.width)
+  .filter((width, index, widths) => widths.indexOf(width) === index);
 const toc = headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text }));
 const url = (p: string) => new URL(p, Astro.site).href;
 const jsonLd = [
@@ -41,7 +44,7 @@ const jsonLd = [
       </header>
       <WorkSummary company={d.company} isAnonymized={d.isAnonymized} role={d.role} period={d.period} team={d.team} metrics={d.metrics} />
       <div class="thumb-frame">
-        <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[600, 1200]} sizes="(min-width: 1200px) 1024px, 100vw" class="thumb-frame-img" transition:name={`work-thumb-${work.id}`} />
+        <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={thumbnailWidths} sizes="(min-width:1200px) 760px, calc(100vw - 3rem)" class="thumb-frame-img" transition:name={`work-thumb-${work.id}`} />
       </div>
       <div class="mdx-body max-w-prose">
         <Content />

@@ -29,6 +29,8 @@
 
   --spacing: 4px;                /* Tailwind v4 간격 배수 기준 -> 1=4px, 2=8px, 3=12px, 4=16px, 6=24px, 8=32px, 12=48px, 16=64px, 24=96px, 32=128px */
   --container-prose: 680px;      /* 본문 최대 폭 (max-w-prose) */
+  --radius-media: 8px;
+  --shadow-media: 0 1px 3px rgb(26 26 26 / 0.08);
   --container-page: 1200px;      /* 페이지 최대 폭 (max-w-page) */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }

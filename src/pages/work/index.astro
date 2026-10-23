@@ -32,11 +32,11 @@ import sdLaunch5 from '../../assets/images/work/briefs/story-dive/launch-5.webp'
 const works = sortByOrder(await getPublished('work'));
 const byId = Object.fromEntries(workBriefs.map((b) => [b.id, b]));
 const hhLangs = [
-  { src: hhEn, alt: 'Run Coco, Run! 10–11쪽 · 영어 원문' },
-  { src: hhKo, alt: 'Run Coco, Run! 10–11쪽 · 한국어' },
-  { src: hhZh, alt: 'Run Coco, Run! 10–11쪽 · 중국어' },
-  { src: hhRu, alt: 'Run Coco, Run! 10–11쪽 · 러시아어' },
-  { src: hhVi, alt: 'Run Coco, Run! 10–11쪽 · 베트남어' },
+  { src: hhEn, alt: 'Run Coco, Run! 10–11쪽 · 영어 원문', plain: true },
+  { src: hhKo, alt: 'Run Coco, Run! 10–11쪽 · 한국어', plain: true },
+  { src: hhZh, alt: 'Run Coco, Run! 10–11쪽 · 중국어', plain: true },
+  { src: hhRu, alt: 'Run Coco, Run! 10–11쪽 · 러시아어', plain: true },
+  { src: hhVi, alt: 'Run Coco, Run! 10–11쪽 · 베트남어', plain: true },
 ];
 const sdPairs = [
   { label: '1 시작', before: { src: sdMvp1, alt: 'MVP 1 시작 화면' }, after: { src: sdLaunch1, alt: '출시 1 시작 화면' } },
@@ -54,7 +54,7 @@ const sdPairs = [
         <li data-testid="work-card">
           <a href={`/work/${work.id}`} class="group flex flex-col gap-4 text-ink no-underline">
             <div class="thumb-frame overflow-hidden">
-              <Image src={work.data.thumbnail} alt={work.data.thumbnailAlt} widths={[400, 800]} sizes="(min-width: 768px) 50vw, 100vw" class="thumb-frame-img transition-transform duration-500 group-hover:scale-[1.04] group-focus-within:scale-[1.04]" transition:name={`work-thumb-${work.id}`} />
+              <Image src={work.data.thumbnail} alt={work.data.thumbnailAlt} widths={[544, 1088, work.data.thumbnail.width]} sizes="(min-width:768px) 544px, calc(100vw - 2rem)" class="thumb-frame-img transition-transform duration-500 group-hover:scale-[1.04] group-focus-within:scale-[1.04]" transition:name={`work-thumb-${work.id}`} />
             </div>
             <h2 class="flex items-center gap-2 text-h3 font-semibold break-keep transition-colors group-hover:text-accent group-focus-within:text-accent" transition:name={`work-title-${work.id}`}>{work.data.title} <span class="text-accent opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100" aria-hidden="true">→</span></h2>
             <p class="text-ink-muted break-keep">{work.data.summary}</p>
@@ -76,7 +76,7 @@ const sdPairs = [
   <section aria-labelledby="work-briefs" class="mt-24 border-t border-ink-line pt-16">
     <h2 id="work-briefs" class="text-h2 font-semibold break-keep">추가 사례</h2>
     <div class="mt-12 grid gap-8 md:grid-cols-2">
-      <BriefCard {...byId['brc']} image={brcSettings} imageAlt="개선. 나뉘어 있던 설정을 한 화면으로: 세 화면의 과제 배정 흐름을 한 모달로">
+      <BriefCard {...byId['brc']} image={brcSettings} imageAlt="As-is 세 화면 과제 배정 흐름과 To-be 한 화면 모달 비교" imageCaption="개선. 나뉘어 있던 설정을 한 화면으로" imagePlain>
         <div>
           <p class="brief-extra-label">그 밖에 · 원장·선생님이 매일 쓰는 화면도 함께</p>
           <dl class="brief-table">
@@ -87,11 +87,11 @@ const sdPairs = [
         </div>
       </BriefCard>
 
-      <BriefCard {...byId['olb']} image={olbMiddleware} imageAlt="OLB Middleware As-is / To-be 구조도 (보안 상세는 가림 처리)" />
+      <BriefCard {...byId['olb']} image={olbMiddleware} imageAlt="OLB Middleware As-is / To-be 구조도 (보안 상세는 가림 처리)" imagePlain />
 
       <BriefCard {...byId['harmony-hills']} image={hhTablet} imageAlt="태블릿에서 펼친 Harmony Hills 도서 화면">
         <FigureGroup cols={5} items={hhLangs} caption="Run Coco, Run! 10–11쪽 · 영어 원문과 중·러·베 3개 언어" />
-        <Figure src={hhTable} alt="제작 흐름. 단계마다 AI 자동화와 사람 검수를 나눴습니다 (36권 × 3개 언어 · 2주 내 납품)" caption="제작 흐름 · 단계별 AI 자동화와 사람 검수" />
+        <Figure src={hhTable} alt="제작 흐름. 단계마다 AI 자동화와 사람 검수를 나눴습니다 (36권 × 3개 언어 · 2주 내 납품)" caption="제작 흐름 · 단계별 AI 자동화와 사람 검수" plain />
       </BriefCard>
 
       <BriefCard {...byId['story-dive']} image={sdLaunch3} imageAlt="출시 3 LAURA 대화 화면">

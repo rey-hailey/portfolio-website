@@ -13,7 +13,10 @@ interface Props {
   caption?: string | undefined;
 }
 const { steps, caption } = Astro.props;
-const widthsFor = (w: number) => [480, 960].filter((x) => x <= w).concat(w).filter((x, i, a) => a.indexOf(x) === i);
+const widthsFor = (w: number) =>
+  [620, 1240, w]
+    .filter((x) => x <= w)
+    .filter((x, i, a) => a.indexOf(x) === i);
 ---
 
 <div class="media-steps not-prose">
@@ -26,7 +29,7 @@ const widthsFor = (w: number) => [480, 960].filter((x) => x <= w).concat(w).filt
             <p class="media-step-label break-keep">{s.label}</p>
             <figure class="media-figure" data-figure>
               <button type="button" class="media-trigger" aria-label={`${s.alt} — 크게 보기`}>
-                <Image src={s.src} alt={s.alt} widths={widthsFor(s.src.width)} sizes="(min-width:1024px) 760px, 100vw" class="media-img" loading="lazy" />
+                <Image src={s.src} alt={s.alt} widths={widthsFor(s.src.width)} sizes="(min-width:1024px) 620px, calc(100vw - 5rem)" class="media-img" loading="lazy" />
               </button>
               <dialog class="media-lightbox" aria-label={s.alt}>
                 <Image src={s.src} alt={s.alt} widths={[Math.min(s.src.width, 1600)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />

@@ -12,15 +12,24 @@ interface Pair {
   before: { src: ImageMetadata; alt: string };
   after: { src: ImageMetadata; alt: string };
 }
+interface VisualRow {
+  label: string;
+  items: { src: ImageMetadata; alt: string; chip: string }[];
+  accent?: boolean;
+}
 interface Props {
   before?: Flow | undefined;
   after?: Flow | undefined;
   pairs?: Pair[] | undefined;
+  visualRows?: VisualRow[] | undefined;
   headers?: [string, string] | undefined;
   caption?: string | undefined;
 }
-const { before, after, pairs, headers, caption } = Astro.props;
-const widthsFor = (w: number) => [320, 640].filter((x) => x <= w).concat(w).filter((x, i, a) => a.indexOf(x) === i);
+const { before, after, pairs, visualRows, headers, caption } = Astro.props;
+const widthsFor = (w: number, slot = 320) =>
+  [slot, slot * 2, w]
+    .filter((x) => x <= w)
+    .filter((x, i, a) => a.indexOf(x) === i);
 ---
 
 <div class="media-ba not-prose">
@@ -68,7 +77,7 @@ const widthsFor = (w: number) => [320, 640].filter((x) => x <= w).concat(w).filt
                 )}
                 <figure class="media-figure media-ba-pairimg" data-figure>
                   <button type="button" class="media-trigger" aria-label={`${img.alt} — 크게 보기`}>
-                    <Image src={img.src} alt={img.alt} widths={widthsFor(img.src.width)} sizes="(min-width:1024px) 300px, 42vw" class="media-img" loading="lazy" />
+                    <Image src={img.src} alt={img.alt} widths={widthsFor(img.src.width, 300)} sizes="(min-width:1024px) 300px, calc(100vw - 4rem)" class="media-img" loading="lazy" />
                   </button>
                   <dialog class="media-lightbox" aria-label={img.alt}>
                     <Image src={img.src} alt={img.alt} widths={[Math.min(img.src.width, 1200)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
@@ -78,6 +87,42 @@ const widthsFor = (w: number) => [320, 640].filter((x) => x <= w).concat(w).filt
             ))}
           </div>
         ))}
+      </div>
+    )
+  }
+  {
+    visualRows && (
+      <div class="media-ba-visualrows">
+        {visualRows.map((row) => {
+          const slot = Math.floor((680 - (row.items.length - 1) * 16) / row.items.length);
+          return (
+            <section class:list={['media-ba-visualrow', row.accent && 'media-ba-visualrow--accent']}>
+              <p class="media-ba-visualrow-label">{row.label}</p>
+              <div class="media-ba-visuals" style={`--visual-cols:${row.items.length}`}>
+                {row.items.map((item) => (
+                  <div class="media-ba-visualitem">
+                    <figure class="media-figure media-ba-visualfig" data-figure>
+                      <button type="button" class="media-trigger" aria-label={`${item.alt} — 크게 보기`}>
+                        <Image
+                          src={item.src}
+                          alt={item.alt}
+                          widths={widthsFor(item.src.width, slot)}
+                          sizes={`(min-width:1024px) ${slot}px, calc(100vw - 3rem)`}
+                          class="media-img"
+                          loading="lazy"
+                        />
+                      </button>
+                      <dialog class="media-lightbox" aria-label={item.alt}>
+                        <Image src={item.src} alt={item.alt} widths={[item.src.width]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
+                      </dialog>
+                    </figure>
+                    <p class="media-ba-chip break-keep">{item.chip}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })}
       </div>
     )
   }

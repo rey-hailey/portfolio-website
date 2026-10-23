@@ -11,17 +11,21 @@ interface Props {
   maxWidth?: number | undefined;
   sizes?: string | undefined;
   class?: string | undefined;
+  plain?: boolean | undefined;
 }
-const { src, alt, caption, maxWidth, sizes = '(min-width: 1024px) 860px, 100vw', class: cls = '' } = Astro.props;
+const { src, alt, caption, maxWidth, sizes, class: cls = '', plain = false } = Astro.props;
 const isSvg = src.format === 'svg';
-const widths = [480, 960, 1440].filter((w) => w <= src.width);
-if (widths.length === 0 || widths[widths.length - 1] < src.width) widths.push(src.width);
-const style = maxWidth ? `max-width:${maxWidth}px` : undefined;
+const displayWidth = Math.min(maxWidth ?? 680, src.width);
+const widths = [displayWidth, displayWidth * 2, src.width]
+  .filter((w) => w <= src.width)
+  .filter((w, i, a) => a.indexOf(w) === i);
+const responsiveSizes = sizes ?? `(min-width:1024px) ${displayWidth}px, calc(100vw - 3rem)`;
+const style = `max-width:${displayWidth}px`;
 ---
 
-<figure class:list={['media-figure not-prose', cls]} data-figure style={style}>
+<figure class:list={['media-figure not-prose', plain && 'media-figure--plain', cls]} data-figure style={style}>
   <button type="button" class="media-trigger" aria-label={`${alt} — 크게 보기`}>
-    {isSvg ? <img src={src.src} alt={alt} class="media-img" loading="lazy" /> : <Image src={src} alt={alt} widths={widths} sizes={sizes} class="media-img" loading="lazy" />}
+    {isSvg ? <img src={src.src} alt={alt} class="media-img" loading="lazy" /> : <Image src={src} alt={alt} widths={widths} sizes={responsiveSizes} class="media-img" loading="lazy" />}
   </button>
   {caption && <figcaption class="media-caption">{caption}</figcaption>}
   <dialog class="media-lightbox" aria-label={alt}>

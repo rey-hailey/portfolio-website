@@ -10,17 +10,29 @@ interface Props {
   metricLabel: string;
   image: ImageMetadata;
   imageAlt: string;
+  imageCaption?: string | undefined;
+  imagePlain?: boolean | undefined;
   sections: { label: string; body: string }[];
 }
-const { title, period, metricValue, metricLabel, image, imageAlt, sections } = Astro.props;
-const widths = [400, 800].filter((x) => x <= image.width).concat(image.width).filter((x, i, a) => a.indexOf(x) === i);
+const { title, period, metricValue, metricLabel, image, imageAlt, imageCaption, imagePlain = false, sections } = Astro.props;
+const widths = [510, 1020, image.width]
+  .filter((x) => x <= image.width)
+  .filter((x, i, a) => a.indexOf(x) === i);
 ---
 
 <article class="brief-card">
-  <figure class="brief-media media-figure" data-figure>
+  <figure class:list={['brief-media media-figure', imagePlain && 'media-figure--plain']} data-figure>
     <button type="button" class="media-trigger brief-frame" aria-label={`${imageAlt} — 크게 보기`}>
-      <Image src={image} alt={imageAlt} widths={widths} sizes="(min-width:768px) 440px, 100vw" class="brief-frame-img" loading="lazy" />
+      <Image
+        src={image}
+        alt={imageAlt}
+        widths={widths}
+        sizes="(min-width:768px) 510px, calc(100vw - 4rem)"
+        class:list={['brief-frame-img', !imagePlain && 'brief-frame-img--screen']}
+        loading="lazy"
+      />
     </button>
+    {imageCaption && <figcaption class="media-caption">{imageCaption}</figcaption>}
     <dialog class="media-lightbox" aria-label={imageAlt}>
       <Image src={image} alt={imageAlt} widths={[Math.min(image.width, 1600)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
     </dialog>

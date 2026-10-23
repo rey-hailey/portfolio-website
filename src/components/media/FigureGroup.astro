@@ -6,6 +6,7 @@ import type { ImageMetadata } from 'astro';
 interface Item {
   src: ImageMetadata;
   alt: string;
+  plain?: boolean | undefined;
 }
 interface Props {
   items: Item[];
@@ -15,16 +16,20 @@ interface Props {
 }
 const { items, caption, cols, class: cls = '' } = Astro.props;
 const n = Math.min(cols ?? items.length, 5);
-const widthsFor = (w: number) => [240, 480, 880].filter((x) => x <= w).concat(w).filter((x, i, a) => a.indexOf(x) === i);
+const slot = Math.floor((680 - (n - 1) * 16) / n);
+const widthsFor = (w: number) =>
+  [slot, slot * 2, w]
+    .filter((x) => x <= w)
+    .filter((x, i, a) => a.indexOf(x) === i);
 ---
 
 <div class:list={['media-groupwrap not-prose', cls]}>
   <div class="media-group" style={`--cols:${n}`}>
     {
       items.map((it) => (
-        <figure class="media-figure media-group-item" data-figure>
+        <figure class:list={['media-figure media-group-item', it.plain && 'media-figure--plain']} data-figure>
           <button type="button" class="media-trigger" aria-label={`${it.alt} — 크게 보기`}>
-            <Image src={it.src} alt={it.alt} widths={widthsFor(it.src.width)} sizes={`(min-width:1024px) ${Math.round(880 / n)}px, 100vw`} class="media-img" loading="lazy" />
+            <Image src={it.src} alt={it.alt} widths={widthsFor(it.src.width)} sizes={`(min-width:1024px) ${slot}px, calc(100vw - 3rem)`} class="media-img" loading="lazy" />
           </button>
           <dialog class="media-lightbox" aria-label={it.alt}>
             <Image src={it.src} alt={it.alt} widths={[Math.min(it.src.width, 1600)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
