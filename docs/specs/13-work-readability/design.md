@@ -1,6 +1,6 @@
 # 13-work-readability — Design
 
-> 상태: **Draft** (2026-10-23)
+> 상태: **Approved** (2026-10-23, A안)
 > 요구사항: `./requirements.md`
 > 관련 ADR: 없음 (새 라이브러리·스키마 변경 없음. 스키마 변경이 필요해지면 ADR을 먼저 올린다)
 
@@ -17,10 +17,11 @@
 /work/[slug]
 └─ BaseLayout
    ├─ header (H1, summary)                       — 기존
-   ├─ WorkSummary (<dl> 역할·기간·metrics)        — 기존 (WRK-R03)
    ├─ CaseAtAGlance  ← 신규 (WRR-R01·R02)
-   │   ├─ 문제 / 한 일 / 결과 3칸 (<section aria-label="요약">, <h2> 아님 → WRK-R02 H2 검사 무관)
-   │   └─ 대표 그림 1장 (결과 그림 있으면 결과, 없으면 썸네일)
+   │   ├─ 문제 / 한 일 / 결과 3칸 (<section aria-label="한눈에 보기">, <dl>, 제목 요소 없음 → WRK-R02 H2 검사 무관)
+   │   └─ 대표 결과 그림 1장 (이미지 또는 BarCompare 데이터)
+   ├─ WorkSummary (<dl> 역할·기간·metrics)        — 기존 (WRK-R03)
+   ├─ 썸네일                                       — 기존 (목록→상세 View Transition 모핑 유지)
    └─ .mdx-body (6단계 본문)
        ├─ Figure        + `wide` prop (WRR-R03), caption 필수화 (WRR-R05)
        ├─ FigureGroup   + `caption` prop (WRR-R05), `wide`
@@ -31,9 +32,10 @@
 
 ## 3. 데이터 흐름
 
-- 요약 3칸 원천: MDX 본문 상단에 `<CaseAtAGlance problem="…" action="…" result="…" />`를 둔다(스키마 변경 없음). 슬러그 페이지가 아니라 MDX 안에 두는 이유: work 스키마가 strict라 frontmatter 필드 추가는 02-content-model 변경이 된다.
-  - 대안: frontmatter `glance` 필드 추가 → Keystatic 편집 가능하지만 02 스펙·ADR 0002 변경 필요. 사이트 주인 확인 후 결정(requirements 5절 2).
-- 인용 검사(WRR-R01 AC2): 빌드 후 Vitest에서 MDX 원문을 읽어 `CaseAtAGlance` 속성 문자열이 본문 또는 frontmatter에 포함되는지 확인. `[TODO: 문구]`는 통과.
+- 요약 3칸 원천: `src/data/work-glance.ts`(zod 자체검증, slug 키). `[slug].astro`가 slug로 찾아 헤더 바로 뒤에 렌더한다. 12-case-visuals의 `work-briefs.ts`와 같은 방식이며, work 스키마(strict)·Keystatic은 바꾸지 않는다.
+  - MDX 안에 컴포넌트로 두는 안은 버렸다: 본문(`.mdx-body`)이 썸네일 뒤에 렌더되어 첫 화면에 들어오지 않는다.
+  - frontmatter `glance` 필드 안은 02-content-model·ADR 0002 변경이 필요해 버렸다.
+- 인용 검사(WRR-R01 AC2): Vitest가 `src/content/work/<slug>.mdx` 원문을 읽어 glance 문자열이 그대로 포함되는지 확인. `[TODO: 문구]`는 통과.
 - 캡션 검사(WRR-R05): `dist/work/*/index.html`에서 `.mdx-body figure`마다 `figcaption` 또는 그룹 제목 존재를 검사.
 
 ## 4. 레이아웃 — 넓은 그림 (WRR-R03)
@@ -41,6 +43,8 @@
 - 현재 상세 그리드: `max-w-page(1200) = 본문 열 minmax(0,1fr) + 목차 14rem`. 본문 텍스트만 `--container-prose(680)`로 제한되어 1440에서 본문 열 오른쪽이 비어 있다.
 - `wide` 그림은 본문 열 전체 폭(약 960px)까지 쓴다: `.media-figure--wide { max-width: none; width: 100%; }` + `.mdx-body`의 prose 제한을 텍스트 요소(p, ul, ol, h2, h3)에만 걸고 figure에는 걸지 않는다.
 - 목차 열까지 덮는 풀블리드는 쓰지 않는다 — 목차 sticky와 겹치고, 1200 컨테이너 밖은 토큰에 없는 값이 된다.
+- 묶음 컴포넌트(FigureGroup·BeforeAfter·MemorySteps·BarCompare)는 기본 prose 폭, `wide`일 때만 본문 열 전체.
+- 그룹 캡션이 `<div>` 안의 `<figcaption>`이던 HTML 오류를 함께 고친다: 묶음 바깥 요소를 `<figure>`로 바꾼다(WRR-R05).
 - 반응형 후보: `wide`는 `widths=[960, 1920, 원본]`, `sizes="(min-width:1200px) 960px, calc(100vw - 3rem)"`. 원본이 1920 미만이면 원본 폭까지만(CVS-R14 규칙).
 
 ## 5. Figma 연동 (WRR-R04)
@@ -71,7 +75,7 @@
 
 | Requirement ID | 설계 요소 | 검증 |
 |----------------|-----------|------|
-| WRR-R01 | `CaseAtAGlance.astro`, 3개 MDX 상단 삽입 | Vitest(인용) + Playwright(첫 화면) |
+| WRR-R01 | `CaseAtAGlance.astro`, `src/data/work-glance.ts`, `[slug].astro` | Vitest(인용) + Playwright(첫 화면) |
 | WRR-R02 | `CaseAtAGlance` 대표 그림 슬롯 | Playwright |
 | WRR-R03 | `Figure`·`FigureGroup`·`BeforeAfter` `wide` prop, `global.css` `.mdx-body` 폭 규칙 | Playwright(가로 스크롤·표시 폭) |
 | WRR-R04 | 부록 A 측정표, Figma export 파이프라인 | 수동 |
