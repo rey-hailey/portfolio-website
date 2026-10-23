@@ -45,8 +45,8 @@
 - 우선순위: P0 · 스토리: US-01 · 해결: V1
 - 요구사항: THE SYSTEM SHALL 본문 그림(`Figure`)의 바깥 상자 폭을 prose(680) 또는 wide(864) 두 가지로만 둔다. 원본이 그보다 작으면 그림은 상자 안에서 **가운데 정렬**되고 상자 폭(캡션 위치·왼쪽 끝)은 유지한다. `maxWidth`는 상자가 아니라 그림의 상한으로만 쓴다.
 - 수용 기준:
-  - [ ] AC1: 3개 상세에서 `.media-figure` 바깥 상자 폭의 종류가 1440 기준 {680, 864} 두 값뿐이다(Playwright 실측).
-  - [ ] AC2: 원본보다 크게 늘리지 않는다(CVS-R14 유지).
+  - [x] AC1: 3개 상세에서 `.media-figure` 바깥 상자 폭의 종류가 1440 기준 {680, 864} 두 값뿐이다(Playwright 실측).
+  - [x] AC2: 원본보다 크게 늘리지 않는다(CVS-R14 유지).
 - 검증: Playwright
 
 ### VIS-R02: 묶음 칸 폭은 N등분만, 높이는 틀로 통일
@@ -54,8 +54,8 @@
 - 우선순위: P0 · 스토리: US-01 · 해결: V2·V4
 - 요구사항: THE SYSTEM SHALL `FigureGroup` 항목을 상자 폭의 N등분(간격 16px)으로 배치하고, WHERE `frame`(예: `4/3`, `3/4`)이 지정되면 모든 항목을 같은 비율 틀 안에 `contain`으로 넣어 높이를 맞춘다. 세로·가로가 섞인 묶음(LAURA 리포트, LOOL 배경)은 `frame`을 지정한다.
 - 수용 기준:
-  - [ ] AC1: 같은 묶음 안 항목 높이 차가 2px 이내다(Playwright).
-  - [ ] AC2: 틀 안 그림이 잘리지 않는다(`object-fit: contain`).
+  - [x] AC1: 같은 묶음 안 항목 높이 차가 2px 이내다(Playwright).
+  - [x] AC2: 틀 안 그림이 잘리지 않는다(`object-fit: contain`).
 - 검증: Playwright + 수동 확인
 
 ### VIS-R03: 개선 후 강조
@@ -63,9 +63,9 @@
 - 우선순위: P0 · 스토리: US-02 · 해결: V3
 - 요구사항: THE SYSTEM SHALL `BeforeAfter`의 `visualRows`에서 **개선 후 행을 상자 전체 폭**으로, **개선 전 행은 그 60% 폭**에 채도를 낮춰(`filter: grayscale`) 보여 주고, 두 행 사이에 아래 화살표와 "개선 후" 라벨을 둔다. 개선 후 행은 accent 테두리(현행 `--accent`)를 유지한다.
 - 수용 기준:
-  - [ ] AC1: 개선 후 한 장의 표시 폭 > 개선 전 한 장의 표시 폭(Playwright, 1440·390 모두).
-  - [ ] AC2: 개선 전·후 라벨 문구는 현행 원문 그대로.
-  - [ ] AC3: 새 색 값 없음(grayscale은 색이 아니라 필터).
+  - [x] AC1: 개선 후 한 장의 표시 폭 > 개선 전 한 장의 표시 폭(Playwright, 1440·390 모두) — 1440: 266 > 251, 390: 324 > 171.
+  - [x] AC2: 개선 전·후 라벨 문구는 현행 원문 그대로.
+  - [x] AC3: 새 색 값 없음(grayscale은 색이 아니라 필터).
 - 검증: Playwright
 
 ### VIS-R04: 화면 스트립(carousel)
@@ -74,11 +74,11 @@
 - 요구사항: THE SYSTEM SHALL 차례가 있는 화면 3장 이상을 `MediaStrip` 컴포넌트로 보여 준다: CSS `scroll-snap` 가로 스트립, 데스크톱은 한 장 폭 = (상자 폭 − 간격)/2 (2장 + 다음 장 일부), 모바일은 한 장 폭 = 상자 폭의 86%(다음 장 일부가 보여 넘길 수 있음을 알림). 각 장 위에 번호·라벨, 아래에 자막(있을 때). 이전/다음 버튼과 "n / N" 표시는 바닐라 JS(gzip 1KB 이내)로, JS 없이도 손가락·휠·키보드(Tab → 장 포커스 → 화살표)로 넘길 수 있다. `prefers-reduced-motion: reduce`면 `scroll-behavior: auto`.
 - 적용 대상: Meet the Character 5장(`ScreenFlow` 대체), ORC 레슨 3단계 4장, 관계형 AI 3단계(`MemorySteps` 대체 — 말풍선 그림을 한 장 폭으로 키움), About LAURA 활동 10장.
 - 수용 기준:
-  - [ ] AC1: 1440에서 한 장 폭 ≥ 400px, 390에서 ≥ 300px(현행 277·109).
-  - [ ] AC2: 버튼으로 끝까지 넘기면 "N / N"이 되고, 마지막에서 다음 버튼은 `disabled`다(Playwright).
-  - [ ] AC3: 각 장은 라이트박스로 열린다(기존 `[data-figure]` 재사용).
-  - [ ] AC4: JS(gzip) 합계 30KB 이하(FND-R21), 가로 스크롤 없음(FND-R10 — 스트립은 `overflow-x: auto` 안에서만 스크롤).
-  - [ ] AC5: 모바일 상세 전체 높이가 현행(LAURA 11,362px)보다 줄어든다.
+  - [x] AC1: 1440에서 한 장 폭 ≥ 400px, 390에서 ≥ 300px(현행 277·109) — 실측 424 · 308.
+  - [x] AC2: 버튼으로 끝까지 넘기면 "N / N"이 되고, 마지막에서 다음 버튼은 `disabled`다(Playwright).
+  - [x] AC3: 각 장은 라이트박스로 열린다(기존 `[data-figure]` 재사용).
+  - [x] AC4: JS(gzip) 합계 30KB 이하(FND-R21) — 14.3KB(+0.3KB), 가로 스크롤 없음(FND-R10 — 스트립은 `overflow-x: auto` 안에서만 스크롤).
+  - [x] AC5: 모바일 상세 전체 높이가 현행(LAURA 11,362px)보다 줄어든다 — 10,261px. ORC 6,283 · LOOL 6,560.
 - 검증: Playwright + 수동 확인
 
 ### VIS-R05: 글-그림 짝 그림 폭 통일
@@ -86,7 +86,7 @@
 - 우선순위: P1 · 스토리: US-01 · 해결: V2
 - 요구사항: THE SYSTEM SHALL `MediaPair`의 그림 칸을 상자 폭의 1/2(wide 424)로 두어 `FigureGroup` 2장 칸과 같은 폭이 되게 한다(현행 416).
 - 수용 기준:
-  - [ ] AC1: 1440에서 MediaPair 그림 폭 = FigureGroup(wide, 2장) 칸 폭.
+  - [x] AC1: 1440에서 MediaPair 그림 폭 = FigureGroup(wide, 2장) 칸 폭.
 - 검증: Playwright
 
 ### VIS-R06: 회귀
