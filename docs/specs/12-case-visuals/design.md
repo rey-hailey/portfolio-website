@@ -94,3 +94,47 @@ const briefSchema = z.object({
 | CVS-R09 | `about.astro`(프로필), `about/index.mdx`(그리드·OUP) | About 스크린샷 |
 | CVS-R10 | `src/content/lab/acts-tts-studio.mdx` | 빌드(드래프트 제외) |
 | CVS-R11 | `pnpm build`·`pnpm test`, Lighthouse | 빌드/테스트 출력 |
+
+## 9. 후속 수정 설계 (2026-10-23)
+
+### 레이어 도식 캡처
+
+- Playwright viewport 1920×1080, `deviceScaleFactor: 2`.
+- 덱의 31개 절대배치 slide 중 대상 slide만 `opacity: 1`, 나머지는 0으로 전환한다.
+- HTML·SVG가 겹친 도식은 `page.screenshot({ clip })`으로 합성 결과를 캡처한다.
+- 캡처 PNG는 리사이즈 없이 `cwebp -q 90`으로 변환한다.
+- 원본 이미지가 이미 고해상 webp인 Sentence Practice 5장과 다국어 화면은 base64 원본 바이트를 직접 디코딩한다.
+
+### Figure 표시 변형
+
+```text
+media-figure (기본: 앱 화면)
+└─ media-img: radius-media + shadow-media
+
+media-figure--plain (도식·그래프·포스터)
+└─ media-img: radius 0 + shadow none
+```
+
+- `Figure`는 `plain`, `FigureGroup` 각 item은 `plain`을 받는다.
+- 공통 `border`·회색 surface는 없다.
+- `.thumb-frame`·`.brief-frame`은 4:3 레이아웃만 담당하며 border/background/padding을 갖지 않는다.
+
+### BeforeAfter 이미지 행
+
+- `visualRows` 모드: `{ label, accent, items[] }`.
+- 각 item은 `{ src, alt, chip }`.
+- 데스크톱 `items.length`열(2 / 3), 모바일 1열.
+- 원본 단계 라벨은 이미지 아래에 둔다.
+
+### Retina 후보
+
+- 본문 실표시 최대 폭은 `--container-prose: 680px`.
+- 후보 폭은 `displayWidth`, `displayWidth × 2`, `source width`에서 원본 이하 중복 제거.
+- FigureGroup·BeforeAfter·MemorySteps는 실제 열 폭을 계산해 1×/2× 후보와 `sizes`를 맞춘다.
+- 검증은 DPR 보정된 DOM `naturalWidth`가 아니라 `fetch(currentSrc)` → `createImageBitmap(blob).width` 실제 리소스 픽셀로 한다.
+- 벡터 SVG는 실제 픽셀 비율 계산 대상에서 제외(해상도 독립).
+
+### 증거
+
+- 스크린샷: `_private/screenshots/12-case-visuals-fix/{page}-{375|1440}.png`
+- 측정: `_private/screenshots/12-case-visuals-fix/measurements.json`
