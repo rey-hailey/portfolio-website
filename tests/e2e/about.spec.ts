@@ -42,8 +42,11 @@ test('헤더 About에 aria-current (ABT-R01 AC2)', async ({ page }) => {
   await expect(page.locator('header a[href="/about"][aria-current="page"]').first()).toBeAttached();
 });
 
-test('사진이 없으면 img 없음 (ABT-R05)', async ({ page }) => {
-  await expect(page.locator('main img')).toHaveCount(0);
+test('About 이미지는 프로필·시각 자료가 있고 모두 alt를 가진다 (CVS-R09, ABT-R05 대체)', async ({ page }) => {
+  const imgs = page.locator('main img');
+  expect(await imgs.count()).toBeGreaterThan(0);
+  const alts = await imgs.evaluateAll((els) => els.map((el) => (el as HTMLImageElement).getAttribute('alt')));
+  for (const alt of alts) expect((alt ?? '').trim().length).toBeGreaterThan(0);
 });
 
 test('제목 수준이 건너뛰지 않는다 (ABT-R07 AC2)', async ({ page }) => {
