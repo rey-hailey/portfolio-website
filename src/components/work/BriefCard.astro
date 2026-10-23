@@ -1,5 +1,6 @@
 ---
 // 12-case-visuals: Work 목록 하단 '추가 사례' 카드. 이미지 + 제목 + 기간 + 핵심 숫자 + <details> 자세히 보기(slot).
+// 13-work-readability (WRR-R07): 카드 크기에서 읽히지 않는 도식은 썸네일로 쓰지 않는다 → image 선택형.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
@@ -8,35 +9,39 @@ interface Props {
   period: string;
   metricValue: string;
   metricLabel: string;
-  image: ImageMetadata;
-  imageAlt: string;
+  image?: ImageMetadata | undefined;
+  imageAlt?: string | undefined;
   imageCaption?: string | undefined;
   imagePlain?: boolean | undefined;
   sections: { label: string; body: string }[];
 }
 const { title, period, metricValue, metricLabel, image, imageAlt, imageCaption, imagePlain = false, sections } = Astro.props;
-const widths = [510, 1020, image.width]
-  .filter((x) => x <= image.width)
-  .filter((x, i, a) => a.indexOf(x) === i);
+const widths = image
+  ? [510, 1020, image.width].filter((x) => x <= image.width).filter((x, i, a) => a.indexOf(x) === i)
+  : [];
 ---
 
 <article class="brief-card">
-  <figure class:list={['brief-media media-figure', imagePlain && 'media-figure--plain']} data-figure>
-    <button type="button" class="media-trigger brief-frame" aria-label={`${imageAlt} — 크게 보기`}>
-      <Image
-        src={image}
-        alt={imageAlt}
-        widths={widths}
-        sizes="(min-width:768px) 510px, calc(100vw - 4rem)"
-        class:list={['brief-frame-img', !imagePlain && 'brief-frame-img--screen']}
-        loading="lazy"
-      />
-    </button>
-    {imageCaption && <figcaption class="media-caption">{imageCaption}</figcaption>}
-    <dialog class="media-lightbox" aria-label={imageAlt}>
-      <Image src={image} alt={imageAlt} widths={[Math.min(image.width, 1600)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
-    </dialog>
-  </figure>
+  {
+    image && imageAlt && (
+      <figure class:list={['brief-media media-figure', imagePlain && 'media-figure--plain']} data-figure>
+        <button type="button" class="media-trigger brief-frame" aria-label={`${imageAlt} — 크게 보기`}>
+          <Image
+            src={image}
+            alt={imageAlt}
+            widths={widths}
+            sizes="(min-width:768px) 510px, calc(100vw - 4rem)"
+            class:list={['brief-frame-img', !imagePlain && 'brief-frame-img--screen']}
+            loading="lazy"
+          />
+        </button>
+        {imageCaption && <figcaption class="media-caption">{imageCaption}</figcaption>}
+        <dialog class="media-lightbox" aria-label={imageAlt}>
+          <Image src={image} alt={imageAlt} widths={[Math.min(image.width, 1600)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
+        </dialog>
+      </figure>
+    )
+  }
   <div class="brief-body">
     <h3 class="brief-title break-keep">{title}</h3>
     <p class="brief-period">{period}</p>
