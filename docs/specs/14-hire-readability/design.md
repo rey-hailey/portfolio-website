@@ -1,6 +1,6 @@
 # 14-hire-readability — Design
 
-> 상태: Draft · 요구사항: `./requirements.md`
+> 상태: Approved · 요구사항: `./requirements.md`
 
 ## 1. 변경 파일
 

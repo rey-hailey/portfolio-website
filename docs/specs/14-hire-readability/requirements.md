@@ -1,6 +1,6 @@
 # 14-hire-readability — Requirements
 
-> 상태: **Draft** (사이트 주인 승인 대기)
+> 상태: **Approved** (2026-10-23, 사이트 주인 승인 — R04 제안 A, R06 "25배", 4절 후보 문구 그대로 반영)
 > 상위 문서: `docs/PRD.md` 2 G1·G2, 3.2 S1·S2 · 관련: `docs/specs/03-home`, `docs/specs/05-work`, `docs/specs/13-work-readability`
 > 설계: `./design.md` · 실행 계획: `.omo/plans/14-hire-readability.md`(승인 후)
 > ID 접두어: `HIR`
