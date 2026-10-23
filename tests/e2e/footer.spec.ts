@@ -14,7 +14,7 @@ test('푸터: 하단 메뉴, about 연락처, RSS, 저작권 연도, 전화 없�
   const footer = page.locator('footer');
   const nav = footer.getByRole('navigation', { name: '하단 메뉴' });
   const hrefs = await nav.locator('a').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
-  expect(hrefs).toEqual(['/about', '/work', '/lab', '/encyclopedia', '/writing']);
+  expect(hrefs).toEqual(['/about', '/work', '/encyclopedia']);
   await expect(footer.locator('a[href^="mailto:"]')).toHaveAttribute('href', 'mailto:son1616@gmail.com');
   const linkedin = footer.getByRole('link', { name: 'LinkedIn' });
   await expect(linkedin).toHaveAttribute('href', 'https://www.linkedin.com/in/growthreyson');

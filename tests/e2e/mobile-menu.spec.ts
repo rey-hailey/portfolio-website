@@ -77,10 +77,10 @@ test.describe('모바일 메뉴 (JS 켬)', () => {
 test.describe('모바일 메뉴 (JS 끔, FND-R15)', () => {
   test.use({ javaScriptEnabled: false });
 
-  test('메뉴 링크 5개가 보인다', async ({ page }) => {
+  test('메뉴 링크 3개가 보인다', async ({ page }) => {
     await page.goto('/');
     const links = page.getByRole('navigation', { name: '모바일 메뉴' }).locator('ul a');
-    await expect(links).toHaveCount(5);
+    await expect(links).toHaveCount(3);
     for (const link of await links.all()) await expect(link).toBeVisible();
   });
 });

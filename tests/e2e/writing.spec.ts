@@ -8,7 +8,6 @@ test('공개 글이 없으면 빈 상태, RSS 링크 (WRT-R02)', async ({ page }
   await expect(page.getByTestId('writing-empty')).toBeVisible();
   await expect(page.getByTestId('writing-filters')).toHaveCount(0);
   await expect(page.locator('main a[href="/rss.xml"]')).toHaveCount(1);
-  await expect(page.locator('header a[href="/writing"][aria-current="page"]').first()).toBeAttached();
 });
 
 test('/rss.xml: RSS 2.0, 공개 글 0개면 item 없음 (WRT-R04)', async ({ request }) => {

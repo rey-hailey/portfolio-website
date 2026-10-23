@@ -17,9 +17,7 @@ export const site: SiteConfig = {
   nav: [
     { label: 'About', href: '/about' },
     { label: 'Work', href: '/work' },
-    { label: 'Lab', href: '/lab' },
     { label: 'Encyclopedia', href: '/encyclopedia' },
-    { label: 'Writing', href: '/writing' },
   ],
   cta: { label: '이력서 다운로드', href: '/resume.pdf' },
 };

@@ -22,16 +22,16 @@ const person = personLd({ name, email, linkedinUrl, url: new URL('/about', Astro
       <p class="text-h3 break-keep">{headline}</p>
     </section>
 
+    <section aria-labelledby="about-career" class="flex flex-col gap-8">
+      <h2 id="about-career" class="text-h2 font-semibold">경력</h2>
+      <CareerTimeline career={career} />
+    </section>
+
     <section aria-labelledby="about-intro" class="flex flex-col gap-6">
       <h2 id="about-intro" class="text-h2 font-semibold">소개</h2>
       <div class="flex flex-col gap-4 break-keep">
         <Content />
       </div>
-    </section>
-
-    <section aria-labelledby="about-career" class="flex flex-col gap-8">
-      <h2 id="about-career" class="text-h2 font-semibold">경력</h2>
-      <CareerTimeline career={career} />
     </section>
 
     <section aria-labelledby="about-contact" class="flex flex-col gap-6" data-testid="about-contact">

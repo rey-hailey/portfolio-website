@@ -13,8 +13,13 @@ const { strengths } = Astro.props;
       strengths.map((s, i) => (
         <li class="flex flex-col gap-3">
           <span class="font-display text-small text-accent">{String(i + 1).padStart(2, '0')}</span>
-          <h3 class="text-h3 font-semibold break-keep">{s.href ? <a href={s.href} class="text-ink underline-offset-4 hover:underline">{s.title}</a> : s.title}</h3>
+          <h3 class="text-h3 font-semibold break-keep">{s.title}</h3>
           <p class="text-ink-muted break-keep">{s.description}</p>
+          {s.href && (
+            <a href={s.href} class="mt-1 inline-flex items-center gap-1 text-small text-accent underline underline-offset-4">
+              사례 보기 <span aria-hidden="true">↗</span>
+            </a>
+          )}
         </li>
       ))
     }

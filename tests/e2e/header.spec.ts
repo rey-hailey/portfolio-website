@@ -10,7 +10,7 @@ test.describe('데스크톱 헤더', () => {
     const nav = page.getByRole('navigation', { name: '주 메뉴' });
     await expect(nav).toBeVisible();
     const hrefs = await nav.locator('a').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
-    expect(hrefs).toEqual(['/about', '/work', '/lab', '/encyclopedia', '/writing']);
+    expect(hrefs).toEqual(['/about', '/work', '/encyclopedia']);
   });
 
   test('이력서 CTA: /resume.pdf, download, accent 배경 (FND-R11 AC2·AC3)', async ({ page }) => {

@@ -8,7 +8,6 @@ test.beforeEach(async ({ page }) => {
 test('Hero: H1 하나 = 한 줄 정체성, 사이트 이름 (HOME-R01)', async ({ page }) => {
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.locator('h1')).toHaveText('AI 제품을 직접 만들고, 그 제품을 해외 B2B 매출로 키운 5년 차 PM 손병성입니다.');
-  await expect(page.locator('main')).toContainText('손병성 · Rey Son');
   await expect(page.locator('header a[href="/"]')).toHaveText('손병성 · Rey Son');
 });
 
@@ -43,7 +42,7 @@ test('대표 Work 3개가 01·02·03 순서로 링크된다 (HOME-R05, WRK-R06 A
 });
 
 test('강점 근거가 공개 케이스로 링크된다 (HOME-R02, WRK-R06 AC3)', async ({ page }) => {
-  const links = page.locator('section[aria-labelledby="home-strengths"] h3 a');
+  const links = page.locator('section[aria-labelledby="home-strengths"] a[href^="/work/"]');
   await expect(links).toHaveCount(3);
   await expect(links.first()).toHaveAttribute('href', '/work/laura');
 });
@@ -57,13 +56,9 @@ test('일하는 방식 4가지 (HOME-R06)', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 2, name: '이렇게 일합니다' })).toBeVisible();
 });
 
-test('Encyclopedia 바로가기 (HOME-R08)', async ({ page }) => {
-  await expect(page.locator('main a[href="/encyclopedia"]')).toHaveCount(1);
-});
-
 test('마무리 문장과 CTA (HOME-R09)', async ({ page }) => {
   await expect(page.getByTestId('home-closing')).toHaveText('AI를 제품으로, 제품을 매출로.');
-  const resume = page.locator('main a[href="/resume.pdf"]');
+  const resume = page.locator('main a[href="/resume.pdf"]').first();
   expect(await resume.getAttribute('download')).not.toBeNull();
   await expect(page.locator('main a[href="mailto:son1616@gmail.com"]')).toHaveCount(1);
 });

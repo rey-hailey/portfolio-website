@@ -1,0 +1,27 @@
+---
+// HOME: 짧은 경력 요약. 전체 경력·소개는 About에서 본다
+interface Props {
+  career: { company: string; role: string; start: string; end?: string | null }[];
+}
+const { career } = Astro.props;
+const ym = (v: string) => v.replace('-', '.');
+const period = (s: string, e?: string | null) => `${ym(s)} – ${e ? ym(e) : '현재'}`;
+---
+
+<section aria-labelledby="home-career" class="border-t border-ink-line py-16 md:py-32" data-reveal>
+  <h2 id="home-career" class="text-h2 font-semibold break-keep">경력</h2>
+  <ol class="mt-12 flex flex-col">
+    {
+      career.map((c) => (
+        <li class="flex flex-col gap-1 border-t border-ink-line py-6 md:flex-row md:items-baseline md:gap-8">
+          <span class="font-semibold break-keep md:w-64 md:shrink-0">{c.company}</span>
+          <span class="text-ink-muted break-keep md:flex-1">{c.role}</span>
+          <span class="text-small text-ink-muted whitespace-nowrap">{period(c.start, c.end)}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <a href="/about" class="mt-12 inline-flex items-center gap-2 text-accent underline underline-offset-4">
+    전체 경력·소개 보기 <span aria-hidden="true">→</span>
+  </a>
+</section>

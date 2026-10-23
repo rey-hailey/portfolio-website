@@ -16,7 +16,7 @@ const { works } = Astro.props;
             <a href={`/work/${w.slug}`} class="flex flex-col gap-2 py-8 text-ink no-underline md:flex-row md:gap-12">
               <span class="font-display text-h2 text-accent">{String(i + 1).padStart(2, '0')}</span>
               <span class="flex flex-col gap-2">
-                <span class="text-h3 font-semibold break-keep">{w.title}</span>
+                <span class="text-h3 font-semibold break-keep">{w.title} <span class="text-accent" aria-hidden="true">↗</span></span>
                 <span class="text-ink-muted break-keep">{w.summary}</span>
               </span>
             </a>

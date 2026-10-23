@@ -1,29 +1,23 @@
 ---
-// 메인 페이지 (03-home, HOME-R01~R09). 데이터: about·home 단일 문서 + 공개된 work/lab/writing
-import { getEntry, render } from 'astro:content';
+// 메인 페이지 (03-home). 데이터: about·home 단일 문서 + 공개된 work
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CareerSummary from '../components/home/CareerSummary.astro';
 import ClosingCta from '../components/home/ClosingCta.astro';
 import FeaturedWork from '../components/home/FeaturedWork.astro';
 import HomeHero from '../components/home/HomeHero.astro';
-import HomeStory from '../components/home/HomeStory.astro';
-import LabHighlight from '../components/home/LabHighlight.astro';
-import LatestWriting from '../components/home/LatestWriting.astro';
-import MetricCards from '../components/home/MetricCards.astro';
-import ProblemSection from '../components/home/ProblemSection.astro';
 import StrengthList from '../components/home/StrengthList.astro';
 import WorkingStyle from '../components/home/WorkingStyle.astro';
 import { site } from '../config/site';
 import { getPublished } from '../lib/content';
-import { evidenceHref, selectFeaturedWorks, selectLabHighlights, selectLatestWritings } from '../lib/home';
+import { evidenceHref, selectFeaturedWorks } from '../lib/home';
 import { personLd, webSiteLd } from '../lib/seo';
 
 const about = await getEntry('about', 'index');
 const home = await getEntry('home', 'index');
 if (!about || !home) throw new Error('about 또는 home 문서가 없다');
-const { Content: StoryContent } = await render(home);
-const [works, labs, writings] = await Promise.all([getPublished('work'), getPublished('lab'), getPublished('writing')]);
+const works = await getPublished('work');
 const workSlugs = new Set(works.map((w) => w.id));
-const labSlugs = new Set(labs.map((l) => l.id));
 const siteUrl = Astro.site?.href ?? 'http://localhost:4321';
 const jsonLd = [
   webSiteLd({ name: site.name, url: siteUrl }),
@@ -32,23 +26,19 @@ const jsonLd = [
 ---
 
 <BaseLayout title={site.name} description={about.data.headline} jsonLd={jsonLd}>
-  <HomeHero siteName={site.name} headline={about.data.headline} />
+  <HomeHero
+    title="AI Product Manager · Global Project Manager"
+    headline={about.data.headline}
+    subhead={home.data.problem}
+    metrics={home.data.metrics}
+  />
+  <FeaturedWork
+    works={selectFeaturedWorks(works).map((w) => ({ slug: w.id, title: w.data.title, summary: w.data.summary }))}
+  />
   <StrengthList
-    strengths={about.data.strengths.map((s) => ({ ...s, href: evidenceHref(s.evidence, workSlugs, labSlugs) }))}
+    strengths={about.data.strengths.map((s) => ({ ...s, href: evidenceHref(s.evidence, workSlugs, new Set<string>()) }))}
   />
-  <ProblemSection problem={home.data.problem} />
-  <MetricCards metrics={home.data.metrics} />
-  <FeaturedWork works={selectFeaturedWorks(works).map((w) => ({ slug: w.id, title: w.data.title, summary: w.data.summary }))} />
   <WorkingStyle items={about.data.workingStyle} />
-  <LabHighlight labs={selectLabHighlights(labs).map((l) => ({ slug: l.id, title: l.data.title, oneLiner: l.data.oneLiner }))} />
-  <LatestWriting
-    writings={selectLatestWritings(writings).map((w) => ({
-      slug: w.id,
-      title: w.data.title,
-      summary: w.data.summary,
-      publishedAt: w.data.publishedAt,
-    }))}
-  />
-  <HomeStory><StoryContent /></HomeStory>
+  <CareerSummary career={about.data.career} />
   <ClosingCta closing={home.data.closing} email={about.data.email} />
 </BaseLayout>
