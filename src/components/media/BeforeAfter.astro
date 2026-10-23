@@ -1,7 +1,10 @@
 ---
 // 12-case-visuals: 라벨·화살표가 있는 개선 전/후 흐름. 텍스트 단계(flow) 또는 이미지 쌍(pairs) 두 모드.
+// 13-work-readability: wide(WRR-R03), 바깥 <figure>(WRR-R05).
+// 15-visual-rhythm (VIS-R03): visualRows에서 개선 후(accent) 행은 상자 전체 폭, 개선 전 행은 60% 폭 + 흑백. 사이에 ↓ 화살표.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { PROSE, WIDE } from './widths';
 
 interface Flow {
   label: string;
@@ -24,15 +27,16 @@ interface Props {
   visualRows?: VisualRow[] | undefined;
   headers?: [string, string] | undefined;
   caption?: string | undefined;
+  wide?: boolean | undefined;
 }
-const { before, after, pairs, visualRows, headers, caption } = Astro.props;
+const { before, after, pairs, visualRows, headers, caption, wide = false } = Astro.props;
 const widthsFor = (w: number, slot = 320) =>
   [slot, slot * 2, w]
     .filter((x) => x <= w)
     .filter((x, i, a) => a.indexOf(x) === i);
 ---
 
-<div class="media-ba not-prose">
+<figure class:list={['media-ba not-prose', wide && 'media-wide']}>
   {
     before && after && (
       <div class="media-ba-flows">
@@ -93,10 +97,17 @@ const widthsFor = (w: number, slot = 320) =>
   {
     visualRows && (
       <div class="media-ba-visualrows">
-        {visualRows.map((row) => {
-          const slot = Math.floor((680 - (row.items.length - 1) * 16) / row.items.length);
+        {visualRows.map((row, ri) => {
+          const rowWidth = Math.floor((wide ? WIDE : PROSE) * (row.accent ? 1 : 0.6));
+          const slot = Math.floor((rowWidth - (row.items.length - 1) * 16) / row.items.length);
           return (
-            <section class:list={['media-ba-visualrow', row.accent && 'media-ba-visualrow--accent']}>
+            <>
+              {ri > 0 && (
+                <span class="media-ba-down" aria-hidden="true">
+                  ↓
+                </span>
+              )}
+            <section class:list={['media-ba-visualrow', row.accent ? 'media-ba-visualrow--accent' : 'media-ba-visualrow--before']} data-ba-row={row.accent ? 'after' : 'before'}>
               <p class="media-ba-visualrow-label">{row.label}</p>
               <div class="media-ba-visuals" style={`--visual-cols:${row.items.length}`}>
                 {row.items.map((item) => (
@@ -121,10 +132,11 @@ const widthsFor = (w: number, slot = 320) =>
                 ))}
               </div>
             </section>
+            </>
           );
         })}
       </div>
     )
   }
   {caption && <figcaption class="media-caption">{caption}</figcaption>}
-</div>
+</figure>

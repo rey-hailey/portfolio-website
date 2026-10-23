@@ -120,6 +120,14 @@
   .mdx-body :where(p, ul, ol, h2, h3, h4, blockquote) {
     max-width: var(--container-prose);
   }
+  /* 13-work-readability (WRR-R03): 본문 열은 폭 제한 없음. 묶음 그림은 기본 prose, wide만 본문 열 전체 */
+  .mdx-body > :where(.media-figure, .media-groupwrap, .media-ba, .media-bars, .media-pair, .media-strip) {
+    max-width: var(--container-prose);
+  }
+  .mdx-body > .media-wide {
+    max-width: 100%;
+  }
+  /* 15-visual-rhythm (VIS-R01): 상자는 항상 prose/wide 폭, 그림은 --img-max 상한 안에서 가운데 */
   .media-figure {
     width: 100%;
     margin: calc(var(--spacing) * 8) 0;
@@ -136,7 +144,9 @@
   .media-img {
     display: block;
     width: 100%;
+    max-width: var(--img-max, 100%);
     height: auto;
+    margin-inline: auto;
     border-radius: var(--radius-media);
     box-shadow: var(--shadow-media);
   }
@@ -183,44 +193,144 @@
   .media-group .media-figure {
     margin: 0;
   }
+  /* VIS-R02: 같은 비율 틀 + contain → 묶음 안 높이 통일 */
+  .media-group--framed .media-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: var(--frame);
+  }
+  .media-group--framed .media-img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
   @media (max-width: 767px) {
     .media-group {
       grid-template-columns: 1fr;
     }
   }
 
-  /* MemorySteps */
-  .media-steps {
+  /* MediaPair (WRR-R06) */
+  .media-pair {
+    display: grid;
+    gap: calc(var(--spacing) * 4);
+    margin: calc(var(--spacing) * 8) 0;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .media-pair {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: calc(var(--spacing) * 4);
+    }
+  }
+  .media-pair .media-pair-text {
+    padding-right: calc(var(--spacing) * 4);
+  }
+  .media-pair .media-pair-fig {
+    margin: 0;
+    justify-self: center;
+  }
+  .media-pair-text > :is(ol, ul) {
+    margin: 0;
+  }
+
+  /* MediaStrip (VIS-R04): 가로 스트립. 라벨·자막은 media-flow-* 재사용 */
+  .media-strip {
     margin: calc(var(--spacing) * 8) 0;
   }
-  .media-steps-list {
+  .media-strip-track {
     display: flex;
-    flex-direction: column;
-    gap: calc(var(--spacing) * 8);
-  }
-  .media-step {
-    display: grid;
-    grid-template-columns: auto 1fr;
     gap: calc(var(--spacing) * 4);
-    align-items: start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    padding-bottom: calc(var(--spacing) * 2);
   }
-  .media-step-num {
-    font-family: var(--font-display);
-    font-size: var(--text-small);
-    font-weight: 600;
-    color: var(--color-accent);
-  }
-  .media-step-body {
+  .media-strip-slide {
+    flex: 0 0 calc((100% - var(--spacing) * 4) / 2);
+    margin: 0;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing) * 2);
     min-width: 0;
   }
-  .media-step-label {
+  @media (max-width: 767px) {
+    .media-strip-slide {
+      flex-basis: 86%;
+    }
+  }
+  .media-strip--framed .media-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: var(--frame);
+  }
+  .media-strip--framed .media-img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .media-strip-nav {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 3);
+    margin-top: calc(var(--spacing) * 2);
+  }
+  .media-strip-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--spacing) * 10);
+    height: calc(var(--spacing) * 10);
+    border: 1px solid var(--color-ink-line);
+    background: transparent;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    cursor: pointer;
+  }
+  .media-strip-btn:disabled {
+    color: var(--color-ink-muted);
+    cursor: default;
+    opacity: 0.4;
+  }
+  .media-strip-count {
+    font-family: var(--font-display);
+    font-size: var(--text-small);
+    color: var(--color-ink-muted);
+    min-width: 4ch;
+    text-align: center;
+  }
+  html:not(.js) .media-strip-nav {
+    display: none;
+  }
+  .media-flow-label {
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--spacing) * 2);
+    font-size: var(--text-small);
     font-weight: 600;
   }
-  .media-step .media-figure {
-    margin: 0;
+  .media-flow-num,
+  .media-flow-arrow {
+    font-family: var(--font-display);
+    color: var(--color-accent);
+  }
+  .media-flow-arrow {
+    margin-left: auto;
+  }
+  .media-flow-line {
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+  .media-flow-speaker {
+    margin-right: calc(var(--spacing) * 2);
+    font-weight: 600;
+    color: var(--color-ink-muted);
   }
 
   /* BeforeAfter */
@@ -292,6 +402,23 @@
   .media-ba-visualrow--accent .media-ba-chip {
     color: var(--color-accent);
   }
+  /* VIS-R03: 개선 전은 60% 폭·흑백, 개선 후는 전체 폭·accent 테두리 */
+  .media-ba-visualrow--before {
+    max-width: 60%;
+  }
+  .media-ba-visualrow--before .media-img {
+    filter: grayscale(1);
+  }
+  .media-ba-visualrow--accent {
+    border: 1px solid var(--color-accent);
+    padding: calc(var(--spacing) * 4);
+  }
+  .media-ba-down {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-accent);
+    line-height: 1;
+  }
   .media-ba-visuals {
     display: grid;
     grid-template-columns: repeat(var(--visual-cols), minmax(0, 1fr));
@@ -328,6 +455,12 @@
     .media-ba-visuals {
       grid-template-columns: 1fr;
     }
+    .media-ba-visualrow--before {
+      max-width: 100%;
+    }
+    .media-ba-visualrow--before .media-ba-visuals {
+      grid-template-columns: 1fr 1fr;
+    }
     .media-ba-pair {
       grid-template-columns: 1fr;
     }
@@ -360,6 +493,9 @@
     grid-template-columns: minmax(0, 6rem) 1fr auto;
     gap: calc(var(--spacing) * 3);
     align-items: center;
+  }
+  .media-bar-row--nolabel {
+    grid-template-columns: 1fr auto;
   }
   .media-bar-rowlabel {
     font-size: var(--text-small);
@@ -425,6 +561,49 @@
   .brief-frame-img--screen {
     border-radius: var(--radius-media);
     box-shadow: var(--shadow-media);
+  }
+
+  /* 13-work-readability: 상세 상단 '한눈에 보기' (WRR-R01·R02) */
+  /* 14-hire-readability (HIR-R05): 3줄 아래 결과 그림을 본문 전체 폭으로 (1열) */
+  .glance {
+    display: grid;
+    gap: calc(var(--spacing) * 8);
+  }
+  .glance-list {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 4);
+  }
+  .glance-row {
+    display: grid;
+    grid-template-columns: calc(var(--spacing) * 12) minmax(0, 1fr);
+    gap: calc(var(--spacing) * 3);
+    align-items: baseline;
+  }
+  .glance-label {
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+  }
+  .glance-row--result .glance-label,
+  .glance-row--result .glance-text {
+    color: var(--color-accent);
+  }
+  .glance-row--result .glance-text {
+    font-weight: 600;
+  }
+  .glance-visual {
+    margin: 0;
+    min-width: 0;
+    width: 100%;
+  }
+  .glance-visual .media-bars {
+    margin: 0;
+  }
+  .glance-img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   /* BriefCard */
@@ -506,8 +685,12 @@
     display: flex;
     align-items: center;
     gap: calc(var(--spacing) * 2);
+    width: 100%;
   }
+  /* 좁은 칸(320px 1열, 768px 3열)에서는 3장이 칸 폭을 1/3씩 넘지 않고 contain으로 줄어든다 (FND-R10) */
   .strength-lang {
+    min-width: 0;
+    max-width: calc((100% - var(--spacing) * 4) / 3);
     height: calc(var(--spacing) * 18);
     width: auto;
     object-fit: contain;

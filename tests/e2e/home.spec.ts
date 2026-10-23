@@ -25,11 +25,13 @@ test('문제의식 (HOME-R03)', async ({ page }) => {
   expect(text).not.toBe('[TODO: 문구]');
 });
 
-test('숫자 카드 4개, accent 색, 절대 매출액 없음 (HOME-R04)', async ({ page }) => {
+test('숫자 카드 4개, accent 색, 절대 매출액 없음, 각 숫자가 케이스로 링크 (HOME-R04, HIR-R04)', async ({ page }) => {
   await expect(page.getByTestId('home-metric')).toHaveCount(4);
-  await expect(page.getByTestId('home-metric-value').first()).toHaveText('+11.1%p');
+  await expect(page.getByTestId('home-metric-value').first()).toHaveText('54.5 → 65.6%');
   await expect(page.getByTestId('home-metric-value').first()).toHaveCSS('color', 'rgb(47, 91, 255)');
   expect(await page.content()).not.toMatch(/억 ?원/);
+  const hrefs = await page.getByTestId('home-metric-link').evaluateAll((els) => els.map((el) => el.getAttribute('href')));
+  expect(hrefs).toEqual(['/work/laura', '/work/orc-laura', '/work/orc-laura', '/work/the-life-of-our-lord']);
 });
 
 test('대표 Work 3개가 01·02·03 순서로 링크된다 (HOME-R05, WRK-R06 AC3)', async ({ page }) => {
@@ -39,6 +41,22 @@ test('대표 Work 3개가 01·02·03 순서로 링크된다 (HOME-R05, WRK-R06 A
     '/work/orc-laura',
     '/work/the-life-of-our-lord',
   ]);
+});
+
+test('대표 Work 카드마다 문제·한 일·결과 3줄과 대표 숫자가 보인다 (HIR-R01 AC1)', async ({ page }) => {
+  const cards = page.getByTestId('home-work-card');
+  await expect(cards).toHaveCount(3);
+  for (const i of [0, 1, 2]) {
+    for (const field of ['problem', 'action', 'result']) await expect(cards.nth(i).locator(`[data-field="${field}"] dd`)).toBeVisible();
+    await expect(cards.nth(i).getByTestId('home-work-metric')).toBeVisible();
+  }
+  await expect(cards.first().getByTestId('home-work-metric')).toContainText('54.5 → 65.6%');
+});
+
+test('강점마다 근거 문장·숫자가 있고 장식 이미지는 없다 (HIR-R02)', async ({ page }) => {
+  await expect(page.getByTestId('home-strength-quote')).toHaveCount(3);
+  await expect(page.getByTestId('home-strength-metric')).toHaveCount(3);
+  await expect(page.locator('.strength-visual')).toHaveCount(0);
 });
 
 test('강점 근거가 공개 케이스로 링크된다 (HOME-R02, WRK-R06 AC3)', async ({ page }) => {
@@ -51,9 +69,11 @@ test('공개된 Lab이 없으면 섹션 없음 (HOME-R07)', async ({ page }) => 
   await expect(page.getByTestId('home-lab')).toHaveCount(0);
 });
 
-test('일하는 방식 4가지 (HOME-R06)', async ({ page }) => {
+test('일하는 방식 4가지, 설명은 문장·숫자는 별도 칸 (HOME-R06, HIR-R03)', async ({ page }) => {
   await expect(page.getByTestId('home-style-item')).toHaveCount(4);
   await expect(page.getByRole('heading', { level: 2, name: '이렇게 일합니다' })).toBeVisible();
+  await expect(page.getByTestId('home-style-metric')).toHaveCount(4);
+  for (const text of await page.getByTestId('home-style-item').locator('p').first().allTextContents()) expect(text.trim()).toMatch(/다\.$/);
 });
 
 test('마무리 문장과 CTA (HOME-R09)', async ({ page }) => {

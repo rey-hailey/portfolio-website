@@ -32,6 +32,7 @@ promotedFromLab: null
 
 import Figure from '../../components/media/Figure.astro';
 import FigureGroup from '../../components/media/FigureGroup.astro';
+import MediaStrip from '../../components/media/MediaStrip.astro';
 import BarCompare from '../../components/media/BarCompare.astro';
 import textbook from '../../assets/images/work/orc-laura/textbook.webp';
 import goalBox from '../../assets/images/work/orc-laura/goal-box.webp';
@@ -72,7 +73,7 @@ OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 
 
 검증 지표 · 판매 1건당 발생 매출 · ORC 매출
 
-<Figure src={goalBox} alt="목표. ORC를 교과서까지 담는 플랫폼으로: As-is 원서 뷰어 → To-be 교과서 + 3단계 학습 + LAURA" caption="목표. ORC를 교과서까지 담는 플랫폼으로" plain />
+<Figure src={goalBox} alt="목표. ORC를 교과서까지 담는 플랫폼으로: As-is 원서 뷰어 → To-be 교과서 + 3단계 학습 + LAURA" caption="목표. ORC를 교과서까지 담는 플랫폼으로" plain wide />
 
 ## 실행
 
@@ -82,7 +83,7 @@ OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 
 2. **플랫폼.** 교과서를 담도록 재설계했습니다. 원서 뷰어 → 원서 뷰어 + 교과서 뷰어
 3. **계약.** OUP가 요구한 SOC 2 대신 ISO 27001을 역제안해 합의하고 인증을 취득했습니다. AI 사용 비용을 반영한 수익 배분 구조와 공급가를 협상했습니다.
 
-<FigureGroup cols={4} items={[{ src: lessonStart, alt: "레슨 시작 화면: 3단계 아이콘, LAURA Report, START" }, { src: gettingStarted, alt: "Getting Started 어휘 카드: me, It's me." }, { src: practice1, alt: "Practice 1 Say the word: 음절·음소별 발음 점수 분석" }, { src: practice2, alt: "Practice 2 Roleplay: LAURA와 대화, Hint, Scenario" }]} caption="① 학습법 · 레슨 3단계 화면" />
+<MediaStrip wide steps={[{ label: "레슨 시작", src: lessonStart, alt: "레슨 시작 화면: 3단계 아이콘, LAURA Report, START" }, { label: "Getting Started", src: gettingStarted, alt: "Getting Started 어휘 카드: me, It's me." }, { label: "Practice 1", src: practice1, alt: "Practice 1 Say the word: 음절·음소별 발음 점수 분석" }, { label: "Practice 2", src: practice2, alt: "Practice 2 Roleplay: LAURA와 대화, Hint, Scenario" }]} caption="① 학습법 · 레슨 3단계 화면" />
 
 <Figure src={contractSoc2} alt="계약: OUP가 요구한 SOC 2 → 역제안 → ISO 27001 합의" caption="계약 · SOC 2 → ISO 27001" plain />
 
@@ -90,16 +91,14 @@ OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 
 
 객단가가 높은 신규 상품이 판매 건수 1.8%만으로 ORC 전체 매출의 21%를 차지했습니다.
 
-<BarCompare rows={[{ label: "판매 건수", segments: [{ value: 98.2, text: "기존 98.2%" }, { value: 1.8, text: "새 상품 1.8%", accent: true }] }, { label: "매출", segments: [{ value: 79, text: "기존 79%" }, { value: 21, text: "새 상품 21%", accent: true }] }]} />
+<BarCompare rows={[{ label: "판매 건수", segments: [{ value: 98.2, text: "기존 98.2%" }, { value: 1.8, text: "새 상품 1.8%", accent: true }] }, { label: "매출", segments: [{ value: 79, text: "기존 79%" }, { value: 21, text: "새 상품 21%", accent: true }] }]} note="2026 상반기 매출 분석 기준" />
 
 - **판매 1건당 발생 매출** 기존 상품 대비 약 14배
 - **ORC 매출** 전년 동기 대비 +40%
-- OLB 매출이 42% 줄었지만, ORC · BRC가 늘어 해외 매출 전체 감소를 −9%로 줄였습니다
+- OLB 감소분(−42%)을 ORC · BRC 성장으로 상쇄해 해외 매출 감소를 −9%에서 막았습니다
 - **확장.** 2024.07 Let's Go with LAURA(교과서 6권 · 활동 192개) → 2026.06 LAURA for Readers(도서 201권 · LAURA 활동 5종 탑재), 한국 역수출(한국 런칭 웨비나 · 2026.07.09)
 
-<FigureGroup items={[{ src: oupPage, alt: "OUP 공식 사이트의 LAURA 판매 페이지: Meet LAURA, Buy, free trial" }, { src: webinar, alt: "Let's Go × LAURA 한국 런칭 웨비나 포스터 상단: AI로 완성하는 코스북 수업", plain: true }]} />
-
-2026 상반기 매출 분석 기준
+<FigureGroup frame="2/1" items={[{ src: oupPage, alt: "OUP 공식 사이트의 LAURA 판매 페이지: Meet LAURA, Buy, free trial", caption: "OUP 판매 페이지" }, { src: webinar, alt: "Let's Go × LAURA 한국 런칭 웨비나 포스터 상단: AI로 완성하는 코스북 수업", plain: true, caption: "한국 런칭 웨비나 · 2026.07.09" }]} />
 
 ## 회고
 

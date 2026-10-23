@@ -7,7 +7,7 @@ draft: false
 summary: 따라 말하기에 머물던 스피킹 학습의 한계를 넘어, 아이가 방금 읽은 책으로 먼저 자기 말로 대화하는 AI 튜터를 출시했습니다.
 company: 아이포트폴리오
 isAnonymized: false
-role: AI 스피킹 튜터 · Product Lead
+role: Product Lead · 기획 · 프롬프트 설계 · 지표 운영
 period:
   start: 2023-09-01
   end: 2026-07-01
@@ -33,7 +33,8 @@ promotedFromLab: null
 import Figure from '../../components/media/Figure.astro';
 import FigureGroup from '../../components/media/FigureGroup.astro';
 import BeforeAfter from '../../components/media/BeforeAfter.astro';
-import MemorySteps from '../../components/media/MemorySteps.astro';
+import MediaPair from '../../components/media/MediaPair.astro';
+import MediaStrip from '../../components/media/MediaStrip.astro';
 import BarCompare from '../../components/media/BarCompare.astro';
 import reading5 from '../../assets/images/work/laura/reading-5step.webp';
 import chat from '../../assets/images/work/laura/chat.webp';
@@ -45,8 +46,13 @@ import sentenceAfter1 from '../../assets/images/work/laura/sentence-after-1.webp
 import sentenceAfter2 from '../../assets/images/work/laura/sentence-after-2.webp';
 import sentenceAfter3 from '../../assets/images/work/laura/sentence-after-3.webp';
 import reportLetter from '../../assets/images/work/laura/report-letter.webp';
-import reportPron from '../../assets/images/work/laura/report-pronunciation.webp';
-import reportCorr from '../../assets/images/work/laura/report-correction.webp';
+import reportScore from '../../assets/images/work/laura/report-score.webp';
+import reportReview from '../../assets/images/work/laura/report-review.webp';
+import meetEnter from '../../assets/images/work/laura/meet-enter.webp';
+import meetAsk from '../../assets/images/work/laura/meet-ask.webp';
+import meetChild from '../../assets/images/work/laura/meet-child.webp';
+import meetCoco from '../../assets/images/work/laura/meet-coco.webp';
+import meetBye from '../../assets/images/work/laura/meet-bye.webp';
 import completionGraph from '../../assets/images/work/laura/completion-graph.svg';
 import memory1 from '../../assets/images/work/laura/memory-1.webp';
 import memory2 from '../../assets/images/work/laura/memory-2.webp';
@@ -80,12 +86,28 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 언어 습득 이론을 근거로, 모든 대화 활동에 같은 세 가지 원칙을 적용했습니다.
 
 1. **책 속 장면으로 말하기.** 기존에는 단편 문장을 따라 읽고 패턴을 반복했습니다. LAURA에서는 읽은 책의 인물·사건을 두고 책의 맥락 안에서 말합니다.
+
+<MediaPair src={chat} alt="LAURA 캐릭터 대화 화면: 책 속 인물과 대화, 아이가 만든 질문, Help 제안 (아이 얼굴 흐림)" wide>
+
 2. **열린 질문으로 말 끌어내기.** 기존에는 정해진 질문에 정해진 답을 했습니다. LAURA에서는 AI가 열린 질문을 던지고, 아이가 자기 문장을 만듭니다.
+
+</MediaPair>
+
+<MediaPair src={levels} alt="LAURA 수준별 답변: 같은 질문에 Elementary · Pre-intermediate · Intermediate 수준으로 다르게 답함" plain wide>
+
 3. **틀려도 멈추지 않게.** 기존에는 점수와 교정이 먼저 보여 말을 멈췄습니다. LAURA에서는 대화 중엔 고치지 않고 끝난 뒤 리포트로, 난이도는 아이 수준에 맞춥니다.
 
-<FigureGroup items={[{ src: chat, alt: "LAURA 캐릭터 대화 화면: 책 속 인물과 대화, 아이가 만든 질문, Help 제안 (아이 얼굴 흐림)" }, { src: levels, alt: "LAURA 수준별 답변: 같은 질문에 Elementary · Pre-intermediate · Intermediate 수준으로 다르게 답함", plain: true }]} />
+</MediaPair>
 
-<Figure src={activityFlow} alt="Role-play · Describe the Scene · Book Quiz 활동 흐름도" caption="같은 뼈대 위에 활동마다 다른 대화를 설계하고 구현했습니다" plain />
+<Figure src={activityFlow} alt="Role-play · Describe the Scene · Book Quiz 활동 흐름도" caption="같은 뼈대 위에 활동마다 다른 대화를 설계하고 구현했습니다" plain wide />
+
+<MediaStrip wide caption="Meet the Character" steps={[
+  { label: "최초 진입 시", src: meetEnter, alt: "Coco가 먼저 말을 건다: Ouch… a bee stung me.", speaker: "Coco", line: "Ouch… a bee stung me." },
+  { label: "코코 발화 → 대기", src: meetAsk, alt: "Coco가 묻고 아이의 말을 기다린다: It really hurts. What do you want to know?", speaker: "Coco", line: "It really hurts. What do you want to know?" },
+  { label: "음성 인식 중", src: meetChild, alt: "아이가 자기 질문을 말한다: Oh no! Are you okay? Does it hurt a lot?", speaker: "아이", line: "Oh no! Are you okay? Does it hurt a lot?" },
+  { label: "코코 발화 중", src: meetCoco, alt: "Coco가 답하고 다시 묻는다: It stings, but I'm a brave runner! Did you see the race?", speaker: "Coco", line: "It stings, but I'm a brave runner! Did you see the race?" },
+  { label: "최종 인사", src: meetBye, alt: "Coco의 마무리 인사와 Done 버튼: Thanks for asking me so many things! Goodbye!", speaker: "Coco", line: "Thanks for asking me so many things! Goodbye!" },
+]} />
 
 ### Sentence Practice
 
@@ -96,7 +118,7 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 - **액션.** 활동 전에 책 속 핵심 문장을 2번 따라 말하는 단계 추가 · 따라 말하기 → Keywords → 그림 질문 → 꼬리질문 순으로 변경
 - **가설 → 결과.** 핵심 문장을 먼저 따라 말하면, 활동을 완주할 것이다. 1~7월 완료율 49.7% → 69.8% (+20.1%p · 같은 기간 다른 활동 상승(+8.4%p)의 약 2.4배)
 
-<BeforeAfter visualRows={[
+<BeforeAfter wide visualRows={[
   {
     label: "개선 전 · Keywords만 보고 바로 답하기",
     items: [
@@ -126,13 +148,13 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 
 <Figure src={reportLetter} alt="칭찬 편지: 대화에서 이런 내용이 좋았어요" caption="칭찬 편지" />
 
-<FigureGroup items={[{ src: reportPron, alt: "발음 점수: 종합 86점, 자연스러움 78점, 발음 정확도 92점, 유창성 90점" }, { src: reportCorr, alt: "교정: How you swing? → How do you swing? 'do'가 빠졌어요" }]} />
+<FigureGroup wide frame="1/1" items={[{ src: reportScore, alt: "LAURA Report Score: 종합 점수 86점, 자연스러움 78점, 발음 정확도 92점, 유창성 90점", caption: "Score" }, { src: reportReview, alt: "LAURA Report Review: 아이가 말한 문장과 LAURA's Correction의 Original Text · Revised Text 비교와 설명", caption: "Review · LAURA's Correction" }]} caption="점수 · 교정 확인" />
 
 ## 결과
 
 North Star인 활동 완료율이 오르고, 아이들은 다음 달에도 다시 찾아왔습니다.
 
-<Figure src={completionGraph} alt="월별 평균 활동 완료율 2025.01–2026.07" caption="월별 평균 활동 완료율 2025.01–2026.07" plain />
+<Figure src={completionGraph} alt="월별 평균 활동 완료율 2025.01–2026.07" caption="월별 평균 활동 완료율 2025.01–2026.07 · 월별 값이며 기간 평균은 54.5 → 65.6%" plain />
 
 - **활동 완료율** 54.5% → 65.6% (+11.1%p) · Sentence Practice를 빼도 55.9% → 64.3% (+8.4%p)
 - **다음 달 재방문** 48.9% → 63.0% (+14.1%p)
@@ -148,7 +170,7 @@ North Star인 활동 완료율이 오르고, 아이들은 다음 달에도 다�
 지난번에 한 이야기를 캐릭터가 기억해 주면, 아이는 다시 말을 걸 이유가 생깁니다.
 베타 체험단 지속 이용 의향 4.51 / 5 · 학습 흥미도 4.01 / 5 (설문). 정식 출시 전, 재방문으로 이어지는지 검증하던 단계입니다.
 
-<MemorySteps steps={[{ label: "기억으로 저장", src: memory1, alt: "아이: Ellie is a small dog, but she's smart. She plays soccer with me." }, { label: "그 아이의 기억만 찾기", src: memory2, alt: "아이: Do you remember my dog's name?" }, { label: "캐릭터 말투로 대답", src: memory3, alt: "Coco: Yes! Your dog's name is Ellie." }]} />
+<MediaStrip wide caption="관계형 AI · 기억 3단계" steps={[{ label: "기억으로 저장", src: memory1, alt: "아이: Ellie is a small dog, but she's smart. She plays soccer with me.", plain: true }, { label: "그 아이의 기억만 찾기", src: memory2, alt: "아이: Do you remember my dog's name?", plain: true }, { label: "캐릭터 말투로 대답", src: memory3, alt: "Coco: Yes! Your dog's name is Ellie.", plain: true }]} />
 
 ## 회고
 

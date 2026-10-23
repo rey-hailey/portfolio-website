@@ -122,7 +122,10 @@ export const aboutSchema = <I extends z.ZodType, R extends z.ZodType>(h: SchemaH
       email: z.email(),
       linkedinUrl: z.url(),
       resumeFile: z.literal('/resume.pdf'),
-      workingStyle: z.array(z.object({ title: text, description: text }).strict()).length(4),
+      // HIR-R03: 설명은 케이스 원문 문장, 숫자는 별도 칸(선택)
+      workingStyle: z
+        .array(z.object({ title: text, description: text, metricValue: z.string().nullish(), metricLabel: z.string().nullish() }).strict())
+        .length(4),
     })
     .strict()
     .refine((d) => !d.photo || !!d.photoAlt, { message: '사진에는 alt가 필요하다', path: ['photoAlt'] });
@@ -131,7 +134,8 @@ export const homeSchema = () =>
   z
     .object({
       problem: text,
-      metrics: z.array(z.object({ value: text, label: text }).strict()).length(4),
+      // HIR-R04: 숫자마다 근거 케이스 상세 링크(선택)
+      metrics: z.array(z.object({ value: text, label: text, href: z.string().nullish() }).strict()).length(4),
       closing: text,
     })
     .strict();

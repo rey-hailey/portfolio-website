@@ -1,29 +1,33 @@
 ---
 // 12-case-visuals: 본문 이미지 1장 + 캡션 + 라이트박스(<dialog>, Esc·바깥클릭·키보드). 디자인 토큰만.
+// 15-visual-rhythm (VIS-R01): <figure> 상자는 항상 prose/wide 폭. maxWidth는 그림(<img>)의 상한이며 그림은 상자 안 가운데.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { PROSE, WIDE } from './widths';
 
 interface Props {
   src: ImageMetadata;
   alt: string;
   caption?: string | undefined;
-  /** 원본 가로폭 미만일 때 확대하지 않도록 상한 지정(px). 미지정이면 컨테이너 폭. */
+  /** 그림 상한(px). 원본보다 크게 늘리지 않는다. 상자 폭은 그대로다(VIS-R01). */
   maxWidth?: number | undefined;
   sizes?: string | undefined;
   class?: string | undefined;
   plain?: boolean | undefined;
+  /** 13-work-readability: 본문 폭(680)을 넘어 본문 열 전체 폭까지 (WRR-R03) */
+  wide?: boolean | undefined;
 }
-const { src, alt, caption, maxWidth, sizes, class: cls = '', plain = false } = Astro.props;
+const { src, alt, caption, maxWidth, sizes, class: cls = '', plain = false, wide = false } = Astro.props;
 const isSvg = src.format === 'svg';
-const displayWidth = Math.min(maxWidth ?? 680, src.width);
+const displayWidth = Math.min(maxWidth ?? (wide ? WIDE : PROSE), src.width);
 const widths = [displayWidth, displayWidth * 2, src.width]
   .filter((w) => w <= src.width)
   .filter((w, i, a) => a.indexOf(w) === i);
 const responsiveSizes = sizes ?? `(min-width:1024px) ${displayWidth}px, calc(100vw - 3rem)`;
-const style = `max-width:${displayWidth}px`;
+const style = `--img-max:${displayWidth}px`;
 ---
 
-<figure class:list={['media-figure not-prose', plain && 'media-figure--plain', cls]} data-figure style={style}>
+<figure class:list={['media-figure not-prose', plain && 'media-figure--plain', wide && 'media-wide', cls]} data-figure style={style}>
   <button type="button" class="media-trigger" aria-label={`${alt} — 크게 보기`}>
     {isSvg ? <img src={src.src} alt={alt} class="media-img" loading="lazy" /> : <Image src={src} alt={alt} widths={widths} sizes={responsiveSizes} class="media-img" loading="lazy" />}
   </button>

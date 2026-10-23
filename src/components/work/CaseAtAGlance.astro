@@ -1,0 +1,33 @@
+---
+// 13-work-readability (WRR-R01·R02) + 14 (HIR-R05): 상세 상단 '한눈에 보기' — 문제 / 한 일 / 결과 3줄 아래 대표 결과 그림을 본문 전체 폭으로. 제목 요소 없음(WRK-R02 H2 검사 무관).
+import BarCompare from '../media/BarCompare.astro';
+import type { WorkGlance } from '../../data/work-glance';
+
+interface Props {
+  glance: WorkGlance;
+}
+const { glance } = Astro.props;
+const rows = [
+  { key: 'problem', label: '문제', text: glance.problem },
+  { key: 'action', label: '한 일', text: glance.action },
+  { key: 'result', label: '결과', text: glance.result },
+];
+const v = glance.visual;
+---
+
+<section aria-label="한눈에 보기" class="glance" data-testid="work-glance">
+  <dl class="glance-list">
+    {
+      rows.map((r) => (
+        <div class:list={['glance-row', r.key === 'result' && 'glance-row--result']} data-field={r.key}>
+          <dt class="glance-label">{r.label}</dt>
+          <dd class="glance-text break-keep">{r.text}</dd>
+        </div>
+      ))
+    }
+  </dl>
+  <figure class="glance-visual">
+    {v.kind === 'image' ? <img src={v.src.src} alt={v.alt} width={v.src.width} height={v.src.height} class="glance-img" /> : <BarCompare rows={v.rows} />}
+    <figcaption class="media-caption">{v.caption}</figcaption>
+  </figure>
+</section>

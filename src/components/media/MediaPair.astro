@@ -1,0 +1,22 @@
+---
+// 13-work-readability (WRR-R06): 그림 하나를 설명하는 글을 그림과 한 쌍으로. 데스크톱 글 | 그림, 모바일 글 → 그림.
+// 글(slot)이 그림의 캡션 역할을 하므로 바깥 <figure>의 <figcaption>에 둔다(WRR-R05).
+import type { ImageMetadata } from 'astro';
+import Figure from './Figure.astro';
+import { PROSE, WIDE } from './widths';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  plain?: boolean | undefined;
+  wide?: boolean | undefined;
+}
+const { src, alt, plain = false, wide = false } = Astro.props;
+// 15-visual-rhythm (VIS-R05): 그림 칸 = FigureGroup 2장 칸과 같은 폭(간격 16)
+const slot = Math.floor(((wide ? WIDE : PROSE) - 16) / 2);
+---
+
+<figure class:list={['media-pair not-prose', wide && 'media-wide']}>
+  <figcaption class="media-pair-text"><slot /></figcaption>
+  <Figure src={src} alt={alt} plain={plain} maxWidth={slot} sizes={`(min-width:1024px) ${slot}px, calc(100vw - 3rem)`} class="media-pair-fig" />
+</figure>

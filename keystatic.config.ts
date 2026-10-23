@@ -137,7 +137,7 @@ export default config({
       format: { contentField: 'body' },
       schema: {
         problem: longText('문제의식'),
-        metrics: fields.array(fields.object({ value: text('숫자'), label: text('설명') }), {
+        metrics: fields.array(fields.object({ value: text('숫자'), label: text('설명'), href: optionalText('근거 케이스 링크 (/work/slug)') }), {
           label: '성과 숫자 (4개)',
           itemLabel: (p) => p.fields.value.value,
           validation: { length: { min: 4, max: 4 } },
@@ -173,11 +173,10 @@ export default config({
         email: text('이메일'),
         linkedinUrl: fields.url({ label: 'LinkedIn URL', validation: { isRequired: true } }),
         resumeFile: fields.select({ label: '이력서 파일', options: [{ label: '/resume.pdf', value: '/resume.pdf' }], defaultValue: '/resume.pdf' }),
-        workingStyle: fields.array(fields.object({ title: text('제목'), description: longText('설명') }), {
-          label: '일하는 방식 (4개)',
-          itemLabel: (p) => p.fields.title.value,
-          validation: { length: { min: 4, max: 4 } },
-        }),
+        workingStyle: fields.array(
+          fields.object({ title: text('제목'), description: longText('설명 (케이스 원문 문장)'), metricValue: optionalText('숫자'), metricLabel: optionalText('숫자 설명') }),
+          { label: '일하는 방식 (4개)', itemLabel: (p) => p.fields.title.value, validation: { length: { min: 4, max: 4 } } },
+        ),
         intro: fields.mdx({ label: '소개 글' }),
       },
     }),

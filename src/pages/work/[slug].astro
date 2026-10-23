@@ -1,10 +1,12 @@
 ---
-// Work 상세 (WRK-R02~R05)
-import { Image } from 'astro:assets';
+// Work 상세 (WRK-R02~R05) + 13-work-readability: 상단 한눈에 보기(WRR-R01·R02), 넓은 그림을 위해 본문 열은 폭 제한 없음(WRR-R03)
+// 14-hire-readability (HIR-R05): 큰 썸네일은 목록·OG에만 두고 상세에서는 결과 그림이 그 자리를 맡는다
 import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkPager from '../../components/work/WorkPager.astro';
 import WorkSummary from '../../components/work/WorkSummary.astro';
+import CaseAtAGlance from '../../components/work/CaseAtAGlance.astro';
+import { glanceBySlug } from '../../data/work-glance';
 import { site } from '../../config/site';
 import { getPublished } from '../../lib/content';
 import { neighbors, sortByOrder } from '../../lib/work';
@@ -22,9 +24,7 @@ export async function getStaticPaths() {
 const { work, prev, next } = Astro.props;
 const { Content, headings } = await render(work);
 const d = work.data;
-const thumbnailWidths = [600, 1200, d.thumbnail.width]
-  .filter((width) => width <= d.thumbnail.width)
-  .filter((width, index, widths) => widths.indexOf(width) === index);
+const glance = glanceBySlug(work.id);
 const toc = headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text }));
 const url = (p: string) => new URL(p, Astro.site).href;
 const jsonLd = [
@@ -42,11 +42,9 @@ const jsonLd = [
         <h1 class="font-display text-h1 font-semibold break-keep" transition:name={`work-title-${work.id}`}>{d.title}</h1>
         <p class="text-h3 text-ink-muted break-keep">{d.summary}</p>
       </header>
+      {glance && <CaseAtAGlance glance={glance} />}
       <WorkSummary company={d.company} isAnonymized={d.isAnonymized} role={d.role} period={d.period} team={d.team} metrics={d.metrics} />
-      <div class="thumb-frame">
-        <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={thumbnailWidths} sizes="(min-width:1200px) 760px, calc(100vw - 3rem)" class="thumb-frame-img" transition:name={`work-thumb-${work.id}`} />
-      </div>
-      <div class="mdx-body max-w-prose">
+      <div class="mdx-body">
         <Content />
       </div>
     </article>
