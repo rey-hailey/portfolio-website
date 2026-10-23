@@ -1,0 +1,64 @@
+---
+// 15-visual-rhythm (VIS-R04): 차례가 있는 화면 3장 이상을 가로 스트립으로. CSS scroll-snap, 데스크톱 2장 + 다음 장 일부, 모바일 1장 + 다음 장 일부.
+// 각 장 = 번호 + 라벨 + 화면(라이트박스, [data-figure]) + 자막(있을 때). 이전/다음 버튼·"n / N"은 src/scripts/media-strip.ts (JS 없이도 스크롤로 넘김).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { PROSE, WIDE } from './widths';
+
+interface Step {
+  src: ImageMetadata;
+  alt: string;
+  label?: string | undefined;
+  /** 화면 안 자막은 썸네일 크기에서 읽히지 않으므로 화면 아래에 그대로 옮겨 적는다 */
+  speaker?: string | undefined;
+  line?: string | undefined;
+  plain?: boolean | undefined;
+}
+interface Props {
+  steps: Step[];
+  caption?: string | undefined;
+  wide?: boolean | undefined;
+  /** 장마다 크기가 다르면 같은 비율 틀 안에 contain (예: "4/3") */
+  frame?: string | undefined;
+  label?: string | undefined;
+}
+const { steps, caption, wide = false, frame, label = '화면 흐름, 좌우로 넘기기' } = Astro.props;
+const slot = Math.floor(((wide ? WIDE : PROSE) - 16) / 2);
+const widthsFor = (w: number) =>
+  [slot, slot * 2, w]
+    .filter((x) => x <= w)
+    .filter((x, i, a) => a.indexOf(x) === i);
+---
+
+<figure class:list={['media-strip not-prose', wide && 'media-wide', frame && 'media-strip--framed']} data-strip style={frame ? `--frame:${frame}` : undefined}>
+  <div class="media-strip-track" tabindex="0" aria-label={label} data-strip-track>
+    {
+      steps.map((s, i) => (
+        <figure class:list={['media-figure media-strip-slide', s.plain && 'media-figure--plain']} data-figure data-strip-slide>
+          <p class="media-flow-label break-keep">
+            <span class="media-flow-num">{String(i + 1).padStart(2, '0')}</span>
+            {s.label ?? ''}
+          </p>
+          <button type="button" class="media-trigger" aria-label={`${s.alt} — 크게 보기`}>
+            <Image src={s.src} alt={s.alt} widths={widthsFor(s.src.width)} sizes={`(min-width:1024px) ${slot}px, 86vw`} class="media-img" loading="lazy" />
+          </button>
+          {s.line && (
+            <p class="media-flow-line break-keep">
+              {s.speaker && <span class="media-flow-speaker">{s.speaker}</span>}
+              {s.line}
+            </p>
+          )}
+          <dialog class="media-lightbox" aria-label={s.alt}>
+            <Image src={s.src} alt={s.alt} widths={[Math.min(s.src.width, 1600)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
+          </dialog>
+        </figure>
+      ))
+    }
+  </div>
+  <div class="media-strip-nav">
+    <button type="button" class="media-strip-btn" data-strip-prev aria-label="이전 화면" disabled>←</button>
+    <span class="media-strip-count" data-strip-count aria-live="polite">1 / {steps.length}</span>
+    <button type="button" class="media-strip-btn" data-strip-next aria-label="다음 화면">→</button>
+  </div>
+  {caption && <figcaption class="media-caption">{caption}</figcaption>}
+</figure>
