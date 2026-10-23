@@ -1,0 +1,48 @@
+---
+// 12-case-visuals: 비율 막대. 단일 값(track 대비 %) 또는 누적 세그먼트(합=100%). 숫자·라벨은 원본 그대로.
+interface Segment {
+  value: number;
+  text: string;
+  accent?: boolean;
+}
+interface Row {
+  label?: string;
+  segments: Segment[];
+}
+interface Props {
+  title?: string | undefined;
+  rows: Row[];
+  note?: string | undefined;
+}
+const { title, rows, note } = Astro.props;
+---
+
+<div class="media-bars not-prose">
+  {title && <p class="media-bars-title break-keep">{title}</p>}
+  <ul class="media-bars-list">
+    {
+      rows.map((row) => {
+        const sum = row.segments.reduce((a, s) => a + s.value, 0);
+        const single = row.segments.length === 1;
+        const aria = `${row.label ? row.label + ': ' : ''}${row.segments.map((s) => s.text).join(', ')}`;
+        return (
+          <li class="media-bar-row">
+            {row.label && <span class="media-bar-rowlabel break-keep">{row.label}</span>}
+            <div class="media-bar-track" role="img" aria-label={aria}>
+              {row.segments.map((s) => {
+                const pct = single ? Math.max(0, Math.min(100, s.value)) : (s.value / sum) * 100;
+                return (
+                  <span class:list={['media-bar-seg', (s.accent ?? single) && 'media-bar-seg--accent']} style={`width:${pct}%`}>
+                    {!single && <span class="media-bar-segtext break-keep">{s.text}</span>}
+                  </span>
+                );
+              })}
+            </div>
+            {single && <span class="media-bar-value break-keep">{row.segments[0]!.text}</span>}
+          </li>
+        );
+      })
+    }
+  </ul>
+  {note && <p class="media-bars-note break-keep">{note}</p>}
+</div>

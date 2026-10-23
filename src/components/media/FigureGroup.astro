@@ -1,0 +1,37 @@
+---
+// 12-case-visuals: 같은 문맥 이미지 2~3장을 데스크톱 나란히 / 모바일 세로로 묶는다. 각 이미지 라이트박스.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Item {
+  src: ImageMetadata;
+  alt: string;
+}
+interface Props {
+  items: Item[];
+  caption?: string | undefined;
+  cols?: number | undefined;
+  class?: string | undefined;
+}
+const { items, caption, cols, class: cls = '' } = Astro.props;
+const n = Math.min(cols ?? items.length, 5);
+const widthsFor = (w: number) => [240, 480, 880].filter((x) => x <= w).concat(w).filter((x, i, a) => a.indexOf(x) === i);
+---
+
+<div class:list={['media-groupwrap not-prose', cls]}>
+  <div class="media-group" style={`--cols:${n}`}>
+    {
+      items.map((it) => (
+        <figure class="media-figure media-group-item" data-figure>
+          <button type="button" class="media-trigger" aria-label={`${it.alt} — 크게 보기`}>
+            <Image src={it.src} alt={it.alt} widths={widthsFor(it.src.width)} sizes={`(min-width:1024px) ${Math.round(880 / n)}px, 100vw`} class="media-img" loading="lazy" />
+          </button>
+          <dialog class="media-lightbox" aria-label={it.alt}>
+            <Image src={it.src} alt={it.alt} widths={[Math.min(it.src.width, 1600)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
+          </dialog>
+        </figure>
+      ))
+    }
+  </div>
+  {caption && <figcaption class="media-caption">{caption}</figcaption>}
+</div>

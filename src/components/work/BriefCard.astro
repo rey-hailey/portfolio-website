@@ -1,0 +1,48 @@
+---
+// 12-case-visuals: Work 목록 하단 '추가 사례' 카드. 이미지 + 제목 + 기간 + 핵심 숫자 + <details> 자세히 보기(slot).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  title: string;
+  period: string;
+  metricValue: string;
+  metricLabel: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  sections: { label: string; body: string }[];
+}
+const { title, period, metricValue, metricLabel, image, imageAlt, sections } = Astro.props;
+const widths = [400, 800].filter((x) => x <= image.width).concat(image.width).filter((x, i, a) => a.indexOf(x) === i);
+---
+
+<article class="brief-card">
+  <figure class="brief-media media-figure" data-figure>
+    <button type="button" class="media-trigger brief-frame" aria-label={`${imageAlt} — 크게 보기`}>
+      <Image src={image} alt={imageAlt} widths={widths} sizes="(min-width:768px) 440px, 100vw" class="brief-frame-img" loading="lazy" />
+    </button>
+    <dialog class="media-lightbox" aria-label={imageAlt}>
+      <Image src={image} alt={imageAlt} widths={[Math.min(image.width, 1600)]} sizes="92vw" class="media-lightbox-img" loading="lazy" />
+    </dialog>
+  </figure>
+  <div class="brief-body">
+    <h3 class="brief-title break-keep">{title}</h3>
+    <p class="brief-period">{period}</p>
+    <p class="brief-metric">
+      <strong class="brief-metric-value">{metricValue}</strong>
+      <span class="brief-metric-label break-keep">{metricLabel}</span>
+    </p>
+  </div>
+  <details class="brief-details">
+    <summary class="brief-summary">자세히 보기</summary>
+    <div class="brief-detail-body">
+      {sections.map((s) => (
+        <div class="brief-section">
+          <p class="brief-section-label">{s.label}</p>
+          <p class="brief-section-text break-keep">{s.body}</p>
+        </div>
+      ))}
+      <slot />
+    </div>
+  </details>
+</article>
