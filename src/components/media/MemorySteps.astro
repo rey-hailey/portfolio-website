@@ -1,5 +1,6 @@
 ---
 // 12-case-visuals: 번호가 있는 3단계 세로 흐름(각 단계 = 라벨 + 이미지, 라이트박스).
+// 13-work-readability: 바깥 <figure>(WRR-R05).
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
@@ -19,7 +20,7 @@ const widthsFor = (w: number) =>
     .filter((x, i, a) => a.indexOf(x) === i);
 ---
 
-<div class="media-steps not-prose">
+<figure class="media-steps not-prose">
   <ol class="media-steps-list">
     {
       steps.map((s, i) => (
@@ -41,4 +42,4 @@ const widthsFor = (w: number) =>
     }
   </ol>
   {caption && <figcaption class="media-caption">{caption}</figcaption>}
-</div>
+</figure>

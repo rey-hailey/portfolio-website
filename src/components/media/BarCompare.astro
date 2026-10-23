@@ -1,5 +1,5 @@
 ---
-// 12-case-visuals: 비율 막대. 단일 값(track 대비 %) 또는 누적 세그먼트(합=100%). 숫자·라벨은 원본 그대로.
+// 12-case-visuals: 비율 막대. 13-work-readability: 라벨 없는 행은 막대가 라벨 열에 갇히지 않게 2열. 단일 값(track 대비 %) 또는 누적 세그먼트(합=100%). 숫자·라벨은 원본 그대로.
 interface Segment {
   value: number;
   text: string;
@@ -26,7 +26,7 @@ const { title, rows, note } = Astro.props;
         const single = row.segments.length === 1;
         const aria = `${row.label ? row.label + ': ' : ''}${row.segments.map((s) => s.text).join(', ')}`;
         return (
-          <li class="media-bar-row">
+          <li class:list={['media-bar-row', !row.label && 'media-bar-row--nolabel']}>
             {row.label && <span class="media-bar-rowlabel break-keep">{row.label}</span>}
             <div class="media-bar-track" role="img" aria-label={aria}>
               {row.segments.map((s) => {

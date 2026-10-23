@@ -1,7 +1,9 @@
 ---
 // 12-case-visuals: 라벨·화살표가 있는 개선 전/후 흐름. 텍스트 단계(flow) 또는 이미지 쌍(pairs) 두 모드.
+// 13-work-readability: wide(WRR-R03), 바깥 <figure>(WRR-R05).
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { PROSE, WIDE } from './widths';
 
 interface Flow {
   label: string;
@@ -24,15 +26,16 @@ interface Props {
   visualRows?: VisualRow[] | undefined;
   headers?: [string, string] | undefined;
   caption?: string | undefined;
+  wide?: boolean | undefined;
 }
-const { before, after, pairs, visualRows, headers, caption } = Astro.props;
+const { before, after, pairs, visualRows, headers, caption, wide = false } = Astro.props;
 const widthsFor = (w: number, slot = 320) =>
   [slot, slot * 2, w]
     .filter((x) => x <= w)
     .filter((x, i, a) => a.indexOf(x) === i);
 ---
 
-<div class="media-ba not-prose">
+<figure class:list={['media-ba not-prose', wide && 'media-wide']}>
   {
     before && after && (
       <div class="media-ba-flows">
@@ -94,7 +97,7 @@ const widthsFor = (w: number, slot = 320) =>
     visualRows && (
       <div class="media-ba-visualrows">
         {visualRows.map((row) => {
-          const slot = Math.floor((680 - (row.items.length - 1) * 16) / row.items.length);
+          const slot = Math.floor(((wide ? WIDE : PROSE) - (row.items.length - 1) * 16) / row.items.length);
           return (
             <section class:list={['media-ba-visualrow', row.accent && 'media-ba-visualrow--accent']}>
               <p class="media-ba-visualrow-label">{row.label}</p>
@@ -127,4 +130,4 @@ const widthsFor = (w: number, slot = 320) =>
     )
   }
   {caption && <figcaption class="media-caption">{caption}</figcaption>}
-</div>
+</figure>
