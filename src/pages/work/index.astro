@@ -16,9 +16,11 @@ const works = sortByOrder(await getPublished('work'));
     {
       works.map((work) => (
         <li data-testid="work-card">
-          <a href={`/work/${work.id}`} class="flex flex-col gap-4 text-ink no-underline">
-            <Image src={work.data.thumbnail} alt={work.data.thumbnailAlt} widths={[400, 800]} sizes="(min-width: 768px) 50vw, 100vw" class="h-auto w-full" />
-            <h2 class="text-h3 font-semibold break-keep">{work.data.title}</h2>
+          <a href={`/work/${work.id}`} class="group flex flex-col gap-4 text-ink no-underline">
+            <div class="overflow-hidden">
+              <Image src={work.data.thumbnail} alt={work.data.thumbnailAlt} widths={[400, 800]} sizes="(min-width: 768px) 50vw, 100vw" class="h-auto w-full transition-transform duration-500 group-hover:scale-[1.04] group-focus-within:scale-[1.04]" transition:name={`work-thumb-${work.id}`} />
+            </div>
+            <h2 class="flex items-center gap-2 text-h3 font-semibold break-keep transition-colors group-hover:text-accent group-focus-within:text-accent" transition:name={`work-title-${work.id}`}>{work.data.title} <span class="text-accent opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100" aria-hidden="true">→</span></h2>
             <p class="text-ink-muted break-keep">{work.data.summary}</p>
             {work.data.metrics[0] && (
               <p class="flex flex-wrap items-baseline gap-x-3">

@@ -20,8 +20,9 @@ export async function getStaticPaths() {
 }
 
 const { work, prev, next } = Astro.props;
-const { Content } = await render(work);
+const { Content, headings } = await render(work);
 const d = work.data;
+const toc = headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text }));
 const url = (p: string) => new URL(p, Astro.site).href;
 const jsonLd = [
   articleLd({ headline: d.title, description: d.description, url: url(Astro.url.pathname), image: url(ogImagePath(Astro.url.pathname)), datePublished: d.publishedAt, dateModified: d.updatedAt, author: '손병성' }),
@@ -30,17 +31,33 @@ const jsonLd = [
 ---
 
 <BaseLayout title={`${d.title} | ${site.name}`} description={d.description} kind="Work" ogType="article" jsonLd={jsonLd}>
-  <article class="mx-auto flex max-w-page flex-col gap-12">
-    <header class="flex max-w-prose flex-col gap-4">
-      <p class="text-small text-ink-muted"><a href="/work" class="text-ink-muted">Work</a></p>
-      <h1 class="font-display text-h1 font-semibold break-keep">{d.title}</h1>
-      <p class="text-h3 text-ink-muted break-keep">{d.summary}</p>
-    </header>
-    <WorkSummary company={d.company} isAnonymized={d.isAnonymized} role={d.role} period={d.period} team={d.team} metrics={d.metrics} />
-    <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[600, 1200]} sizes="(min-width: 1200px) 1200px, 100vw" class="h-auto w-full" />
-    <div class="mdx-body max-w-prose">
-      <Content />
-    </div>
-  </article>
+  <div data-reading-progress class="fixed left-0 top-0 z-50 h-0.5 w-full origin-left scale-x-0 bg-accent" aria-hidden="true"></div>
+  <div class="mx-auto grid max-w-page gap-12 lg:grid-cols-[minmax(0,1fr)_14rem]">
+    <article class="flex min-w-0 flex-col gap-12">
+      <header class="flex max-w-prose flex-col gap-4">
+        <p class="text-small text-ink-muted"><a href="/work" class="text-ink-muted">Work</a></p>
+        <h1 class="font-display text-h1 font-semibold break-keep" transition:name={`work-title-${work.id}`}>{d.title}</h1>
+        <p class="text-h3 text-ink-muted break-keep">{d.summary}</p>
+      </header>
+      <WorkSummary company={d.company} isAnonymized={d.isAnonymized} role={d.role} period={d.period} team={d.team} metrics={d.metrics} />
+      <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[600, 1200]} sizes="(min-width: 1200px) 1200px, 100vw" class="h-auto w-full" transition:name={`work-thumb-${work.id}`} />
+      <div class="mdx-body max-w-prose">
+        <Content />
+      </div>
+    </article>
+    {
+      toc.length > 0 && (
+        <aside class="hidden lg:block">
+          <nav data-toc aria-label="목차" class="sticky top-24 flex flex-col gap-2 text-small">
+            {toc.map((item) => (
+              <a href={`#${item.slug}`} class="text-ink-muted no-underline hover:text-ink aria-[current=true]:font-semibold aria-[current=true]:text-accent">
+                {item.text}
+              </a>
+            ))}
+          </nav>
+        </aside>
+      )
+    }
+  </div>
   <WorkPager prev={prev} next={next} />
 </BaseLayout>
