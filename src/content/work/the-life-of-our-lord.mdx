@@ -19,8 +19,8 @@ metrics:
   - label: 판매 채널
     value: 5곳
     note: ''
-thumbnail: ../../assets/images/work/the-life-of-our-lord/thumbnail.png
-thumbnailAlt: The Life of Our Lord 포트폴리오 표지
+thumbnail: ../../assets/images/work/the-life-of-our-lord/thumb.webp
+thumbnailAlt: 웹·태블릿·모바일에서 열린 The Life of Our Lord 어린이 시리즈
 tags:
   - AI 제작
   - 1인 사업
@@ -29,6 +29,16 @@ featured: true
 promotedFromLab: null
 ---
 
+
+import Figure from '../../components/media/Figure.astro';
+import FigureGroup from '../../components/media/FigureGroup.astro';
+import BarCompare from '../../components/media/BarCompare.astro';
+import moviePoster from '../../assets/images/work/the-life-of-our-lord/movie-poster.webp';
+import dickens from '../../assets/images/work/the-life-of-our-lord/dickens.webp';
+import levels from '../../assets/images/work/the-life-of-our-lord/levels.webp';
+import adaptation from '../../assets/images/work/the-life-of-our-lord/adaptation.webp';
+import productionFlow from '../../assets/images/work/the-life-of-our-lord/production-flow.webp';
+
 ## 배경
 
 디킨스 원작의 영화 『King of Kings』가 2025년 7월 국내 개봉을 앞두고 있었습니다.
@@ -36,6 +46,8 @@ promotedFromLab: null
 
 - '기생충'을 넘은 북미 흥행 · 국내 개봉 2025.07 · 시사회 호평
 - 퍼블릭 도메인 원작 · 라이선스 비용 0원
+
+<FigureGroup items={[{ src: moviePoster, alt: "영화 King of Kings 포스터" }, { src: dickens, alt: "찰스 디킨스 원작 The Life of Our Lord 표지와 초상" }]} />
 
 ## 문제 정의
 
@@ -60,6 +72,8 @@ promotedFromLab: null
 - **어린이 시리즈 11권.** 같은 장면을 초급 · 중급 · 고급 3단계로
 - **청소년 · 성인 EPUB.** 19세기 원문을 현대 영어로 각색
 
+<FigureGroup items={[{ src: levels, alt: "같은 장면의 초급·중급·고급 문장" }, { src: adaptation, alt: "디킨스 원문과 현대 영어 각색 비교" }]} caption="독자별 상품 2종 · 수준별 문장과 현대 영어 각색" />
+
 제작은 AI 제작 플로우에 맡기고, 아낀 시간으로 판매 채널 5곳을 직접 열었습니다.
 
 1. Claude · 수준별로 다시 쓰기 (3단계 원고 × 11권)
@@ -67,6 +81,8 @@ promotedFromLab: null
 3. AI TTS · 한 · 영 내레이션 (성우 없이 녹음)
 4. 직접 만든 툴 · 음성 EPUB (문장마다 글 + 소리)
 5. READING & · 앱에 올리기 (수준별로 글 바꿔 보기)
+
+<Figure src={productionFlow} alt="제작. AI 제작 플로우 5단계(Claude · OpenArt · AI TTS · 직접 만든 툴 · READING &) → 외주 4곳·수개월에서 1명·약 2개월로" caption="제작. AI 제작 플로우로 외주 4곳·수개월 → 1명 · 약 2개월" />
 
 외주였다면 작가 · 일러스트 · 성우 · EPUB 4곳 · 수개월이 걸렸을 일을 1명 · 약 2개월로 줄였습니다.
 
@@ -79,6 +95,8 @@ promotedFromLab: null
 ## 결과
 
 판매 채널 5곳에서 투입 비용의 25배 매출을 냈습니다.
+
+<BarCompare rows={[{ label: "투입 비용", segments: [{ value: 4, text: "4" }] }, { label: "매출", segments: [{ value: 100, text: "100", accent: true }] }]} note="매출을 100으로 볼 때 · 투입 비용 = 광고비 + AI 도구 구독료 (인건비 제외)" />
 
 - **ROI 2,400%** 광고비 + AI 구독료 대비 · 인건비 제외 · 출시 후 추가 광고 없이 판매
 - **1명이 제작.** 외주 없이 약 2개월에 12권 출간

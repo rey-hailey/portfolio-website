@@ -19,8 +19,8 @@ metrics:
   - label: 판매 1건당 발생 매출 · 기존 상품 대비
     value: 약 14배
     note: ''
-thumbnail: ../../assets/images/work/orc-laura/thumbnail.png
-thumbnailAlt: ORC × LAURA 포트폴리오 표지
+thumbnail: ../../assets/images/work/orc-laura/thumb.webp
+thumbnailAlt: LAURA와 음식 주제로 대화하는 레슨 화면
 tags:
   - 글로벌 B2B
   - 파트너십
@@ -28,6 +28,21 @@ order: 2
 featured: true
 promotedFromLab: null
 ---
+
+
+import Figure from '../../components/media/Figure.astro';
+import FigureGroup from '../../components/media/FigureGroup.astro';
+import BarCompare from '../../components/media/BarCompare.astro';
+import textbook from '../../assets/images/work/orc-laura/textbook.webp';
+import goalBox from '../../assets/images/work/orc-laura/goal-box.webp';
+import lessonStart from '../../assets/images/work/orc-laura/lesson-start.webp';
+import gettingStarted from '../../assets/images/work/orc-laura/getting-started.webp';
+import practice1 from '../../assets/images/work/orc-laura/practice1.webp';
+import practice2 from '../../assets/images/work/orc-laura/practice2.webp';
+import cms from '../../assets/images/work/orc-laura/cms.webp';
+import contractSoc2 from '../../assets/images/work/orc-laura/contract-soc2.webp';
+import oupPage from '../../assets/images/work/orc-laura/oup-page.webp';
+import webinar from '../../assets/images/work/orc-laura/webinar.webp';
 
 ## 배경
 
@@ -37,10 +52,14 @@ LAURA를 먼저 시연하자 OUP Japan이 ORC 적용을 요청했습니다.
 - 해외 매출 구성 · 2025 상반기 · 출시 10년이 넘은 OLB 한곳에 기대는 구조
 - 해외 매출 = OUP가 OLB · ORC · BRC를 팔수록 함께 늘어나는 아이포트폴리오의 매출
 
+<BarCompare title="해외 매출 구성 · 2025 상반기" rows={[{ segments: [{ value: 61, text: "OLB 61%", accent: true }, { value: 39, text: "ORC · BRC 등 39%" }] }]} />
+
 ## 문제 정의
 
 영업은 교과서를 파는데, ORC엔 교과서 상품이 없었습니다.
 OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 상품은 디지털 리딩 패키지(책 1,000권) 하나뿐이었습니다.
+
+<Figure src={textbook} alt="Let's Go 5th Edition 교재 6권 표지" caption="Let's Go 5th Edition 교재 6권 표지" maxWidth={530} />
 
 교과서에 붙이려면 세 개의 벽을 먼저 넘어야 했습니다.
 
@@ -54,6 +73,8 @@ OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 
 
 검증 지표 · 판매 1건당 발생 매출 · ORC 매출
 
+<Figure src={goalBox} alt="목표. ORC를 교과서까지 담는 플랫폼으로: As-is 원서 뷰어 → To-be 교과서 + 3단계 학습 + LAURA" caption="목표. ORC를 교과서까지 담는 플랫폼으로" />
+
 ## 실행
 
 학습법 · 플랫폼 · 계약을 하나씩 풀어 OUP 첫 AI 학습 상품을 출시했습니다.
@@ -62,14 +83,24 @@ OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 
 2. **플랫폼.** 교과서를 담도록 재설계했습니다. 원서 뷰어 → 원서 뷰어 + 교과서 뷰어
 3. **계약.** OUP가 요구한 SOC 2 대신 ISO 27001을 역제안해 합의하고 인증을 취득했습니다. AI 사용 비용을 반영한 수익 배분 구조와 공급가를 협상했습니다.
 
+<FigureGroup cols={4} items={[{ src: lessonStart, alt: "레슨 시작 화면: 3단계 아이콘, LAURA Report, START" }, { src: gettingStarted, alt: "Getting Started 어휘 카드: me, It's me." }, { src: practice1, alt: "Practice 1 Say the word: 음절·음소별 발음 점수 분석" }, { src: practice2, alt: "Practice 2 Roleplay: LAURA와 대화, Hint, Scenario" }]} caption="① 학습법 · 레슨 3단계 화면" />
+
+<Figure src={cms} alt="CMS 화면 설계서: 콜렉션 목록·상세, 도서 상세 Unit Activity, Unit 추가 팝업" caption="② 플랫폼 · CMS 화면 설계서" />
+
+<Figure src={contractSoc2} alt="계약: OUP가 요구한 SOC 2 → 역제안 → ISO 27001 합의" caption="③ 계약 · SOC 2 → ISO 27001" />
+
 ## 결과
 
 객단가가 높은 신규 상품이 판매 건수 1.8%만으로 ORC 전체 매출의 21%를 차지했습니다.
+
+<BarCompare rows={[{ label: "판매 건수", segments: [{ value: 98.2, text: "기존 98.2%" }, { value: 1.8, text: "새 상품 1.8%", accent: true }] }, { label: "매출", segments: [{ value: 79, text: "기존 79%" }, { value: 21, text: "새 상품 21%", accent: true }] }]} />
 
 - **판매 1건당 발생 매출** 기존 상품 대비 약 14배
 - **ORC 매출** 전년 동기 대비 +40%
 - OLB 매출이 42% 줄었지만, ORC · BRC가 늘어 해외 매출 전체 감소를 −9%로 줄였습니다
 - **확장.** 2024.07 Let's Go with LAURA(교과서 6권 · 활동 192개) → 2026.06 LAURA for Readers(도서 201권 · LAURA 활동 5종 탑재), 한국 역수출(한국 런칭 웨비나 · 2026.07.09)
+
+<FigureGroup items={[{ src: oupPage, alt: "OUP 공식 사이트의 LAURA 판매 페이지: Meet LAURA, Buy, free trial" }, { src: webinar, alt: "Let's Go × LAURA 한국 런칭 웨비나 포스터 상단: AI로 완성하는 코스북 수업" }]} />
 
 2026 상반기 매출 분석 기준
 

@@ -40,7 +40,9 @@ const jsonLd = [
         <p class="text-h3 text-ink-muted break-keep">{d.summary}</p>
       </header>
       <WorkSummary company={d.company} isAnonymized={d.isAnonymized} role={d.role} period={d.period} team={d.team} metrics={d.metrics} />
-      <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[600, 1200]} sizes="(min-width: 1200px) 1200px, 100vw" class="h-auto w-full" transition:name={`work-thumb-${work.id}`} />
+      <div class="thumb-frame">
+        <Image src={d.thumbnail} alt={d.thumbnailAlt} widths={[600, 1200]} sizes="(min-width: 1200px) 1024px, 100vw" class="thumb-frame-img" transition:name={`work-thumb-${work.id}`} />
+      </div>
       <div class="mdx-body max-w-prose">
         <Content />
       </div>
