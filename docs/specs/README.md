@@ -36,6 +36,7 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 09 | seo-geo | 메타, OG 이미지, JSON-LD(Lab은 SoftwareApplication 또는 CreativeWork), sitemap, llms.txt | Done (도메인 SITE_URL은 10-launch) | `docs/specs/09-seo-geo/requirements.md` | `docs/specs/09-seo-geo/design.md` | `.omo/plans/09-seo-geo.md` |
 | 10 | launch | Vercel 배포, 도메인, 분석, 최종 QA | Draft (미작성) | `docs/specs/10-launch/requirements.md` | `docs/specs/10-launch/design.md` | `.omo/plans/10-launch.md` |
 | 11 | design-polish | 타이포·섹션 리듬·헤더 거동·카드 상호작용·View Transitions·상세 목차·카운트업 | Draft | `docs/specs/11-design-polish/requirements.md` | `docs/specs/11-design-polish/design.md` | `.omo/plans/11-design-polish.md` |
+| 12 | case-visuals | 원본 덱 화면·도식을 케이스/홈/About/Lab/추가 사례에 배치, 미디어 컴포넌트, 썸네일 교체 | Done | `docs/specs/12-case-visuals/requirements.md` | `docs/specs/12-case-visuals/design.md` | 위임 단건(계획 없음) |
 
 ## Requirement ID 접두어
 
@@ -52,3 +53,4 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 09-seo-geo | `SEO` |
 | 10-launch | `LCH` |
 | 11-design-polish | `DSP` |
+| 12-case-visuals | `CVS` |
