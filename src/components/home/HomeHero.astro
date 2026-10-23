@@ -1,16 +1,18 @@
 ---
-// HOME-R01·R03·R04: 히어로 = 직함 + 포지셔닝(H1) + 설명(문제의식 통합) + 핵심 성과 + CTA
+// HOME-R01·R03·R04 + 14-hire-readability (HIR-R04): 히어로 = 직함 + 포지셔닝(H1) + 설명(문제의식 통합) + 핵심 성과(각 숫자 → 근거 케이스 링크) + CTA
 interface Props {
   title: string;
   headline: string;
   subhead: string;
-  metrics: { value: string; label: string }[];
+  metrics: { value: string; label: string; href?: string | null | undefined }[];
 }
 const { title, headline, subhead, metrics } = Astro.props;
 // DSP-R01: 데스크톱만 의미 단위 줄바꿈(br은 md 이상에서만 보임), 모바일은 자동 줄바꿈
 const headlineHtml = headline
   .replace('만들고, ', '만들고, <br class="hidden md:inline" />')
   .replace('키운 ', '키운 <br class="hidden md:inline" />');
+// DSP-R08 카운트업은 숫자로 시작하는 값에만 (예: "1명 · 약 2개월"은 0→1 애니메이션이 어색하다)
+const countable = (v: string) => /^[+\-−]?\d/.test(v);
 ---
 
 <section class="flex flex-col gap-8 pt-6 pb-16 md:pt-10 md:pb-28">
@@ -21,14 +23,27 @@ const headlineHtml = headline
   </div>
   <ul class="grid grid-cols-2 gap-x-8 gap-y-6 border-t border-ink-line pt-8 md:grid-cols-4">
     {
-      metrics.map((m) => (
-        <li class="flex flex-col gap-1" data-testid="home-metric">
-          <span class="font-display text-h2 font-semibold whitespace-nowrap text-accent" data-testid="home-metric-value" data-count-up>
-            {m.value}
-          </span>
-          <span class="text-small text-ink-muted break-keep">{m.label}</span>
-        </li>
-      ))
+      metrics.map((m) => {
+        const inner = (
+          <>
+            <span class="font-display text-h2 font-semibold whitespace-nowrap text-accent" data-testid="home-metric-value" data-count-up={countable(m.value) ? '' : undefined}>
+              {m.value}
+            </span>
+            <span class="text-small text-ink-muted break-keep">{m.label}</span>
+          </>
+        );
+        return (
+          <li class="flex flex-col gap-1" data-testid="home-metric">
+            {m.href ? (
+              <a href={m.href} class="flex flex-col gap-1 text-ink no-underline" data-testid="home-metric-link">
+                {inner}
+              </a>
+            ) : (
+              inner
+            )}
+          </li>
+        );
+      })
     }
   </ul>
   <div class="flex flex-wrap items-center gap-4">

@@ -11,6 +11,8 @@ import WorkingStyle from '../components/home/WorkingStyle.astro';
 import { site } from '../config/site';
 import { getPublished } from '../lib/content';
 import { evidenceHref, selectFeaturedWorks } from '../lib/home';
+import { glanceBySlug } from '../data/work-glance';
+import { evidenceBySlug } from '../data/home-evidence';
 import { personLd, webSiteLd } from '../lib/seo';
 
 const about = await getEntry('about', 'index');
@@ -18,6 +20,8 @@ const home = await getEntry('home', 'index');
 if (!about || !home) throw new Error('about 또는 home 문서가 없다');
 const works = await getPublished('work');
 const workSlugs = new Set(works.map((w) => w.id));
+// HIR-R02·R04: 강점·히어로 숫자의 근거는 공개 케이스 metrics[0]
+const metricOf = (slug: string | null | undefined) => works.find((w) => w.id === slug)?.data.metrics[0];
 const siteUrl = Astro.site?.href ?? 'http://localhost:4321';
 const jsonLd = [
   webSiteLd({ name: site.name, url: siteUrl }),
@@ -27,16 +31,30 @@ const jsonLd = [
 
 <BaseLayout title={site.name} description={about.data.headline} jsonLd={jsonLd}>
   <HomeHero
-    title="AI Product Manager · Global Project Manager"
+    title="AI Product Manager · 에듀테크 · 글로벌 B2B"
     headline={about.data.headline}
     subhead={home.data.problem}
     metrics={home.data.metrics}
   />
   <FeaturedWork
-    works={selectFeaturedWorks(works).map((w) => ({ slug: w.id, title: w.data.title, summary: w.data.summary, thumbnail: w.data.thumbnail, thumbnailAlt: w.data.thumbnailAlt }))}
+    works={selectFeaturedWorks(works).map((w) => ({
+      slug: w.id,
+      title: w.data.title,
+      summary: w.data.summary,
+      thumbnail: w.data.thumbnail,
+      thumbnailAlt: w.data.thumbnailAlt,
+      glance: glanceBySlug(w.id),
+      metric: w.data.metrics[0],
+    }))}
   />
   <StrengthList
-    strengths={about.data.strengths.map((s) => ({ ...s, href: evidenceHref(s.evidence, workSlugs, new Set<string>()) }))}
+    strengths={about.data.strengths.map((s) => ({
+      title: s.title,
+      description: s.description,
+      href: evidenceHref(s.evidence, workSlugs, new Set<string>()),
+      quote: evidenceBySlug(s.evidence)?.quote,
+      metric: metricOf(s.evidence),
+    }))}
   />
   <WorkingStyle items={about.data.workingStyle} />
   <CareerSummary career={about.data.career} />
