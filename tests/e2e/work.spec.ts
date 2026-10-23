@@ -60,6 +60,9 @@ for (const slug of SLUGS) {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`/work/${slug}`);
     const glance = page.getByTestId('work-glance');
+    // HIR-R05: 결과 그림은 본문 폭, 큰 썸네일은 상세에 없다
+    expect((await glance.locator('figure').boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(680);
+    await expect(page.locator('article > .thumb-frame')).toHaveCount(0);
     for (const field of ['problem', 'action', 'result']) {
       const row = glance.locator(`[data-field="${field}"]`);
       await expect(row).toBeInViewport();
