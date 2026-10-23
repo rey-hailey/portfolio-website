@@ -506,8 +506,12 @@
     display: flex;
     align-items: center;
     gap: calc(var(--spacing) * 2);
+    width: 100%;
   }
+  /* 좁은 칸(320px 1열, 768px 3열)에서는 3장이 칸 폭을 1/3씩 넘지 않고 contain으로 줄어든다 (FND-R10) */
   .strength-lang {
+    min-width: 0;
+    max-width: calc((100% - var(--spacing) * 4) / 3);
     height: calc(var(--spacing) * 18);
     width: auto;
     object-fit: contain;
