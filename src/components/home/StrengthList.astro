@@ -1,9 +1,21 @@
 ---
-// HOME-R02: 강점 3개. href는 근거 콘텐츠가 공개된 경우에만 넘어온다
+// HOME-R02 + 12-case-visuals: 강점 3개. 각 카드 위 시각 자료는 index 순서로 매핑(about 스키마는 건드리지 않는다). href는 근거 콘텐츠가 공개된 경우에만 넘어온다
+import { Image } from 'astro:assets';
+import emotions from '../../assets/images/home/strengths/emotions.webp';
+import logoOrc from '../../assets/images/home/strengths/logo-orc.webp';
+import logoBrc from '../../assets/images/home/strengths/logo-brc.webp';
+import logoOlb from '../../assets/images/home/strengths/logo-olb.webp';
+import actsTts from '../../assets/images/home/strengths/acts-tts.webp';
+
 interface Props {
   strengths: { title: string; description: string; href?: string | undefined }[];
 }
 const { strengths } = Astro.props;
+const partnerLogos = [
+  { src: logoOrc, alt: 'Oxford Reading Club 로고' },
+  { src: logoBrc, alt: 'Big Reading Club 로고' },
+  { src: logoOlb, alt: "Oxford Learner's Bookshelf 로고" },
+];
 ---
 
 <section aria-labelledby="home-strengths" class="border-t border-ink-line py-16 md:py-32" data-reveal>
@@ -13,6 +25,17 @@ const { strengths } = Astro.props;
     {
       strengths.map((s, i) => (
         <li class="flex flex-col gap-3">
+          <div class="strength-visual">
+            {i === 0 && <Image src={emotions} alt="Coco의 6가지 표정" widths={[320, 640]} sizes="(min-width:768px) 320px, 100vw" class="strength-visual-img" loading="lazy" />}
+            {i === 1 && (
+              <div class="strength-logos">
+                {partnerLogos.map((l) => (
+                  <Image src={l.src} alt={l.alt} widths={[l.src.width]} sizes="160px" class="strength-logo" loading="lazy" />
+                ))}
+              </div>
+            )}
+            {i === 2 && <Image src={actsTts} alt="직접 만든 ACTS TTS Studio 화면: 낭독 지시문, 언어·억양 선택, 캐릭터별 성우 프리셋" widths={[320, 640]} sizes="(min-width:768px) 320px, 100vw" class="strength-visual-img" loading="lazy" />}
+          </div>
           <span class="font-display text-small text-accent">{String(i + 1).padStart(2, '0')}</span>
           <h3 class="text-h3 font-semibold break-keep">{s.title}</h3>
           <p class="text-ink-muted break-keep">{s.description}</p>

@@ -1,7 +1,10 @@
 ---
-// HOME-R05: 대표 Work 최대 3개. 없으면 렌더링하지 않는다
+// HOME-R05 + 12-case-visuals: 대표 Work 최대 3개 (제품 화면 썸네일 포함, 4:3 contain). 없으면 렌더링하지 않는다
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
-  works: { slug: string; title: string; summary: string }[];
+  works: { slug: string; title: string; summary: string; thumbnail: ImageMetadata; thumbnailAlt: string }[];
 }
 const { works } = Astro.props;
 ---
@@ -14,11 +17,18 @@ const { works } = Astro.props;
       <ol class="mt-12 flex flex-col">
         {works.map((w, i) => (
           <li class="border-t border-ink-line">
-            <a href={`/work/${w.slug}`} class="flex flex-col gap-2 py-8 text-ink no-underline md:flex-row md:gap-12">
-              <span class="font-display text-h2 text-accent">{String(i + 1).padStart(2, '0')}</span>
-              <span class="flex flex-col gap-2">
-                <span class="text-h3 font-semibold break-keep">{w.title} <span class="text-accent" aria-hidden="true">↗</span></span>
-                <span class="text-ink-muted break-keep">{w.summary}</span>
+            <a href={`/work/${w.slug}`} class="flex flex-col gap-4 py-8 text-ink no-underline md:flex-row-reverse md:items-center md:gap-10">
+              <div class="thumb-frame w-full shrink-0 md:w-60">
+                <Image src={w.thumbnail} alt={w.thumbnailAlt} widths={[240, 480]} sizes="(min-width:768px) 240px, 100vw" class="thumb-frame-img" loading="lazy" />
+              </div>
+              <span class="flex flex-1 flex-col gap-2 md:flex-row md:gap-12">
+                <span class="font-display text-h2 text-accent">{String(i + 1).padStart(2, '0')}</span>
+                <span class="flex flex-col gap-2">
+                  <span class="text-h3 font-semibold break-keep">
+                    {w.title} <span class="text-accent" aria-hidden="true">↗</span>
+                  </span>
+                  <span class="text-ink-muted break-keep">{w.summary}</span>
+                </span>
               </span>
             </a>
           </li>

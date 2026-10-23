@@ -11,10 +11,11 @@ const render = async (component: Parameters<experimental_AstroContainer['renderT
 
 describe('FeaturedWork', () => {
   it('2개면 카드 2개와 /work 링크, 번호 01·02', async () => {
+    const thumb = { src: '/thumb.png', width: 400, height: 300, format: 'png' } as const;
     const html = await render(FeaturedWork, {
       works: [
-        { slug: 'a', title: 'A', summary: 'sa' },
-        { slug: 'b', title: 'B', summary: 'sb' },
+        { slug: 'a', title: 'A', summary: 'sa', thumbnail: thumb, thumbnailAlt: 'thumb a' },
+        { slug: 'b', title: 'B', summary: 'sb', thumbnail: thumb, thumbnailAlt: 'thumb b' },
       ],
     });
     expect(html.match(/href="\/work\/[ab]"/g)).toHaveLength(2);

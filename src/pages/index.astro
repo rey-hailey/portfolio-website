@@ -33,7 +33,7 @@ const jsonLd = [
     metrics={home.data.metrics}
   />
   <FeaturedWork
-    works={selectFeaturedWorks(works).map((w) => ({ slug: w.id, title: w.data.title, summary: w.data.summary }))}
+    works={selectFeaturedWorks(works).map((w) => ({ slug: w.id, title: w.data.title, summary: w.data.summary, thumbnail: w.data.thumbnail, thumbnailAlt: w.data.thumbnailAlt }))}
   />
   <StrengthList
     strengths={about.data.strengths.map((s) => ({ ...s, href: evidenceHref(s.evidence, workSlugs, new Set<string>()) }))}
