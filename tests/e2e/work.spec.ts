@@ -81,6 +81,41 @@ for (const slug of SLUGS) {
   });
 }
 
+// 15-visual-rhythm
+for (const slug of SLUGS) {
+  test(`상세 ${slug}: 그림 상자 폭은 680·864 둘뿐, 틀 묶음은 높이 같음, 스트립 버튼 (VIS-R01, R02, R04)`, async ({ page }, info) => {
+    test.skip(info.project.name !== 'desktop', '1440 기준 실측');
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`/work/${slug}`);
+    const widths = await page.locator('.mdx-body > figure').evaluateAll((els) => [...new Set(els.map((el) => Math.round(el.getBoundingClientRect().width)))].sort());
+    for (const w of widths) expect([680, 864], `figure 상자 폭 ${widths}`).toContain(w);
+    for (const group of await page.locator('.media-group--framed').all()) {
+      const hs = await group.locator('.media-trigger').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
+      expect(Math.max(...hs) - Math.min(...hs)).toBeLessThanOrEqual(2);
+    }
+    for (const strip of await page.locator('[data-strip]').all()) {
+      await strip.scrollIntoViewIfNeeded();
+      const n = await strip.locator('[data-strip-slide]').count();
+      expect(n).toBeGreaterThanOrEqual(3);
+      const slideWidth = (await strip.locator('[data-strip-slide] .media-trigger img').first().boundingBox())!.width;
+      expect(slideWidth).toBeGreaterThanOrEqual(400);
+      await expect(strip.locator('[data-strip-prev]')).toBeDisabled();
+      for (let i = 0; i < n; i += 1) await strip.locator('[data-strip-next]').click({ force: true });
+      await expect(strip.locator('[data-strip-count]')).toHaveText(`${n} / ${n}`);
+      await expect(strip.locator('[data-strip-next]')).toBeDisabled();
+    }
+  });
+}
+
+test('LAURA 개선 전·후: 개선 후 한 장이 개선 전 한 장보다 크다 (VIS-R03 AC1)', async ({ page }) => {
+  await page.goto('/work/laura');
+  const ba = page.locator('.media-ba').first();
+  await ba.scrollIntoViewIfNeeded();
+  const before = (await ba.locator('[data-ba-row="before"] .media-trigger img').first().boundingBox())!.width;
+  const after = (await ba.locator('[data-ba-row="after"] .media-trigger img').first().boundingBox())!.width;
+  expect(after).toBeGreaterThan(before);
+});
+
 test('목록 추가 사례: BRC·OLB 구조도는 썸네일이 아니라 펼침 안에 있다 (WRR-R07 AC1)', async ({ page }) => {
   await page.goto('/work');
   const cards = page.locator('.brief-card');
