@@ -1,0 +1,31 @@
+---
+// 16-case-diagrams (DGM-R04·R06): 번호 있는 단계. dir="row"는 데스크톱 가로(모바일 세로), "col"은 항상 세로. on = 강조 단계.
+interface Step {
+  kicker: string;
+  title: string;
+  text?: string | undefined;
+  on?: boolean | undefined;
+}
+interface Props {
+  steps: Step[];
+  dir?: 'row' | 'col' | undefined;
+  caption?: string | undefined;
+  wide?: boolean | undefined;
+}
+const { steps, dir = 'row', caption, wide = false } = Astro.props;
+---
+
+<figure class:list={['dgm dgm-steps not-prose', `dgm-steps--${dir}`, wide && 'media-wide']}>
+  <ol class="dgm-steps-list" style={dir === 'row' ? `--steps:${steps.length}` : undefined}>
+    {
+      steps.map((s) => (
+        <li class:list={['dgm-step', s.on && 'dgm-step--on']}>
+          <span class="dgm-step-kicker">{s.kicker}</span>
+          <span class="dgm-step-title break-keep">{s.title}</span>
+          {s.text && <span class="dgm-step-text break-keep">{s.text}</span>}
+        </li>
+      ))
+    }
+  </ol>
+  {caption && <figcaption class="media-caption">{caption}</figcaption>}
+</figure>

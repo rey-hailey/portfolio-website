@@ -1,0 +1,27 @@
+---
+// 16-case-diagrams (DGM-R01): 케이스 본문 H2 위 단계 칩. MDX components={{ h2: CaseH2 }}로 쓴다.
+// 6단계는 WRK-R02 고정 구조, id는 MDX가 만든 slug(github-slugger)와 같다. H2 자체(문구·순서·id)는 그대로 둔다.
+interface Props {
+  id?: string;
+}
+const { id } = Astro.props;
+const STEPS = ['배경', '문제 정의', '가설', '실행', '결과', '회고'].map((name) => ({ name, id: name.replace(/\s+/g, '-') }));
+const isStep = STEPS.some((s) => s.id === id);
+---
+
+{
+  isStep && (
+    <nav class="dgm dgm-phases not-prose" aria-label="케이스 단계">
+      <ol>
+        {STEPS.map((s) => (
+          <li>
+            <a href={`#${s.id}`} aria-current={s.id === id ? 'step' : undefined}>
+              {s.name}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+<h2 id={id}><slot /></h2>

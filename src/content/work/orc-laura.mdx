@@ -34,13 +34,14 @@ import Figure from '../../components/media/Figure.astro';
 import FigureGroup from '../../components/media/FigureGroup.astro';
 import MediaStrip from '../../components/media/MediaStrip.astro';
 import BarCompare from '../../components/media/BarCompare.astro';
+import CauseTable from '../../components/diagram/CauseTable.astro';
+import CompareCards from '../../components/diagram/CompareCards.astro';
+import StepList from '../../components/diagram/StepList.astro';
 import textbook from '../../assets/images/work/orc-laura/textbook.webp';
-import goalBox from '../../assets/images/work/orc-laura/goal-box.webp';
 import lessonStart from '../../assets/images/work/orc-laura/lesson-start.webp';
 import gettingStarted from '../../assets/images/work/orc-laura/getting-started.webp';
 import practice1 from '../../assets/images/work/orc-laura/practice1.webp';
 import practice2 from '../../assets/images/work/orc-laura/practice2.webp';
-import contractSoc2 from '../../assets/images/work/orc-laura/contract-soc2.webp';
 import oupPage from '../../assets/images/work/orc-laura/oup-page.webp';
 import webinar from '../../assets/images/work/orc-laura/webinar.webp';
 
@@ -61,11 +62,11 @@ OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 
 
 <Figure src={textbook} alt="Let's Go 5th Edition 교재 6권 표지" caption="Let's Go 5th Edition 교재 6권 표지" maxWidth={530} plain />
 
-교과서에 붙이려면 세 개의 벽을 먼저 넘어야 했습니다.
-
-- **학습법.** 전자책화만으론 부가가치가 없음 → 종이책 대신 살 이유가 없음
-- **플랫폼.** 새 포맷(교과서)을 지원할 설계가 없음 → 영업이 들고 갈 상품이 없음
-- **계약.** OUP가 SOC 2 요구 (약 1년 · 고비용) → 출시 1년 지연 · 비용은 우리 몫
+<CauseTable caption="교과서에 붙이려면 세 개의 벽을 먼저 넘어야 했습니다." columns={["벽", "막혀 있던 것", "그래서", "어떻게 넘었나 (HOW)"]} rows={[
+  { head: "학습법", cells: ["전자책화만으론 부가가치가 없음", "종이책 대신 살 이유가 없음", "① 레슨마다 3단계 학습 + LAURA 대화"] },
+  { head: "플랫폼", cells: ["새 포맷(교과서)을 지원할 설계가 없음", "영업이 들고 갈 상품이 없음", "② 교과서 뷰어 · CMS · LMS 재설계"] },
+  { head: "계약", cells: ["OUP가 SOC 2 요구 (약 1년 · 고비용)", "출시 1년 지연 · 비용은 우리 몫", "③ ISO 27001 역제안 · 수익 배분 협상"] },
+]} />
 
 ## 가설
 
@@ -73,7 +74,18 @@ OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 
 
 검증 지표 · 판매 1건당 발생 매출 · ORC 매출
 
-<Figure src={goalBox} alt="목표. ORC를 교과서까지 담는 플랫폼으로: As-is 원서 뷰어 → To-be 교과서 + 3단계 학습 + LAURA" caption="목표. ORC를 교과서까지 담는 플랫폼으로" plain wide />
+<CompareCards caption="목표 · ORC를 교과서까지 담는 플랫폼으로"
+  before={{ label: "As-is · ORC", items: [
+    { k: "뷰어", text: "원서 뷰어" },
+    { k: "상품", text: "디지털 리딩 패키지(1,000권)" },
+    { k: "교과서 · AI", text: "없음" },
+  ] }}
+  after={{ label: "To-be · ORC", title: "→ OUP Japan 영업이 교과서와 함께 팔 수 있는 AI 상품", items: [
+    { k: "뷰어", text: "원서 뷰어 + 교과서 뷰어" },
+    { k: "상품", text: "디지털 리딩 패키지(1,000권)" },
+    { k: "교과서 · AI", text: "교과서 + 3단계 학습 + LAURA", on: true },
+  ] }}
+/>
 
 ## 실행
 
@@ -85,7 +97,11 @@ OUP Japan은 학교·학원에 교과서를 파는 B2B 영업 조직이고, ORC 
 
 <MediaStrip wide steps={[{ label: "레슨 시작", src: lessonStart, alt: "레슨 시작 화면: 3단계 아이콘, LAURA Report, START" }, { label: "Getting Started", src: gettingStarted, alt: "Getting Started 어휘 카드: me, It's me." }, { label: "Practice 1", src: practice1, alt: "Practice 1 Say the word: 음절·음소별 발음 점수 분석" }, { label: "Practice 2", src: practice2, alt: "Practice 2 Roleplay: LAURA와 대화, Hint, Scenario" }]} caption="① 학습법 · 레슨 3단계 화면" />
 
-<Figure src={contractSoc2} alt="계약: OUP가 요구한 SOC 2 → 역제안 → ISO 27001 합의" caption="계약 · SOC 2 → ISO 27001" plain />
+<StepList dir="col" caption="계약 · SOC 2 → ISO 27001" steps={[
+  { kicker: "OUP 요구", title: "SOC 2 · 준비 약 1년 · 고비용" },
+  { kicker: "↓ 역제안", title: "SOC 2의 과도한 비용 · 준비 기간을 근거로 대안 제시" },
+  { kicker: "합의 · 인증 취득", title: "ISO 27001", text: "CREST 침투 테스트는 OUP 요구로 별도 진행", on: true },
+]} />
 
 ## 결과
 

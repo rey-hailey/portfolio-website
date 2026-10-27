@@ -33,11 +33,13 @@ promotedFromLab: null
 import Figure from '../../components/media/Figure.astro';
 import FigureGroup from '../../components/media/FigureGroup.astro';
 import BarCompare from '../../components/media/BarCompare.astro';
+import CauseTable from '../../components/diagram/CauseTable.astro';
+import CompareCards from '../../components/diagram/CompareCards.astro';
+import StepList from '../../components/diagram/StepList.astro';
 import moviePoster from '../../assets/images/work/the-life-of-our-lord/movie-poster.webp';
 import dickens from '../../assets/images/work/the-life-of-our-lord/dickens.webp';
 import levels from '../../assets/images/work/the-life-of-our-lord/levels.webp';
 import adaptation from '../../assets/images/work/the-life-of-our-lord/adaptation.webp';
-import productionFlow from '../../assets/images/work/the-life-of-our-lord/production-flow.webp';
 
 ## 배경
 
@@ -61,9 +63,11 @@ import productionFlow from '../../assets/images/work/the-life-of-our-lord/produc
 
 세 가지 걸림돌에 각각 해법을 정했습니다. 목표는 적은 비용으로 높은 ROI입니다.
 
-- 제작 → AI로 1명이 제작
-- 독자 → 독자별 상품으로 나눔
-- 예산 → 아낀 시간으로 여러 채널에 판매
+<CauseTable caption="전략 · 세 가지 걸림돌에 각각 해법을 정했습니다" columns={["", "걸림돌", "해법"]} rows={[
+  { head: "제작", cells: ["외주로 만들면 수천만 원 · 수개월", "→ AI로 1명이 제작"] },
+  { head: "독자", cells: ["19세기 문체라 어린이가 읽기 어려움", "→ 독자별 상품으로 나눔"] },
+  { head: "예산", cells: ["주력 장르가 아니라 큰 예산을 받기 어려움", "→ 아낀 시간으로 여러 채널에 판매"] },
+]} />
 
 ## 실행
 
@@ -76,15 +80,18 @@ import productionFlow from '../../assets/images/work/the-life-of-our-lord/produc
 
 제작은 AI 제작 플로우에 맡기고, 아낀 시간으로 판매 채널 5곳을 직접 열었습니다.
 
-1. Claude · 수준별로 다시 쓰기 (3단계 원고 × 11권)
-2. OpenArt · 일러스트 (12권 같은 얼굴 · 화풍)
-3. AI TTS · 한 · 영 내레이션 (성우 없이 녹음)
-4. 직접 만든 툴 · 음성 EPUB (문장마다 글 + 소리)
-5. READING & · 앱에 올리기 (수준별로 글 바꿔 보기)
+<StepList wide caption="제작 · AI 제작 플로우를 직접 구성해 효율을 극대화했습니다" steps={[
+  { kicker: "STEP 1 · Claude", title: "수준별로 다시 쓰기", text: "3단계 원고 × 11권" },
+  { kicker: "STEP 2 · OpenArt", title: "일러스트", text: "12권 같은 얼굴 · 화풍" },
+  { kicker: "STEP 3 · AI TTS", title: "한 · 영 내레이션", text: "성우 없이 녹음" },
+  { kicker: "STEP 4 · 직접 만든 툴", title: "음성 EPUB", text: "문장마다 글 + 소리", on: true },
+  { kicker: "STEP 5 · READING &", title: "앱에 올리기", text: "수준별로 글 바꿔 보기" },
+]} />
 
-<Figure src={productionFlow} alt="제작. AI 제작 플로우 5단계(Claude · OpenArt · AI TTS · 직접 만든 툴 · READING &) → 외주 4곳·수개월에서 1명·약 2개월로" caption="제작. AI 제작 플로우로 외주 4곳·수개월 → 1명 · 약 2개월" plain wide />
-
-외주였다면 작가 · 일러스트 · 성우 · EPUB 4곳 · 수개월이 걸렸을 일을 1명 · 약 2개월로 줄였습니다.
+<CompareCards caption="외주였다면 작가 · 일러스트 · 성우 · EPUB 4곳 · 수개월이 걸렸을 일을 1명 · 약 2개월로 줄였습니다."
+  before={{ label: "외주로 만들었다면", title: "작가 · 일러스트 · 성우 · EPUB 4곳 · 수개월" }}
+  after={{ label: "AI 제작 플로우로", title: "1명 · 약 2개월" }}
+/>
 
 - **상품 설계.** 독자별 패키지 3종 · 단체 구매가
 - **직접 제안.** 국문 · 영문 제안서로 교회 · 기관 · 학원

@@ -1,0 +1,78 @@
+---
+// 16-case-diagrams (DGM-R02): 이미지가 아닌 HTML 흐름도. 흐름 N열(데스크톱) / 1열(모바일).
+// 노드 종류: base(공통 뼈대) · ai(활동별 AI 응답) · help(막혔을 때, 점선·들여쓰기) · judge(판단 ◇, N/Y 갈래) · end(완료)
+interface Branch {
+  label: 'N' | 'Y';
+  text: string;
+}
+interface FlowNode {
+  kind: 'base' | 'ai' | 'help' | 'judge' | 'end';
+  text: string;
+  sub?: string | undefined;
+  branches?: Branch[] | undefined;
+  loop?: string | undefined;
+}
+interface Flow {
+  title: string;
+  goal: string;
+  nodes: FlowNode[];
+}
+interface Props {
+  flows: Flow[];
+  caption?: string | undefined;
+}
+const { flows, caption } = Astro.props;
+const LEGEND = [
+  { kind: 'base', label: '공통 뼈대' },
+  { kind: 'ai', label: '활동별 AI 응답' },
+  { kind: 'help', label: 'Help (막혔을 때)' },
+  { kind: 'judge', label: '판단' },
+];
+---
+
+<figure class="dgm dgm-fc media-wide not-prose" data-flowchart>
+  <ul class="dgm-legend" aria-label="범례">
+    {
+      LEGEND.map((l) => (
+        <li>
+          <i class={`dgm-swatch dgm-swatch--${l.kind}`} aria-hidden="true" />
+          {l.label}
+        </li>
+      ))
+    }
+  </ul>
+  <div class="dgm-fc-cols" style={`--fc-cols:${flows.length}`}>
+    {
+      flows.map((f) => (
+        <section class="dgm-fc-flow" aria-label={`${f.title} 흐름`}>
+          <p class="dgm-fc-title">{f.title}</p>
+          <p class="dgm-fc-goal">{f.goal}</p>
+          <ol class="dgm-fc-nodes">
+            {f.nodes.map((n) => (
+              <li class={`dgm-fn dgm-fn--${n.kind}`}>
+                <span class="dgm-fn-text">
+                  {n.kind === 'judge' && <span class="dgm-sr">판단: </span>}
+                  {n.kind === 'help' && <span class="dgm-sr">Help: </span>}
+                  {n.text}
+                </span>
+                {n.sub && <span class="dgm-fn-sub">{n.sub}</span>}
+                {n.branches && (
+                  <dl class="dgm-fn-branches">
+                    {n.branches.map((b) => (
+                      <div class:list={['dgm-br', b.label === 'Y' && 'dgm-br--y']}>
+                        <dt>{b.label}</dt>
+                        <dd>{b.text}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+                {n.loop && <span class="dgm-loop">↺ {n.loop}</span>}
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
+  </div>
+  {caption && <figcaption class="media-caption">{caption}</figcaption>}
+</figure>

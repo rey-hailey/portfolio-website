@@ -1,0 +1,32 @@
+---
+// 16-case-diagrams (DGM-R05): 라벨 + 본문(+ 목록 · 근거) 카드 N개. 예: 문제 · 원인 · 액션
+interface Card {
+  label: string;
+  body?: string | undefined;
+  list?: string[] | undefined;
+  note?: string | undefined;
+}
+interface Props {
+  cards: Card[];
+}
+const { cards } = Astro.props;
+---
+
+<div class="dgm dgm-cards not-prose" style={`--cards:${cards.length}`}>
+  {
+    cards.map((c) => (
+      <section class="dgm-card" aria-label={c.label}>
+        <p class="dgm-card-label">{c.label}</p>
+        {c.body && <p class="dgm-card-body break-keep">{c.body}</p>}
+        {c.list && (
+          <ul class="dgm-card-list">
+            {c.list.map((li) => (
+              <li class="break-keep">{li}</li>
+            ))}
+          </ul>
+        )}
+        {c.note && <p class="dgm-card-note break-keep">{c.note}</p>}
+      </section>
+    ))
+  }
+</div>

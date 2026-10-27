@@ -1,0 +1,63 @@
+---
+// 16-case-diagrams (DGM-R04·R06·R07): As-is 카드(ink-fill) → To-be 카드(accent 테두리·accent-fill). 데스크톱 가로, 모바일 세로 + ↓.
+// 항목: k = 작은 라벨, text = 본문, mark = 앞 기호(✓ ✕ →), on = 바뀐 항목 강조
+interface Item {
+  k?: string | undefined;
+  text: string;
+  mark?: string | undefined;
+  on?: boolean | undefined;
+}
+interface Side {
+  label: string;
+  title?: string | undefined;
+  items?: Item[] | undefined;
+}
+interface Props {
+  before: Side;
+  after: Side;
+  caption?: string | undefined;
+}
+const { before, after, caption } = Astro.props;
+const sides = [
+  { ...before, key: 'before' },
+  { ...after, key: 'after' },
+];
+---
+
+<figure class="dgm dgm-cmp not-prose">
+  <div class="dgm-cmp-row">
+    {
+      sides.map((s, i) => (
+        <>
+          {i === 1 && (
+            <span class="dgm-cmp-arrow" aria-hidden="true">
+              →
+            </span>
+          )}
+          <section class={`dgm-cmp-card dgm-cmp-card--${s.key}`} aria-label={s.label} data-cmp={s.key}>
+            <p class="dgm-cmp-label">{s.label}</p>
+            {s.title && <p class="dgm-cmp-title">{s.title}</p>}
+            {s.items && (
+              <ul class="dgm-cmp-items">
+                {s.items.map((it) => (
+                  <li class:list={['dgm-cmp-item', it.on && 'dgm-cmp-item--on']}>
+                    {it.mark && (
+                      <span class="dgm-cmp-mark" aria-hidden="true">
+                        {it.mark}
+                      </span>
+                    )}
+                    <span>
+                      {it.k && <span class="dgm-cmp-k">{it.k}</span>}
+                      {it.text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </>
+      ))
+    }
+  </div>
+  {caption && <figcaption class="media-caption">{caption}</figcaption>}
+</figure>
