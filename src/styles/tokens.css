@@ -10,6 +10,8 @@
   --color-accent: #2F5BFF;
   --color-ink-muted: #5C5C5C;             /* 보조 텍스트. bg 대비 6.23:1 — tests/unit/contrast.test.ts로 확정 */
   --color-ink-line: rgb(26 26 26 / 0.12); /* 구분선 (텍스트 아님). ink 투명도 변형 */
+  --color-ink-fill: rgb(26 26 26 / 0.05);   /* 16-case-diagrams: 공통 노드·As-is 카드 채움. ink 투명도 변형, 위 글자는 ink */
+  --color-accent-fill: rgb(47 91 255 / 0.08); /* 16-case-diagrams: AI 노드·To-be 카드 채움. accent 투명도 변형, 위 글자는 ink만(accent 글자는 AA 미달) */
 
   --font-*: initial;
   --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
