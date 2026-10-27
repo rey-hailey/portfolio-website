@@ -36,10 +36,14 @@ import BeforeAfter from '../../components/media/BeforeAfter.astro';
 import MediaPair from '../../components/media/MediaPair.astro';
 import MediaStrip from '../../components/media/MediaStrip.astro';
 import BarCompare from '../../components/media/BarCompare.astro';
+import Flowchart from '../../components/diagram/Flowchart.astro';
+import InfoCards from '../../components/diagram/InfoCards.astro';
+import HypothesisResult from '../../components/diagram/HypothesisResult.astro';
+import CompareCards from '../../components/diagram/CompareCards.astro';
+import SystemDiagram from '../../components/diagram/SystemDiagram.astro';
 import reading5 from '../../assets/images/work/laura/reading-5step.webp';
 import chat from '../../assets/images/work/laura/chat.webp';
 import levels from '../../assets/images/work/laura/levels.webp';
-import activityFlow from '../../assets/images/work/laura/activity-flow.webp';
 import sentenceBefore1 from '../../assets/images/work/laura/sentence-before-1.webp';
 import sentenceBefore2 from '../../assets/images/work/laura/sentence-before-2.webp';
 import sentenceAfter1 from '../../assets/images/work/laura/sentence-after-1.webp';
@@ -54,9 +58,6 @@ import meetChild from '../../assets/images/work/laura/meet-child.webp';
 import meetCoco from '../../assets/images/work/laura/meet-coco.webp';
 import meetBye from '../../assets/images/work/laura/meet-bye.webp';
 import completionGraph from '../../assets/images/work/laura/completion-graph.svg';
-import memory1 from '../../assets/images/work/laura/memory-1.webp';
-import memory2 from '../../assets/images/work/laura/memory-2.webp';
-import memory3 from '../../assets/images/work/laura/memory-3.webp';
 
 ## 배경
 
@@ -99,7 +100,45 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 
 </MediaPair>
 
-<Figure src={activityFlow} alt="Role-play · Describe the Scene · Book Quiz 활동 흐름도" caption="같은 뼈대 위에 활동마다 다른 대화를 설계하고 구현했습니다" plain wide />
+진입 → 대화 → Help → 완료는 모든 활동에 공통입니다. 그 위에서 대화 · 반복 · Help · 완료 조건을 활동 목표에 맞게 다르게 설계했습니다. 아래는 활동 10종 중 목표가 뚜렷하게 다른 세 활동의 흐름입니다.
+
+<Flowchart caption="같은 뼈대 위에 활동마다 다른 대화를 설계하고 구현했습니다" flows={[
+  { title: "Role-play", goal: "도서 속 장면에서 역할을 맡아 대화", nodes: [
+    { kind: "base", text: "Start · 장면 · 역할 선택", sub: "역할 교체 가능" },
+    { kind: "ai", text: "캐릭터 메시지", sub: "LLM이 도서 속 장면을 바탕으로 캐릭터 역할 대화" },
+    { kind: "help", text: "Help · 모범 답변 제안", sub: "내 차례에 할 말의 예시" },
+    { kind: "base", text: "음성 입력" },
+    { kind: "judge", text: "마지막 메시지인가?", sub: "학생 5턴", branches: [{ label: "N", text: "캐릭터 메시지로 돌아가 대화를 이어 감" }, { label: "Y", text: "Finished" }], loop: "반복 루프 · 엉뚱한 말도 한 턴으로 세어 무한 반복 없음" },
+    { kind: "end", text: "Finished", sub: "마지막 메시지 · 학생 5턴" },
+    { kind: "end", text: "LAURA Report" },
+  ] },
+  { title: "Describe the Scene", goal: "그림을 보고 단어에서 문장으로", nodes: [
+    { kind: "base", text: "Start · 그림 선택", sub: "3장 중 1장" },
+    { kind: "ai", text: "열린 질문", sub: "\"What can you see?\"" },
+    { kind: "help", text: "Help · 문장 틀", sub: "I can see… · There are…" },
+    { kind: "base", text: "음성 입력" },
+    { kind: "ai", text: "칭찬 + 문장으로 확장", sub: "관련 없는 문장은 지적 없이 고쳐서 다시 말해 줌" },
+    { kind: "ai", text: "후속 질문", sub: "아이가 묘사한 사물 관련 추가 질문" },
+    { kind: "base", text: "학생 답" },
+    { kind: "ai", text: "핵심 문장 따라 말하기", sub: "\"Say it one more time!\"" },
+    { kind: "judge", text: "따라 말했나?", branches: [{ label: "N", text: "목표 문장 재제시 · 강요 없이 진행" }, { label: "Y", text: "다음 판단으로" }] },
+    { kind: "judge", text: "3사이클 완료?", branches: [{ label: "N", text: "열린 질문으로 돌아가 다음 묘사" }, { label: "Y", text: "Finished" }], loop: "반복 루프 · 묘사 3사이클" },
+    { kind: "end", text: "Finished", sub: "묘사 3사이클 · 학생 약 9턴" },
+    { kind: "end", text: "LAURA Report" },
+  ] },
+  { title: "Book Quiz", goal: "정답보다 먼저 스스로 떠올리기", nodes: [
+    { kind: "base", text: "Start · 책 표지", sub: "맞힌 문항마다 별 ★ · 0/5" },
+    { kind: "ai", text: "문항 제시", sub: "저레벨 3지선다 · 고레벨 열린 질문 · Help는 퀴즈 중 꺼짐" },
+    { kind: "base", text: "음성 입력" },
+    { kind: "judge", text: "정답인가?", branches: [{ label: "N", text: "첫 시도면 생각 단서(정답 힌트) → 다시 답하기" }, { label: "N", text: "두 번째도 틀리면 정답 공개 · 별 없음 · 확장 생략 → 마지막 문항 판단으로" }, { label: "Y", text: "칭찬 + 별 ★ 1개" }] },
+    { kind: "ai", text: "확장 질문", sub: "책 내용 → 내 이야기" },
+    { kind: "help", text: "Help · 예시 답변 제시", sub: "문장 틀 + 단어 칩 · 이 단계에서만 켜짐" },
+    { kind: "base", text: "학생 답", sub: "모르면 예시 제안" },
+    { kind: "judge", text: "마지막 문항인가?", branches: [{ label: "N", text: "다음 문항 제시" }, { label: "Y", text: "Finished" }], loop: "반복 루프 · 5문항" },
+    { kind: "end", text: "Finished", sub: "5문항 · 모은 별 ★ n/5" },
+    { kind: "end", text: "LAURA Report" },
+  ] },
+]} />
 
 <MediaStrip wide caption="Meet the Character" steps={[
   { label: "최초 진입 시", src: meetEnter, alt: "Coco가 먼저 말을 건다: Ouch… a bee stung me.", speaker: "Coco", line: "Ouch… a bee stung me." },
@@ -113,10 +152,11 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
 
 책 속 핵심 문장을 먼저 따라 말하게 해, 아이들이 Sentence Practice를 끝까지 하게 만들었습니다.
 
-- **문제.** 모든 활동 중 완료율(49.7%)과 체류 시간이 가장 낮았습니다.
-- **원인.** 책 속 핵심 문장 없이 Keywords만 보여줘, 아이는 어떤 문장으로 답해야 할지 몰라 첫 답을 못 했습니다. 근거 · 세션별 체류 시간이 매우 짧아, VOC와 사용자 인터뷰로 원인 확인
-- **액션.** 활동 전에 책 속 핵심 문장을 2번 따라 말하는 단계 추가 · 따라 말하기 → Keywords → 그림 질문 → 꼬리질문 순으로 변경
-- **가설 → 결과.** 핵심 문장을 먼저 따라 말하면, 활동을 완주할 것이다. 1~7월 완료율 49.7% → 69.8% (+20.1%p · 같은 기간 다른 활동 상승(+8.4%p)의 약 2.4배)
+<InfoCards cards={[
+  { label: "문제", body: "모든 활동 중 완료율(49.7%)과 체류 시간이 가장 낮았습니다." },
+  { label: "원인", body: "책 속 핵심 문장 없이 Keywords만 보여줘, 아이는 어떤 문장으로 답해야 할지 몰라 첫 답을 못 했습니다.", note: "근거 · 세션별 체류 시간이 매우 짧아, VOC와 사용자 인터뷰로 원인 확인" },
+  { label: "액션", list: ["활동 전에 책 속 핵심 문장을 2번 따라 말하는 단계 추가", "따라 말하기 → Keywords → 그림 질문 → 꼬리질문 순으로 변경"], note: "검토한 대안 · 활동 전체 리뉴얼 → 원인이 '무엇을 할지 모름'이라 시작 단계만 바꿈" },
+]} />
 
 <BeforeAfter wide visualRows={[
   {
@@ -137,14 +177,29 @@ AI를 정답을 주는 튜터가 아니라, 아이의 말을 끌어내는 대화
   },
 ]} />
 
+<HypothesisResult hypothesis="핵심 문장을 먼저 따라 말하면, 활동을 완주할 것이다." metrics={[
+  { label: "1~7월 완료율", value: "49.7% → 69.8%" },
+  { label: "변화", value: "+20.1%p", note: "같은 기간 다른 활동 상승(+8.4%p)의 약 2.4배" },
+  { label: "함께 달라진 것", value: "22.5 → 34.4%", note: "개편 직후 완료율 57.0 → 63.6%, 2026년 약 70% 유지 · 활동 비중 22.5 → 34.4%로 1위" },
+]} note="2025.01–07 vs 2026.01–07 · 개편 시점 2025.09–10" />
+
 ### LAURA 리포트
 
 끝까지 한 아이에게는 칭찬을, 부모 · 교사에게는 성장 기록을 보냈습니다.
 교사만 보던 리포트를, 활동이 끝나는 순간 아이 · 부모 · 교사가 함께 받는 리포트로 바꿨습니다.
 
-- **아이 · 앱·웹.** 끝까지 한 아이만 받는 칭찬 편지
-- **부모 · 카카오톡.** 끝나자마자 도착 · 영어 실력과 아이 생각 확인
-- **교사 · LMS.** 점수 · 교정 확인 · 링크로 학부모에게 공유
+<CompareCards caption="사용자(아이)와 구매 결정권자(학부모 · 교사)를 함께 설계했습니다."
+  before={{ label: "문제 · Before · V1 리포트", title: "리포트를 볼 수 있는 사람이 교사뿐이었습니다.", items: [
+    { mark: "✓", k: "교사", text: "LMS에서 대화 기록 확인" },
+    { mark: "✕", k: "아이", text: "자기 기록을 보거나 들을 수 없음" },
+    { mark: "✕", k: "부모", text: "무엇을 했는지 모름" },
+  ] }}
+  after={{ label: "실행 · After · V2 리포트 · 2025", title: "활동 완료 → 리포트 생성 → 리포트 링크 하나가 세 사람에게 바로 갑니다.", items: [
+    { mark: "→", k: "아이 · 앱·웹", text: "끝까지 한 아이만 받는 칭찬 편지", on: true },
+    { mark: "→", k: "부모 · 카카오톡", text: "끝나자마자 도착 · 영어 실력과 아이 생각 확인", on: true },
+    { mark: "→", k: "교사 · LMS", text: "점수 · 교정 확인 · 링크로 학부모에게 공유" },
+  ] }}
+/>
 
 <Figure src={reportLetter} alt="칭찬 편지: 대화에서 이런 내용이 좋았어요" caption="칭찬 편지" />
 
@@ -170,7 +225,28 @@ North Star인 활동 완료율이 오르고, 아이들은 다음 달에도 다�
 지난번에 한 이야기를 캐릭터가 기억해 주면, 아이는 다시 말을 걸 이유가 생깁니다.
 베타 체험단 지속 이용 의향 4.51 / 5 · 학습 흥미도 4.01 / 5 (설문). 정식 출시 전, 재방문으로 이어지는지 검증하던 단계입니다.
 
-<MediaStrip wide caption="관계형 AI · 기억 3단계" steps={[{ label: "기억으로 저장", src: memory1, alt: "아이: Ellie is a small dog, but she's smart. She plays soccer with me.", plain: true }, { label: "그 아이의 기억만 찾기", src: memory2, alt: "아이: Do you remember my dog's name?", plain: true }, { label: "캐릭터 말투로 대답", src: memory3, alt: "Coco: Yes! Your dog's name is Ellie.", plain: true }]} />
+<InfoCards cards={[
+  { label: "문제", body: "다른 활동은 평균 세션 오픈이 2.8배 늘었지만, 책 속 등장인물을 인터뷰하는 활동은 1.07배로 거의 그대로였습니다. 아이 1명당 이용도 12.0회 → 9.8회로 줄었고, 세션 비중은 약 절반으로 줄었습니다." },
+  { label: "원인", body: "대화 상대가 텍스트와 정지된 그림뿐이라, 아이에게는 또 하나의 질문 풀이였습니다. 기존 활동은 읽은 내용을 묻고 문장 정확도로 피드백했습니다." },
+  { label: "실행", list: ["자체 IP Harmony Hills 세계관으로 캐릭터의 성격과 말투를 설계했습니다.", "아이가 말하면 6가지 표정과 입 모양을 맞춘 목소리로 반응합니다.", "매 턴 기억이 필요한지 판단해, 그 아이의 기억만 꺼내 대답합니다."] },
+]} />
+
+**아이가 한 말은 대화 후 기억이 되어, 다른 책 대화에서 다시 쓰입니다.** 하나의 프롬프트에 맡기지 않고 인사 · 판단 · 대화 · 마무리 · 분석 · 기억 정리로 역할을 나눴습니다. 각 단계를 누르면 무엇이 들어가고 무엇이 나오는지 볼 수 있습니다.
+
+<SystemDiagram />
+
+<HypothesisResult label="결과 · 베타 체험단" hypothesis="베타 기간 중 기억은 아이 116명에게서 353개가 저장됐고, 다른 아이의 기억을 꺼낸 경우는 0건이었습니다." metrics={[
+  { label: "지속 이용 의향 (설문)", value: "4.51 / 5" },
+  { label: "학습 흥미도 (설문)", value: "4.01 / 5" },
+  { label: "응답자 중 LAURA 첫 이용자 (설문 자기 응답)", value: "약 70%" },
+]} note="정식 출시 전, 재방문으로 이어지는지 검증하던 단계입니다. 퇴사(2026.07) 시점까지 정식 출시는 하지 않았고, 체험단 한정 운영이라 실제 재이용은 측정 범위 밖입니다." />
+
+<InfoCards cards={[
+  { label: "개선안 ① · 판단 이유 기록에서 발견", body: "기억이 하나도 없는 아이에게도 검색을 시도해, 전체 판단의 29%가 헛검색이었습니다.", note: "→ 기억이 0개면 판단 · 검색을 건너뛰는 개선안을 정리했습니다." },
+  { label: "개선안 ② · 판단 이유 기록에서 발견", body: "가장 가까운 기억 1개를 기준 없이 써서, 관련성이 낮은 기억을 꺼낸 경우가 18%였습니다.", note: "→ 관련성 기준선을 두고, 미달이면 기억 없이 대답하는 개선안을 정리했습니다." },
+]} />
+
+아이들의 대화와 기억 내용은 열어보지 않고 건수만 집계했습니다. 모델 Gemini 3 Flash, 임베딩 text-embedding-3-small.
 
 ## 회고
 
