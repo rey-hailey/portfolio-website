@@ -37,9 +37,10 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 10 | launch | Vercel 배포, 도메인, 분석, 최종 QA | Draft (미작성) | `docs/specs/10-launch/requirements.md` | `docs/specs/10-launch/design.md` | `.omo/plans/10-launch.md` |
 | 11 | design-polish | 타이포·섹션 리듬·헤더 거동·카드 상호작용·View Transitions·상세 목차·카운트업 | Draft | `docs/specs/11-design-polish/requirements.md` | `docs/specs/11-design-polish/design.md` | `.omo/plans/11-design-polish.md` |
 | 12 | case-visuals | 원본 덱 화면·도식을 케이스/홈/About/Lab/추가 사례에 배치, 미디어 컴포넌트, 썸네일 교체 | Done | `docs/specs/12-case-visuals/requirements.md` | `docs/specs/12-case-visuals/design.md` | 위임 단건(계획 없음) |
-| 13 | work-readability | Work 상세 상단 30초 요약·넓은 그림·캡션·글-그림 짝·추가 사례 카드 정리, Figma 도식 polish | In progress (WRR-R04 도식 2건 Figma 재작성 남음) | `docs/specs/13-work-readability/requirements.md` | `docs/specs/13-work-readability/design.md` | `.omo/plans/13-work-readability.md` |
+| 13 | work-readability | Work 상세 상단 30초 요약·넓은 그림·캡션·글-그림 짝·추가 사례 카드 정리, Figma 도식 polish | Done (WRR-R04 도식 2건은 16-case-diagrams에서 HTML로 대체) | `docs/specs/13-work-readability/requirements.md` | `docs/specs/13-work-readability/design.md` | `.omo/plans/13-work-readability.md` |
 | 14 | hire-readability | 서류 통과 관점 리뷰: 홈 카드 인과 3줄·강점 근거·히어로 숫자 1:1·상세 결과 그림 확대·숫자 표기 통일 | Done | `docs/specs/14-hire-readability/requirements.md` | `docs/specs/14-hire-readability/design.md` | `.omo/plans/14-hire-readability.md` |
 | 15 | visual-rhythm | 본문 그림 폭 2단계·묶음 틀·개선 후 강조·화면 스트립(carousel) | Done | `docs/specs/15-visual-rhythm/requirements.md` | `docs/specs/15-visual-rhythm/design.md` | `.omo/plans/15-visual-rhythm.md` |
+| 16 | case-diagrams | Artifact 구성 차용: 단계 칩·HTML 흐름도·Meet the Character 인터랙티브 구조도·벽 표·As-is/To-be 카드 | Done | `docs/specs/16-case-diagrams/requirements.md` | `docs/specs/16-case-diagrams/design.md` | `.omo/plans/16-case-diagrams.md` |
 
 ## Requirement ID 접두어
 
@@ -60,3 +61,4 @@ requirements/design 작성 → 승인(Approved) → ulw-plan 실행 계획 → �
 | 13-work-readability | `WRR` |
 | 14-hire-readability | `HIR` |
 | 15-visual-rhythm | `VIS` |
+| 16-case-diagrams | `DGM` |
