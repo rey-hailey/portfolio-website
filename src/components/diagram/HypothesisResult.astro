@@ -1,0 +1,32 @@
+---
+// 16-case-diagrams (DGM-R05): 가설 한 문장 → 결과 숫자 N칸. accent 배경 + bg 글자(PRD 7.2)
+interface Metric {
+  label: string;
+  value: string;
+  note?: string | undefined;
+}
+interface Props {
+  hypothesis: string;
+  metrics: Metric[];
+  note?: string | undefined;
+  label?: string | undefined;
+}
+const { hypothesis, metrics, note, label = '가설 → 결과' } = Astro.props;
+---
+
+<section class="dgm dgm-hr not-prose" aria-label={label} data-hypothesis-result>
+  <p class="dgm-hr-label">{label}</p>
+  <p class="dgm-hr-hyp break-keep">{hypothesis}</p>
+  <dl class="dgm-hr-metrics" style={`--hr-cols:${metrics.length}`}>
+    {
+      metrics.map((m) => (
+        <div>
+          <dt>{m.label}</dt>
+          <dd class="dgm-hr-value">{m.value}</dd>
+          {m.note && <dd class="dgm-hr-note break-keep">{m.note}</dd>}
+        </div>
+      ))
+    }
+  </dl>
+  {note && <p class="dgm-hr-foot">{note}</p>}
+</section>

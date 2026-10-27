@@ -1,0 +1,37 @@
+---
+// 16-case-diagrams (DGM-R04·R06): 원인 → 결과 → 해법을 한 줄에 보는 표. 첫 열은 행 머리(th scope=row), 마지막 열(해법)은 강조.
+// 767px 이하에서는 행마다 카드로 쌓이고 칸 앞에 열 이름(data-label)이 붙는다.
+interface Props {
+  caption: string;
+  columns: string[];
+  rows: { head: string; cells: string[] }[];
+}
+const { caption, columns, rows } = Astro.props;
+const [headCol, ...cellCols] = columns;
+---
+
+<div class="dgm dgm-table-wrap not-prose">
+  <table class="dgm-table">
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{headCol || <span class="dgm-sr">구분</span>}</th>
+        {cellCols.map((c) => <th scope="col">{c}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((r) => (
+          <tr>
+            <th scope="row">{r.head}</th>
+            {r.cells.map((c, i) => (
+              <td data-label={cellCols[i]} class:list={[i === r.cells.length - 1 && 'dgm-table-sol']}>
+                {c}
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
