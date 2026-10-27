@@ -1,0 +1,206 @@
+---
+// 16-case-diagrams (DGM-R03): Meet the Character 작동 구조. 노드를 누르면 하는 일 · 들어가는 것 · 나가는 것 · 연결 · 설계 결정이 패널(모바일은 아래 시트)에 뜬다.
+// 도식 좌표는 사이트 주인 포트폴리오 Artifact 그대로, 색은 토큰 클래스. 스크립트는 이 컴포넌트를 쓰는 페이지(LAURA 상세)에만 번들된다.
+// JS가 없으면 도식 · 기본 노드(judge) 설명 · 설계 결정 목록이 그대로 보인다.
+import { mtcDiagram, type MtcNodeId } from '../../data/mtc-diagram';
+
+const d = mtcDiagram;
+const DEFAULT: MtcNodeId = 'judge';
+const circled = ['', '①', '②', '③', '④', '⑤'];
+const node = d.nodes[DEFAULT];
+const pinsOf = (id: MtcNodeId) => (d.nodes[id].pins ?? []).map((p) => d.decisions.find((x) => x.id === p)!);
+// 모바일 목록 (Artifact 순서). scope=ov는 '개요' 탭에서만 보인다
+const LIST: { phase?: string; scope?: 'ov'; n?: MtcNodeId; label?: string; sub?: boolean; pins?: number[] }[] = [
+  { phase: '대화 시작', scope: 'ov' },
+  { n: 'greet', label: '먼저 인사 · 쉬운 질문', scope: 'ov' },
+  { phase: '대화 중 · 아이 차례마다 ↺ 반복' },
+  { n: 'speak', label: '아이가 말함' },
+  { n: 'judge', label: '기억이 필요한가?', pins: [1, 4] },
+  { n: 'childmem', label: '지난 이야기 · 취향 · 가족 → 아이 기억', sub: true, pins: [2] },
+  { n: 'world', label: '캐릭터 · 마을 질문 → 세계관', sub: true },
+  { n: 'skip', label: '맞장구 · 인사 · 작별 → 검색 없이', sub: true },
+  { n: 'answer', label: '대답 생성 + 감정 1개' },
+  { n: 'react', label: '표정 · 목소리로 대답' },
+  { phase: '대화 끝', scope: 'ov' },
+  { n: 'farewell', label: '작별 인사', scope: 'ov' },
+  { phase: '대화 후', scope: 'ov' },
+  { n: 'analysis', label: '대화 유형 분석 → 리포트', scope: 'ov' },
+  { n: 'extract', label: '기억 정리 · 추가 · 수정 · 유지', scope: 'ov', pins: [3] },
+  { n: 'childmem', label: '아이 기억에 저장', scope: 'ov', pins: [2] },
+  { n: 'report', label: '관계 리포트 · 기억 확인 · 삭제', scope: 'ov', pins: [5] },
+];
+const laneClass = (id: MtcNodeId) => (d.nodes[id].lane === '프롬프트' ? 'pr' : d.nodes[id].lane === '저장소' ? 'st' : 'sc');
+---
+
+<figure class="dgm dgm-sd media-wide not-prose" data-sd>
+  <div class="dgm-sd-bar">
+    <div class="dgm-seg" role="tablist" aria-label="도식 보기">
+      <button type="button" role="tab" id="sd-tab-ov" aria-selected="true" aria-controls="sd-ov" data-sd-tab="ov">개요</button>
+      <button type="button" role="tab" id="sd-tab-turn" aria-selected="false" aria-controls="sd-turn" data-sd-tab="turn" tabindex="-1">아이가 한 번 말할 때</button>
+    </div>
+  </div>
+
+  <div class="dgm-sd-ex">
+    <div class="dgm-sd-ex-head">
+      <p class="dgm-sd-ex-title">실제 대화 따라가기</p>
+      <div class="dgm-sd-ex-steps" role="group" aria-label="실제 대화 단계">
+        {d.examples.map((e) => <button type="button" data-sd-ex={e.id} aria-pressed="false">{e.id}</button>)}
+      </div>
+    </div>
+    <div class="dgm-sd-ex-body" data-sd-ex-body aria-live="polite">
+      <p class="dgm-sd-muted">테스트 계정의 실제 대화 두 건입니다. 1~4를 누르면 도식에서 그 단계가 강조됩니다.</p>
+    </div>
+  </div>
+
+  <div class="dgm-sd-grid">
+    <div class="dgm-sd-canvas">
+      <div id="sd-ov" role="tabpanel" aria-labelledby="sd-tab-ov" class="dgm-sd-wrap" data-sd-panel="ov">
+        <svg class="dgm-sd-svg" viewBox="0 0 760 420" role="group" aria-label="개요 도식: 아이 · 화면, 프롬프트, 저장소 세 줄과 대화 시작부터 대화 후까지 네 구간">
+          <defs>
+            <marker id="sd-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk"></path></marker>
+            <marker id="sd-a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-ac"></path></marker>
+          </defs>
+          <g class="gr"><line x1="226" y1="44" x2="226" y2="404"></line><line x1="454" y1="44" x2="454" y2="404"></line><line x1="578" y1="44" x2="578" y2="404"></line><line x1="16" y1="162" x2="744" y2="162"></line><line x1="16" y1="318" x2="744" y2="318"></line></g>
+          <g class="hd"><text x="164" y="30" text-anchor="middle">대화 시작</text><text x="340" y="30" text-anchor="middle">대화 중 · 아이 차례마다</text><text x="516" y="30" text-anchor="middle">대화 끝</text><text x="660" y="30" text-anchor="middle">대화 후</text></g>
+          <g class="lnn"><text x="16" y="120">아이 · 화면</text><text x="16" y="246">프롬프트</text><text x="16" y="370">저장소</text></g>
+          <g class="ln">
+            <path d="M164 220V116H232" marker-end="url(#sd-a)"></path>
+            <path d="M290 138V204" marker-end="url(#sd-a)"></path>
+            <path d="M346 242H360" marker-end="url(#sd-a)"></path>
+            <path d="M404 220V140" marker-end="url(#sd-a)"></path>
+            <path d="M400 94V80H290V92" marker-end="url(#sd-a)"></path>
+            <path d="M446 242H458" marker-end="url(#sd-a)"></path>
+            <path d="M572 242H580V210H590" marker-end="url(#sd-a)"></path>
+            <path d="M580 242V274H590" marker-end="url(#sd-a)"></path>
+            <path d="M660 188V140" marker-end="url(#sd-a)"></path>
+            <path d="M660 296V340" marker-end="url(#sd-a)"></path>
+            <path d="M282 278V366H226" class="dash" marker-end="url(#sd-a)"></path>
+          </g>
+          <path class="lp" d="M592 372H320V264" marker-end="url(#sd-a2)"></path>
+          <g class="el">
+            <text x="156" y="176" text-anchor="end">인사 · 질문</text>
+            <text x="345" y="74" text-anchor="middle">다음 차례</text>
+            <text x="354" y="212" text-anchor="middle">기억 1개</text>
+            <text x="453" y="212" text-anchor="middle">대화 끝</text>
+            <text x="668" y="168">피드백</text>
+            <text x="668" y="322">저장</text>
+            <text x="274" y="328" text-anchor="end">세계관 질문</text>
+            <text x="456" y="362" text-anchor="middle" class="lp-t">다음 대화 · 다른 책에서도</text>
+            <text x="456" y="392" text-anchor="middle">그 아이의 기억만 검색</text>
+          </g>
+          <g class="nd sc" data-n="speak" tabindex="0" role="button" aria-label="아이가 말함"><rect x="242" y="94" width="96" height="44" rx="8"></rect><text x="290" y="113" text-anchor="middle" class="nm">아이가 말함</text><text x="290" y="129" text-anchor="middle" class="sb">음성 입력</text></g>
+          <g class="nd sc" data-n="react" tabindex="0" role="button" aria-label="표정 · 목소리"><rect x="354" y="94" width="92" height="44" rx="8"></rect><text x="400" y="113" text-anchor="middle" class="nm">표정 · 목소리</text><text x="400" y="129" text-anchor="middle" class="sb">립싱크 음성</text></g>
+          <g class="nd sc" data-n="report" tabindex="0" role="button" aria-label="관계 리포트"><rect x="592" y="94" width="136" height="44" rx="8"></rect><text x="660" y="113" text-anchor="middle" class="nm">관계 리포트</text><text x="660" y="129" text-anchor="middle" class="sb">기억 확인 · 삭제</text></g>
+          <g class="nd pr" data-n="greet" tabindex="0" role="button" aria-label="먼저 인사"><rect x="112" y="220" width="104" height="44" rx="8"></rect><text x="164" y="239" text-anchor="middle" class="nm">먼저 인사</text><text x="164" y="255" text-anchor="middle" class="sb">쉬운 질문 하나</text></g>
+          <g class="nd pr" data-n="judge" tabindex="0" role="button" aria-label="기억이 필요한가?"><polygon points="234,242 290,206 346,242 290,278"></polygon><text x="290" y="239" text-anchor="middle" class="nm">기억이</text><text x="290" y="255" text-anchor="middle" class="nm">필요한가?</text></g>
+          <g class="nd pr" data-n="answer" tabindex="0" role="button" aria-label="대답 생성"><rect x="362" y="220" width="84" height="44" rx="8"></rect><text x="404" y="239" text-anchor="middle" class="nm">대답 생성</text><text x="404" y="255" text-anchor="middle" class="sb">+ 감정 1개</text></g>
+          <g class="nd pr" data-n="farewell" tabindex="0" role="button" aria-label="작별 인사"><rect x="460" y="220" width="112" height="44" rx="8"></rect><text x="516" y="239" text-anchor="middle" class="nm">작별 인사</text><text x="516" y="255" text-anchor="middle" class="sb">오늘 이야기 짚기</text></g>
+          <g class="nd pr" data-n="analysis" tabindex="0" role="button" aria-label="대화 유형 분석"><rect x="592" y="188" width="136" height="44" rx="8"></rect><text x="660" y="207" text-anchor="middle" class="nm">대화 유형 분석</text><text x="660" y="223" text-anchor="middle" class="sb">Coco 감정 · 피드백</text></g>
+          <g class="nd pr" data-n="extract" tabindex="0" role="button" aria-label="기억 정리"><rect x="592" y="252" width="136" height="44" rx="8"></rect><text x="660" y="271" text-anchor="middle" class="nm">기억 정리</text><text x="660" y="287" text-anchor="middle" class="sb">추가 · 수정 · 유지</text></g>
+          <g class="nd st" data-n="world" tabindex="0" role="button" aria-label="캐릭터 · 세계관 설정"><path d="M104 348V384A60 6 0 0 0 224 384V348"></path><ellipse cx="164" cy="348" rx="60" ry="6"></ellipse><text x="164" y="370" text-anchor="middle" class="nm">캐릭터 · 세계관</text><text x="164" y="385" text-anchor="middle" class="sb">모든 아이 공통</text></g>
+          <g class="nd st" data-n="childmem" tabindex="0" role="button" aria-label="아이 기억"><path d="M592 348V384A68 6 0 0 0 728 384V348"></path><ellipse cx="660" cy="348" rx="68" ry="6"></ellipse><text x="660" y="370" text-anchor="middle" class="nm">아이 기억</text><text x="660" y="385" text-anchor="middle" class="sb">아이별로 분리</text></g>
+          <g class="pin" data-p="1" tabindex="0" role="button" aria-label="설계 결정 1"><circle cx="244" cy="214" r="10"></circle><text x="244" y="218" text-anchor="middle">1</text></g>
+          <g class="pin" data-p="4" tabindex="0" role="button" aria-label="설계 결정 4"><circle cx="356" cy="288" r="10"></circle><text x="356" y="292" text-anchor="middle">4</text></g>
+          <g class="pin" data-p="3" tabindex="0" role="button" aria-label="설계 결정 3"><circle cx="728" cy="254" r="10"></circle><text x="728" y="258" text-anchor="middle">3</text></g>
+          <g class="pin" data-p="2" tabindex="0" role="button" aria-label="설계 결정 2"><circle cx="728" cy="344" r="10"></circle><text x="728" y="348" text-anchor="middle">2</text></g>
+          <g class="pin" data-p="5" tabindex="0" role="button" aria-label="설계 결정 5"><circle cx="728" cy="96" r="10"></circle><text x="728" y="100" text-anchor="middle">5</text></g>
+        </svg>
+        <p class="dgm-sd-legend">실선 = 흐름 · 점선 = 읽기 · <b>accent 칸</b> = 프롬프트 · <b>원통</b> = 저장소 · <b>accent 화살표</b> = 다음 대화로 이어지는 기억 · 숫자 = 설계 결정</p>
+      </div>
+      <div id="sd-turn" role="tabpanel" aria-labelledby="sd-tab-turn" class="dgm-sd-wrap" data-sd-panel="turn" hidden>
+        <svg class="dgm-sd-svg" viewBox="0 0 760 262" role="group" aria-label="확대 도식: 아이가 한 번 말할 때 판단의 세 갈래">
+          <defs><marker id="sd-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk"></path></marker></defs>
+          <g class="ln">
+            <path d="M152 112H196" marker-end="url(#sd-b)"></path>
+            <path d="M326 112H350V52H370" marker-end="url(#sd-b)"></path>
+            <path d="M350 112H370" marker-end="url(#sd-b)"></path>
+            <path d="M350 112V172H370" marker-end="url(#sd-b)"></path>
+            <path d="M548 52H566V112"></path>
+            <path d="M548 172H566V112"></path>
+            <path d="M548 112H582" marker-end="url(#sd-b)"></path>
+            <path d="M650 134V196" marker-end="url(#sd-b)"></path>
+            <path d="M584 222H92V138" marker-end="url(#sd-b)"></path>
+          </g>
+          <g class="el"><text x="658" y="170">대답 + 감정 1개</text><text x="330" y="214" text-anchor="middle">다음 차례 · 반복</text></g>
+          <g class="nd sc" data-n="speak" tabindex="0" role="button" aria-label="아이가 말함"><rect x="32" y="88" width="120" height="48" rx="8"></rect><text x="92" y="109" text-anchor="middle" class="nm">아이가 말함</text><text x="92" y="126" text-anchor="middle" class="sb">음성 입력</text></g>
+          <g class="nd pr" data-n="judge" tabindex="0" role="button" aria-label="기억이 필요한가?"><polygon points="198,112 262,72 326,112 262,152"></polygon><text x="262" y="109" text-anchor="middle" class="nm">기억이</text><text x="262" y="126" text-anchor="middle" class="nm">필요한가?</text></g>
+          <g class="nd st" data-n="childmem" tabindex="0" role="button" aria-label="아이 기억에서 찾기"><rect x="372" y="30" width="176" height="44" rx="8"></rect><text x="460" y="49" text-anchor="middle" class="nm">아이 기억에서 찾기</text><text x="460" y="65" text-anchor="middle" class="sb">지난 이야기 · 취향 · 가족</text></g>
+          <g class="nd st" data-n="world" tabindex="0" role="button" aria-label="세계관에서 찾기"><rect x="372" y="90" width="176" height="44" rx="8"></rect><text x="460" y="109" text-anchor="middle" class="nm">세계관에서 찾기</text><text x="460" y="125" text-anchor="middle" class="sb">캐릭터 · 마을 질문</text></g>
+          <g class="nd sc" data-n="skip" tabindex="0" role="button" aria-label="검색 없이"><rect x="372" y="150" width="176" height="44" rx="8"></rect><text x="460" y="169" text-anchor="middle" class="nm">검색 없이 바로</text><text x="460" y="185" text-anchor="middle" class="sb">맞장구 · 인사 · 작별</text></g>
+          <g class="nd pr" data-n="answer" tabindex="0" role="button" aria-label="대답 생성"><rect x="584" y="90" width="132" height="44" rx="8"></rect><text x="650" y="109" text-anchor="middle" class="nm">대답 생성</text><text x="650" y="125" text-anchor="middle" class="sb">찾은 기억 1개 사용</text></g>
+          <g class="nd sc" data-n="react" tabindex="0" role="button" aria-label="표정 · 목소리"><rect x="584" y="198" width="132" height="44" rx="8"></rect><text x="650" y="217" text-anchor="middle" class="nm">표정 · 목소리</text><text x="650" y="233" text-anchor="middle" class="sb">표정 6가지 · 립싱크</text></g>
+          <g class="pin" data-p="1" tabindex="0" role="button" aria-label="설계 결정 1"><circle cx="216" cy="82" r="10"></circle><text x="216" y="86" text-anchor="middle">1</text></g>
+          <g class="pin" data-p="4" tabindex="0" role="button" aria-label="설계 결정 4"><circle cx="308" cy="82" r="10"></circle><text x="308" y="86" text-anchor="middle">4</text></g>
+          <g class="pin" data-p="2" tabindex="0" role="button" aria-label="설계 결정 2"><circle cx="548" cy="30" r="10"></circle><text x="548" y="34" text-anchor="middle">2</text></g>
+        </svg>
+        <p class="dgm-sd-legend">검색은 비슷한 기억 상위 3개를 찾고, 그중 가장 가까운 1개를 대답에 넣습니다.</p>
+      </div>
+
+      <div class="dgm-sd-list" aria-label="단계 목록" data-sd-list>
+        {
+          LIST.map((r) =>
+            r.phase ? (
+              <p class="dgm-sd-ph" data-scope={r.scope}>{r.phase}</p>
+            ) : (
+              <button type="button" class:list={['dgm-sd-row', `dgm-sd-row--${laneClass(r.n!)}`, r.sub && 'dgm-sd-row--sub']} data-n={r.n} data-scope={r.scope}>
+                <span>{r.label}</span>
+                {r.pins && (
+                  <span class="dgm-sd-pins" aria-label={`설계 결정 ${r.pins.join(', ')}`}>
+                    {r.pins.map((p) => <em>{p}</em>)}
+                  </span>
+                )}
+              </button>
+            ),
+          )
+        }
+        <p class="dgm-sd-loop" data-scope="ov"><b>↺ 다음 대화 · 다른 책에서도</b> 그 아이의 기억이 ‘기억이 필요한가?’로 돌아갑니다</p>
+      </div>
+    </div>
+
+    <aside class="dgm-sd-panel" aria-live="polite" aria-label="선택한 단계 설명">
+      <div data-sd-panel-body>
+        <p class="dgm-sd-stage">{node.stage}</p>
+        <p class="dgm-sd-title">{node.title}<span class={`dgm-sd-lane dgm-sd-lane--${laneClass(DEFAULT)}`}>{node.lane}</span></p>
+        <dl class="dgm-sd-kv">
+          <dt>하는 일</dt><dd>{node.does}</dd>
+          <dt>들어가는 것</dt><dd>{node.input}</dd>
+          <dt>나가는 것</dt><dd>{node.output}</dd>
+          <dt>연결</dt><dd>{node.next}</dd>
+        </dl>
+        {pinsOf(DEFAULT).map((p) => <p class="dgm-sd-pinbox"><b>{circled[p.id]} {p.short}</b>{p.detail}</p>)}
+        {node.prompt && <p class="dgm-sd-prompt">프롬프트 · <code>{node.prompt}</code></p>}
+      </div>
+    </aside>
+  </div>
+
+
+  <dialog class="dgm-sheet" aria-labelledby="sd-sheet-title" data-sd-sheet>
+    <button type="button" class="dgm-sheet-x" data-sd-close aria-label="닫기">✕</button>
+    <div data-sd-sheet-body></div>
+    <div class="dgm-sheet-nav">
+      <button type="button" data-sd-prev>← 이전 단계</button>
+      <button type="button" data-sd-next>다음 단계 →</button>
+    </div>
+  </dialog>
+
+  <script type="application/json" data-sd-data set:html={JSON.stringify(d)} />
+  <figcaption class="dgm-sd-decisions">
+    <p class="dgm-sd-dtitle">설계 결정 ①~⑤</p>
+    <ol class="dgm-sd-dl">
+      {
+        d.decisions.map((p) => (
+          <li>
+            <button type="button" data-p={p.id}>
+              <b>{circled[p.id]} {p.title}</b>
+              <span>{p.detail}</span>
+            </button>
+          </li>
+        ))
+      }
+    </ol>
+  </figcaption>
+</figure>
+
+<script>
+  import '../../scripts/system-diagram';
+</script>
